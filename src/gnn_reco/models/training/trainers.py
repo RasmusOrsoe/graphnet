@@ -14,9 +14,9 @@ class Trainer(object):
         self.optimizer = optimizer
         self.scheduler = scheduler
         self.n_epochs = n_epochs
-        #self.export_loss = export_loss
-        #self.validation_loss = []
-        #self.training_loss = []
+        self.export_loss = export_loss
+        self.validation_loss = []
+        self.training_loss = []
         
     def __call__(self, model):
         trained_model = self._train(model)
