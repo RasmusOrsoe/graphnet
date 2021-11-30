@@ -5,6 +5,7 @@ from tqdm import tqdm
 from gnn_reco.models.training.callbacks import EarlyStopping
 from gnn_reco.models.training.utils import make_train_validation_dataloader
 
+
 class Trainer(object):
     def __init__(self, training_dataloader, validation_dataloader, optimizer, n_epochs, scheduler = None, patience = 10, early_stopping = True, export_loss = False):
         self.training_dataloader = training_dataloader
@@ -17,7 +18,7 @@ class Trainer(object):
         self.export_loss = export_loss
         self.validation_loss = []
         self.training_loss = []
-        
+
     def __call__(self, model):
         trained_model = self._train(model)
         self._load_best_parameters(model)
@@ -27,19 +28,19 @@ class Trainer(object):
         for epoch in range(self.n_epochs):
             acc_loss = 0.
             iteration = 1
-            model.train() 
+            model.train()
             pbar = tqdm(self.training_dataloader, unit= 'batches')
             for batch_of_graphs in pbar:
-                with torch.enable_grad():                                                                                                     
-                    self.optimizer.zero_grad()                                                   
-                    out = model(batch_of_graphs)   
+                with torch.enable_grad():
+                    self.optimizer.zero_grad()
+                    out = model(batch_of_graphs)
                     loss = model.compute_loss(out, batch_of_graphs)
-                    loss.backward()                                                         
+                    loss.backward()
                     self.optimizer.step()
-                if self.scheduler != None:    
+                if self.scheduler != None:
                     self.optimizer.param_groups[0]['lr'] = self.scheduler.get_next_lr().item()
                 acc_loss += loss.item()
-                if iteration == (len(pbar)):    
+                if iteration == (len(pbar)):
                     validation_loss = self._validate(model)
                     pbar.set_description('epoch: %s || loss: %s || valid loss : %s'%(epoch, acc_loss/iteration, validation_loss))
                 else:
@@ -52,19 +53,19 @@ class Trainer(object):
                 print('EARLY STOPPING: %s'%epoch)
                 break
         return model
-            
+
     def _validate(self,model):
         acc_loss = 0.
         model.eval()
         for batch_of_graphs in self.validation_dataloader:
-            with torch.no_grad():                                                                                        
-                out = model(batch_of_graphs)   
+            with torch.no_grad():
+                out = model(batch_of_graphs)
                 loss = model.compute_loss(out, batch_of_graphs)
                 acc_loss += loss.item()
         return acc_loss/len(self.validation_dataloader)
-    
+
     def _load_best_parameters(self,model):
-        return model.load_state_dict(self._early_stopping_method.get_best_params())  
+        return model.load_state_dict(self._early_stopping_method.get_best_params())
 
 
 class MultipleDatabasesTrainer(object):
@@ -113,16 +114,16 @@ class MultipleDatabasesTrainer(object):
             acc_loss = 0.
             iteration = 1
             model.train()
-            pbar = tqdm(total = training_batches, unit= 'batches') 
-            for training_dataloader in self.training_dataloaders:  
+            pbar = tqdm(total = training_batches, unit= 'batches')
+            for training_dataloader in self.training_dataloaders:
                 for batch_of_graphs in training_dataloader:
-                    with torch.enable_grad():                                                                                                     
-                            self.optimizer.zero_grad()                                                   
-                            out = model(batch_of_graphs)   
+                    with torch.enable_grad():
+                            self.optimizer.zero_grad()
+                            out = model(batch_of_graphs)
                             loss = model.compute_loss(out, batch_of_graphs)
-                            loss.backward()                                                         
+                            loss.backward()
                             self.optimizer.step()
-                    if self.scheduler != None:    
+                    if self.scheduler != None:
                         self.optimizer.param_groups[0]['lr'] = self.scheduler.get_next_lr().item()
                     acc_loss += loss.item()
                     iteration +=1
@@ -141,8 +142,8 @@ class MultipleDatabasesTrainer(object):
         iterations = 1
         for validation_dataloader in self.validation_dataloaders:
             for batch_of_graphs in validation_dataloader:
-                with torch.no_grad():                                                                                        
-                    out = model(batch_of_graphs)   
+                with torch.no_grad():
+                    out = model(batch_of_graphs)
                     loss = model.compute_loss(out, batch_of_graphs)
                     acc_loss += loss.item()
                 iterations +=1
