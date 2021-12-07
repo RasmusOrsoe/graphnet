@@ -6,6 +6,7 @@ from gnn_reco.utils import eps_like
 
 
 class AzimuthReconstructionWithKappa(Task):
+    """Reconstructs azimuthal angle and associated kappa (1/var)."""
     # Requires two features: untransformed points in (x,y)-space.
     nb_inputs = 2
 
@@ -41,6 +42,7 @@ class TReconstruction(Task):
         return x
 
 class AzimuthReconstruction(AzimuthReconstructionWithKappa):
+    """Reconstructs azimuthal angle."""
     # Requires two features: untransformed points in (x,y)-space.
     nb_inputs = 2
 
@@ -57,6 +59,7 @@ class AzimuthReconstruction(AzimuthReconstructionWithKappa):
 
 
 class ZenithReconstruction(Task):
+    """Reconstructs zenith angle."""
     # Requires two features: untransformed points in (x,y)-space.
     nb_inputs = 1
 
@@ -65,6 +68,7 @@ class ZenithReconstruction(Task):
         return torch.sigmoid(x[:,:1]) * np.pi
 
 class ZenithReconstructionWithKappa(ZenithReconstruction):
+    """Reconstructs zenith angle and associated kappa (1/var)."""
     # Requires one feature in addition to `ZenithReconstruction`: kappa (unceratinty; 1/variance).
     nb_inputs = 2
 
@@ -73,9 +77,10 @@ class ZenithReconstructionWithKappa(ZenithReconstruction):
         angle = super()._forward(x[:,:1]).squeeze(1)
         kappa = torch.abs(x[:,1]) + eps_like(x)
         return torch.stack((angle, kappa), dim=1)
-        
+
 
 class EnergyReconstruction(Task):
+    """Reconstructs energy."""
     # Requires one feature: untransformed energy
     nb_inputs = 1
 
@@ -84,6 +89,7 @@ class EnergyReconstruction(Task):
         return x[:,0].unsqueeze(1) #torch.pow(10, x[:,0] + 1.).unsqueeze(1)
 
 class EnergyReconstructionWithUncertainty(EnergyReconstruction):
+    """Reconstructs energy and associated uncertainty (log(var))."""
     # Requires one feature in addition to `EnergyReconstruction`: log-variance (uncertainty).
     nb_inputs = 2
 
