@@ -73,6 +73,7 @@ class Model(Module):
         if dirname:
             os.makedirs(dirname, exist_ok=True)
         torch.save(self.cpu(), path, pickle_module=dill)
+        self.to(self._device)
         print(f"Model saved to {path}")
 
     @classmethod

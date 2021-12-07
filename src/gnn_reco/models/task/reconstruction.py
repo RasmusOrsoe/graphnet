@@ -16,6 +16,30 @@ class AzimuthReconstructionWithKappa(Task):
         angle = torch.where(angle < 0, angle + 2 * np.pi, angle)  # atan(y,x) -> [-pi, pi]
         return torch.stack((angle, kappa), dim=1)
 
+class XYZReconstruction(Task):
+    # Requires two features: untransformed points in (x,y)-space.
+    nb_inputs = 3
+
+    def _forward(self, x):
+        # Transform outputs
+        #x[:,0] = x[:,0]*100
+        #x[:,1] = x[:,1]*100
+        #x[:,2] = x[:,2]*100
+        #x[:,3] = x[:,3]*9000 
+        return x
+
+class TReconstruction(Task):
+    # Requires two features: untransformed points in (x,y)-space.
+    nb_inputs = 1
+
+    def _forward(self, x):
+        # Transform outputs
+        #x[:,0] = x[:,0]*100
+        #x[:,1] = x[:,1]*100
+        #x[:,2] = x[:,2]*100
+        #x[:,3] = x[:,3]*9000 
+        return x
+
 class AzimuthReconstruction(AzimuthReconstructionWithKappa):
     # Requires two features: untransformed points in (x,y)-space.
     nb_inputs = 2

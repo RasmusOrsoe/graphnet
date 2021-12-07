@@ -157,6 +157,8 @@ class SQLiteDataset(torch.utils.data.Dataset):
                 except TypeError:
                     # Cannot convert `value` to Tensor due to its data type, e.g. `str`.
                     pass
+        
+        graph['XYZ'] = torch.tensor(np.array([truth_dict['position_x'],truth_dict['position_y'],truth_dict['position_z']]), dtype = torch.float32).reshape(-1,3)
 
         return graph
         

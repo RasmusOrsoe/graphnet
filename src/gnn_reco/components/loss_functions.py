@@ -60,6 +60,32 @@ class LossFunction(_WeightedLoss):
         """Syntax similar to `.forward` for implentation in inheriting classes."""
 
 
+class XYZLogCosh(LossFunction):
+
+    def _log_cosh(self, x: Tensor) -> Tensor:
+        return torch.log(torch.cosh(x))
+
+    def _forward(self, prediction: Tensor, target: Tensor) -> Tensor:
+        #print(target.shape)
+        diff = (prediction[:,0] - target[:,0]/764.431509)**2 + (prediction[:,1] - target[:,1]/785.041607)**2 + (prediction[:,2] - target[:,2]/1083.249944)**2 #+(prediction[:,3] - target[:,3]/14721.646883) 
+        diff = torch.sqrt(diff)
+        elements = self._log_cosh(diff)
+        return elements
+
+class TLogCosh(LossFunction):
+
+    def _log_cosh(self, x: Tensor) -> Tensor:
+        return torch.log(torch.cosh(x))
+
+    def _forward(self, prediction: Tensor, target: Tensor) -> Tensor:
+        #print(target.shape)
+        diff = prediction[:,0] - torch.log10(target) #/4.16795639642756) 
+        #diff = torch.sqrt(diff)
+        
+        elements = self._log_cosh(diff)
+        return elements
+
+
 class LogCoshLoss(LossFunction):
     """Log-cosh loss function. 
     

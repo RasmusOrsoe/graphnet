@@ -103,7 +103,8 @@ def save_results(db, tag, results, archive,model, validation_loss = None, traini
     path = archive + '/' + db_name + '/' + tag
     os.makedirs(path, exist_ok = True)
     results.to_csv(path + '/results.csv')
-    torch.save(model.cpu().state_dict(), path + '/' + tag + '.pth')
+    model.save(path + '/' + tag + '.pth')
+    #torch.save(model.cpu().state_dict(), path + '/' + tag + '.pth')
     if validation_loss != None:
         pd.DataFrame({'training_loss': training_loss, 'validation_loss':validation_loss}).to_csv(path + '/' +'training_hist.csv')
     print('Results saved at: \n %s'%path)
