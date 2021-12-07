@@ -125,7 +125,7 @@ def extract_statistics(data,keys, key_bins):
                     if key == 'zenith':
                         biases[key][str(pid)][str(interaction_type)]['bias'] = (data_interaction_indexed[key +  post_fix] - data_interaction_indexed[key]).values.ravel()
                 bins = key_bins['energy']
-
+                #
                 for i in range(1,(len(bins))):
                     bin_index  = (data_interaction_indexed['energy'] > bins[i-1]) & (data_interaction_indexed['energy'] < bins[i])
                     data_interaction_indexed_sliced = data_interaction_indexed.loc[bin_index,:].sort_values('%s'%key).reset_index(drop  = True) 
