@@ -5,6 +5,22 @@ from gnn_reco.models.task import Task
 from gnn_reco.utils import eps_like
 
 
+
+
+class TrackCascadeClassification(Task):
+    # Requires two features: untransformed points in (x,y)-space.
+    nb_inputs = 1
+
+    def _forward(self, x):
+        return x
+
+class NeutrinoNotNeutrionoClassification(Task):
+    # Requires two features: untransformed points in (x,y)-space.
+    nb_inputs = 1
+
+    def _forward(self, x):
+        return x
+
 class AzimuthReconstructionWithKappa(Task):
     """Reconstructs azimuthal angle and associated kappa (1/var)."""
     # Requires two features: untransformed points in (x,y)-space.

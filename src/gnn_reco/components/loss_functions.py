@@ -5,6 +5,7 @@ All loss functions inherit from `LossFunction` which (...)
 
 from abc import abstractmethod
 from typing import Callable, Optional
+from torch.nn import BCEWithLogitsLoss
 try:
     from typing import final
 except ImportError:  # Python version < 3.8
@@ -60,6 +61,12 @@ class LossFunction(_WeightedLoss):
     def _forward(self, prediction: Tensor, target: Tensor) -> Tensor:
         """Syntax similar to `.forward` for implentation in inheriting classes."""
 
+
+class CustomCrossentropyLoss(LossFunction):
+    def _forward(self, prediction: Tensor, target: Tensor) -> Tensor:
+        f = BCEWithLogitsLoss(reduction = 'none')
+        return f(prediction, target.unsqueeze(1).float()).unsqueeze(1)
+        
 
 class XYZLogCosh(LossFunction):
 
