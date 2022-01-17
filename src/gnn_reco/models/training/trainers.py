@@ -1,10 +1,11 @@
 import pandas as pd
 import torch
 from tqdm import tqdm
-
+import time
 from gnn_reco.models.training.callbacks import EarlyStopping
 from gnn_reco.models.training.utils import make_train_validation_dataloader
-
+import GPUtil
+import multiprocessing
 
 class Trainer(object):
     def __init__(self, training_dataloader, validation_dataloader, optimizer, n_epochs, scheduler = None, patience = 10, early_stopping = True, export_loss = False):
@@ -187,3 +188,60 @@ class Predictor(object):
         out['energy'] = energies
         out[self.target] = target
         return out
+
+class InferenceSpeedTest(object):
+    def __init__(self, dataloader, target, device, output_column_names, n_reps = 10):
+        self.dataloader = dataloader
+        self.target = target
+        self.output_column_names = output_column_names
+        self.device = device
+        self.n_reps = n_reps
+
+    def __call__(self, model):
+        self.model = model
+        self.model.eval()
+        self.model.predict = True
+        return self._run_test()
+    def _watch_gpu_usage(self, settings):
+        log = []
+        q = settings[0]
+        while q.empty() == True:
+            log.append([time.time(),GPUtil.getGPUs()[int(self.device[-1])].load])
+            time.sleep(1)
+        q.put(log)
+        return
+    
+    def _run_test(self):
+        if __name__ == 'gnn_reco.models.training.trainers':
+            delta_t = 0
+            #p = multiprocessing.Pool(processes = 1)
+            q = multiprocessing.Queue()
+            #async_result = p.map_async(self._watch_gpu_usage, [q,1])
+            p = multiprocessing.Process(target=self._watch_gpu_usage, args=([q,1],))
+            p.start()
+            #self._watch_gpu_usage([q,1])
+            inference_speeds = []
+            for i in range(self.n_reps):
+                start_time = time.time()
+                batch_size = self._predict()
+                inference_speeds.append([time.time(), (time.time() - start_time)/(len(self.dataloader)*batch_size)])
+            q.put('stop_monitoring_gpu')
+            p.join()
+            waiting_on_log = True
+            while waiting_on_log:
+                try:
+                    item = q.get()
+                    if isinstance(item, list):
+                        log = item
+                        waiting_on_log = False
+                except:
+                    pass
+            
+            return inference_speeds, log
+    def _predict(self):
+        assert len(self.model._tasks) == 1
+        with torch.no_grad():
+            for batch_of_graphs in tqdm(self.dataloader, unit = 'batches'):
+                batch_of_graphs.to(self.device)
+                self.model(batch_of_graphs)
+        return len(batch_of_graphs)

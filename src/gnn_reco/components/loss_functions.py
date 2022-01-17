@@ -75,7 +75,7 @@ class XYZLogCosh(LossFunction):
 
     def _forward(self, prediction: Tensor, target: Tensor) -> Tensor:
         #print(target.shape)
-        diff = (prediction[:,0] - target[:,0]/764.431509)**2 + (prediction[:,1] - target[:,1]/785.041607)**2 + (prediction[:,2] - target[:,2]/1083.249944)**2 #+(prediction[:,3] - target[:,3]/14721.646883) 
+        diff = (prediction[:,0] - target[:,0]/764.431509) + (prediction[:,1] - target[:,1]/785.041607) + (prediction[:,2] - target[:,2]/1083.249944) #+(prediction[:,3] - target[:,3]/14721.646883) 
         diff = torch.sqrt(diff)
         elements = self._log_cosh(diff)
         return elements

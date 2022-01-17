@@ -41,7 +41,7 @@ def make_dataloader(
         num_workers=num_workers,
         collate_fn=Batch.from_data_list,
         persistent_workers=persistent_workers,
-        prefetch_factor=2,
+        prefetch_factor=100,
     )
 
     return dataloader
