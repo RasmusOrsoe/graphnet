@@ -190,15 +190,19 @@ class Predictor(object):
         return out
 
 class InferenceSpeedTest(object):
-    def __init__(self, dataloader, target, device, output_column_names, n_reps = 10):
+    def __init__(self, dataloader, target, device, output_column_names, batch_size, n_reps = 10):
         self.dataloader = dataloader
         self.target = target
         self.output_column_names = output_column_names
         self.device = device
         self.n_reps = n_reps
+        self.batch_size =  batch_size
 
     def __call__(self, model):
         self.model = model
+        self.model.to(self.device)
+        self.model._device = self.device
+        self.model._gnn.device = self.device
         self.model.eval()
         self.model.predict = True
         return self._run_test()
@@ -214,34 +218,37 @@ class InferenceSpeedTest(object):
     def _run_test(self):
         if __name__ == 'gnn_reco.models.training.trainers':
             delta_t = 0
-            #p = multiprocessing.Pool(processes = 1)
-            q = multiprocessing.Queue()
-            #async_result = p.map_async(self._watch_gpu_usage, [q,1])
-            p = multiprocessing.Process(target=self._watch_gpu_usage, args=([q,1],))
-            p.start()
-            #self._watch_gpu_usage([q,1])
+            if self.device != 'cpu':
+                q = multiprocessing.Queue()
+                p = multiprocessing.Process(target=self._watch_gpu_usage, args=([q,1],))
+                p.start()
             inference_speeds = []
             for i in range(self.n_reps):
                 start_time = time.time()
-                batch_size = self._predict()
-                inference_speeds.append([time.time(), (time.time() - start_time)/(len(self.dataloader)*batch_size)])
-            q.put('stop_monitoring_gpu')
-            p.join()
-            waiting_on_log = True
-            while waiting_on_log:
-                try:
-                    item = q.get()
-                    if isinstance(item, list):
-                        log = item
-                        waiting_on_log = False
-                except:
-                    pass
-            
-            return inference_speeds, log
+                self._predict()
+                inference_speeds.append([time.time(), (len(self.dataloader)*self.batch_size)/(time.time() - start_time)])
+            if self.device != 'cpu':
+                q.put('stop_monitoring_gpu')
+                p.join()
+                waiting_on_log = True
+                while waiting_on_log:
+                    try:
+                        item = q.get()
+                        if isinstance(item, list):
+                            log = item
+                            waiting_on_log = False
+                    except:
+                        pass
+                return inference_speeds, log
+            else:
+                return inference_speeds, None
     def _predict(self):
         assert len(self.model._tasks) == 1
+        print(self.model._device)
+        print(self.model._gnn.device)
+        print(self.device)
         with torch.no_grad():
             for batch_of_graphs in tqdm(self.dataloader, unit = 'batches'):
                 batch_of_graphs.to(self.device)
                 self.model(batch_of_graphs)
-        return len(batch_of_graphs)
+        return 

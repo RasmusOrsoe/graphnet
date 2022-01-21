@@ -81,6 +81,7 @@ class Model(Module):
         super().to(device)
         self._detector.to(device)
         self._gnn.to(device)
+        self._gnn.device = device
         for ix, _ in enumerate(self._tasks):
             self._tasks[ix].to(device)
 
@@ -96,9 +97,9 @@ class Model(Module):
         print(f"Model saved to {path}")
 
     @classmethod
-    def load(cls, path: str) -> 'Model':
+    def load(cls,map_location, path: str) -> 'Model':
         """Loads entire model from `path`."""
-        return torch.load(path, pickle_module=dill)
+        return torch.load(path, pickle_module=dill, map_location = map_location)
 
     def save_state_dict(self, path: str):
         """Saves model `state_dict` to `path`."""
