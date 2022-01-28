@@ -197,7 +197,6 @@ class I3FeatureExtractorIceCubeUpgrade(I3FeatureExtractorIceCube86):
 
 
 class I3TruthExtractor(I3Extractor):
-
     def __init__(self, name="truth"):
         super().__init__(name)
 

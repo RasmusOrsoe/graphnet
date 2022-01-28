@@ -9,7 +9,7 @@ import torch
 from torch.utils.data import DataLoader
 from torch_geometric.data.batch import Batch
 
-from gnn_reco.data.sqlite_dataset import SQLiteDataset
+from gnn_reco.data.sqlite_dataset import SQLiteDataset, SQLiteDatasetWithMergedPulses
 from gnn_reco.models import Model
 
 
@@ -24,15 +24,23 @@ def make_dataloader(
     selection: List[int] = None,
     num_workers: int = 10,
     persistent_workers: bool = True,
+    dataset_class = None,
 ) -> DataLoader:
 
-    dataset = SQLiteDataset(
-        db,
-        pulsemap,
-        features,
-        truth,
-        selection=selection,
-    )
+    if dataset_class == None:
+        dataset = SQLiteDataset(
+            db,
+            pulsemap,
+            features,
+            truth,
+            selection=selection,
+        )
+    else:
+        dataset =  dataset_class(db,
+            pulsemap,
+            features,
+            truth,
+            selection=selection,)
 
     dataloader = DataLoader(
         dataset,
@@ -59,6 +67,7 @@ def make_train_validation_dataloader(
     test_size: float = 0.33,
     num_workers: int = 10,
     persistent_workers: bool = True,
+    dataset_class = None,
 ) -> Tuple[DataLoader]:
 
     # Reproducibility
@@ -88,12 +97,14 @@ def make_train_validation_dataloader(
     training_dataloader = make_dataloader(
         shuffle=True,
         selection=training_selection,
+        dataset_class = dataset_class,
         **common_kwargs,
     )
 
     validation_dataloader = make_dataloader(
         shuffle=False,
         selection=validation_selection,
+        dataset_class = dataset_class,
         **common_kwargs,
     )
 
