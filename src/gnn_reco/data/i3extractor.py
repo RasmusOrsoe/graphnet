@@ -93,7 +93,7 @@ class I3FeatureExtractor(I3Extractor):
                     frame["I3Calibration"] = self._calibration
                     data = frame[self._pulsemap].apply(frame)
                     om_keys = data.keys()
-                    del frame["I3Calibration"]  # Avoid modifying the frame in-place
+                    #del frame["I3Calibration"]  # Avoid modifying the frame in-place
             except:
                 data = dataclasses.I3RecoPulseSeriesMap.from_frame(frame, self._pulsemap)
                 om_keys = data.keys()
