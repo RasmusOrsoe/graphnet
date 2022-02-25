@@ -18,6 +18,7 @@ class SQLiteDataset(torch.utils.data.Dataset):
         index_column: str = 'event_no',
         truth_table: str = 'truth',
         selection: Optional[List[int]] = None,
+        representation: str = 'pulse',
         dtype: torch.dtype = torch.float32,
     ):
 
@@ -44,6 +45,7 @@ class SQLiteDataset(torch.utils.data.Dataset):
         self._index_column = index_column
         self._truth_table = truth_table
         self._dtype = dtype
+        self._representation = representation
 
         self._features_string = ', '.join(self._features)
         self._truth_string = ', '.join(self._truth)
@@ -57,13 +59,39 @@ class SQLiteDataset(torch.utils.data.Dataset):
             self._indices = selection
         self.close_connection()
 
+        accepted_representations = ['pulse', 'dom'] # nodes can either represent pulses or doms.
+        assert self._representation in accepted_representations
 
     def __len__(self):
         return len(self._indices)
 
+    def _merge_pulses(self, features):
+        ''' Merges all same PMT pulses. dom_time is set to first pulse. last pulse time is added. std of time is added. dom_charge is summed'''
+        subset = ['dom_x','dom_y','dom_z']
+        df = pd.DataFrame(data = features, columns = self._features).sort_values('dom_time').reset_index(drop = True)
+        df['dom_time_max'] = 0
+        df['dom_time_std'] = 0
+        dups = df.loc[df.duplicated(subset = subset, keep = False),:].drop_duplicates(subset = subset)
+        if len(dups) > 1:
+            df_merged = df.copy()
+            dropped = []
+            for pulse in dups.index:
+                pmt = df.loc[(df['dom_x'] == dups.loc[pulse, 'dom_x']) & (df['dom_y'] == dups.loc[pulse, 'dom_y']) & (df['dom_z'] == dups.loc[pulse, 'dom_z']), :]
+                df_merged.loc[pmt.index[0], 'charge'] = pmt['charge'].sum()
+                df_merged.loc[pmt.index[0], 'dom_time'] = pmt['dom_time'].min()
+                df_merged.loc[pmt.index[0], 'dom_time_max'] = pmt['dom_time'].max()
+                df_merged.loc[pmt.index[0], 'dom_time_std'] = pmt['dom_time'].std()
+                df_merged = df_merged.drop(pmt.index[1:])
+                dropped.extend(pmt.index[1:])
+            return [tuple(r) for r in df_merged.to_numpy().tolist()]
+        else:
+            return features
+
     def __getitem__(self, i):
         self.establish_connection(i)
         features, truth = self._query_database(i)
+        if self._representation == 'dom':
+            features = self._merge_pulses(features)
         graph = self._create_graph(features, truth)
         return graph
 
