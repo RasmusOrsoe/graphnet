@@ -153,5 +153,32 @@ class IceCubeUpgrade_V2(IceCubeDeepCore):
         # -- Engineered features
         data.x[:,14] = torch.log10(data.x[:,14]) / 2.  # photoelectrons_on_pmt
         data.x[:,15] = torch.log10(1e-03 + data.x[:,15]) / 2.  # distance_to_center_of_gravity
+        return data
+
+class IceCubeDeepCore_V2(IceCubeDeepCore):
+    """`Detector` class for IceCube-Upgrade."""
+
+    # Implementing abstract class attribut
+
+    @property
+    def nb_outputs(self):
+        return 9
+    
+    @property
+    def nb_inputs(self):
+        return 9
+
+    def _forward(self, data: Data) -> Data:
+        """Ingests data, builds graph (connectivity/adjacency), and preprocesses features.
+
+        Args:
+            data (Data): Input graph data.
+
+        Returns:
+            Data: Connected and preprocessed graph data.
+        """
+
+        # Check(s)
+        self._validate_features(data)
 
         return data

@@ -83,9 +83,10 @@ class SQLiteDataset(torch.utils.data.Dataset):
                 df_merged.loc[pmt.index[0], 'dom_time_std'] = pmt['dom_time'].std()
                 df_merged = df_merged.drop(pmt.index[1:])
                 dropped.extend(pmt.index[1:])
+            #print(df_merged.shape)
             return [tuple(r) for r in df_merged.to_numpy().tolist()]
         else:
-            return features
+            return [tuple(r) for r in df.to_numpy().tolist()]
 
     def __getitem__(self, i):
         self.establish_connection(i)
