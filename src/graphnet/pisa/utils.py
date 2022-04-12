@@ -436,8 +436,10 @@ def plot_2D_contour(contour_data, xlim = (0.4, 0.6), ylim = (2.38*1e-3, 2.55*1e-
                     match = 10000     # Sets the z value very high to exclude it from contour
                 z[k,i] = match
         CS = ax.contour(np.sin(np.deg2rad(x))**2,y,z, levels = [chi2_critical_value], colors = color, label = label,linestyles = ls, linewidths = 2)
-        ax.clabel(CS, inline=1, fontsize=10)
+        #ax.clabel(CS, inline=1, fontsize=10)
         proxy.extend([plt.Rectangle((0,0),1,1,fc = color) for pc in CS.collections])
+        if chi2_critical_value == 4.605:
+            label = label + ' 90 $\\%$ CL'
         labels.append(label)
     plt.legend(proxy,labels, frameon = False, loc = 'upper right')
     plt.xlim(xlim[0], xlim[1])
