@@ -441,12 +441,14 @@ def plot_2D_contour(contour_data, xlim = (0.4, 0.6), ylim = (2.38*1e-3, 2.55*1e-
         if chi2_critical_value == 4.605:
             label = label + ' 90 $\\%$ CL'
         labels.append(label)
+    plt.text(0.525, 2.39*1e-3, "IceCube Simulation", color = 'red', size = 14)
     plt.legend(proxy,labels, frameon = False, loc = 'upper right')
     plt.xlim(xlim[0], xlim[1])
     plt.ylim(ylim[0], ylim[1])
     plt.xlabel('$\\sin^2(\\theta_{23})$', fontsize = 12)
     plt.ylabel('$\\Delta m_{31}^2 [eV^2]$', fontsize = 12)
     plt.ticklabel_format(axis='y', style='sci', scilimits=(0,0))
+    plt.title('Sensitivity (Simplified Analysis)')
     return fig
 
 
