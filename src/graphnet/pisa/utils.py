@@ -435,12 +435,18 @@ def plot_2D_contour(contour_data, xlim = (0.4, 0.6), ylim = (2.38*1e-3, 2.55*1e-
                 else:
                     match = 10000     # Sets the z value very high to exclude it from contour
                 z[k,i] = match
+        if label == 'retro':
+            label= 'Likelihood'
+        elif label == 'dynedge':
+            label = 'GNN'
+        
         CS = ax.contour(np.sin(np.deg2rad(x))**2,y,z, levels = [chi2_critical_value], colors = color, label = label,linestyles = ls, linewidths = 2)
         #ax.clabel(CS, inline=1, fontsize=10)
         proxy.extend([plt.Rectangle((0,0),1,1,fc = color) for pc in CS.collections])
         if chi2_critical_value == 4.605:
             label = label + ' 90 $\\%$ CL'
         labels.append(label)
+    plt.text(0.405, 2.385*1e-3, "Assumed\n $\\sin(\\theta_{23})^2$ = 0.453\n $\\Delta m_{31}$      = 2.457e-3 eV", color = 'black', size = 12)
     plt.text(0.525, 2.39*1e-3, "IceCube Simulation", color = 'red', size = 14)
     plt.legend(proxy,labels, frameon = False, loc = 'upper right')
     plt.xlim(xlim[0], xlim[1])
