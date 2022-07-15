@@ -86,7 +86,9 @@ class ParquetDataset(torch.utils.data.Dataset):
         return graph
 
     def _get_all_indices(self):
-        return ak.to_numpy(self._parquet_hook[self._index_column]).tolist()
+        return np.arange(
+            0, len(self._parquet_hook[self._index_column]), 1
+        ).tolist()  # ak.to_numpy(self._parquet_hook[self._index_column]).tolist()
 
     def _apply_selection_to_pulsemap(self, pulsemap, selection, column_name):
         mask = []
@@ -111,9 +113,11 @@ class ParquetDataset(torch.utils.data.Dataset):
             list: List of tuples, containing node-level truth information.
         """
         features = self._query_parquet(
-            self._features, self._pulsemaps, i, self._selection
+            self._features, self._pulsemaps, i, self._indices
         )
-        truth = self._query_parquet(self._truth, self._truth_table, i)
+        truth = self._query_parquet(
+            self._truth, self._truth_table, i, self._indices
+        )
         if self._node_truth is not None:
             node_truth = self._query_parquet(
                 self._node_truth_column, self._node_truth_table, i
@@ -150,22 +154,22 @@ class ParquetDataset(torch.utils.data.Dataset):
             }
 
         # Unpack common variables
-        abs_pid = abs(truth_dict[self._pid_column])
+        # abs_pid = abs(truth_dict[self._pid_column])
 
-        labels_dict = {
-            "event_no": truth_dict[self._index_column],
-            "muon": int(abs_pid == 13),
-            # "muon_stopped": int(truth_dict.get("stopped_muon") == 1),
-            # "noise": int((abs_pid == 1) & (sim_type != "data")),
-            "neutrino": int((abs_pid != 13) & (abs_pid != 1)),
-            "v_e": int(abs_pid == 12),
-            "v_u": int(abs_pid == 14),
-            "v_t": int(abs_pid == 16),
-            "track": int(
-                (abs_pid == 14)
-                & (truth_dict[self._interaction_type_column] == 1)
-            ),
-        }
+        # labels_dict = {
+        #    "event_no": truth_dict[self._index_column],
+        #    "muon": int(abs_pid == 13),
+        #    # "muon_stopped": int(truth_dict.get("stopped_muon") == 1),
+        #    # "noise": int((abs_pid == 1) & (sim_type != "data")),
+        #    "neutrino": int((abs_pid != 13) & (abs_pid != 1)),
+        #    "v_e": int(abs_pid == 12),
+        #    "v_u": int(abs_pid == 14),
+        #    "v_t": int(abs_pid == 16),
+        #    "track": int(
+        #        (abs_pid == 14)
+        #        & (truth_dict[self._interaction_type_column] == 1)
+        #    ),
+        # }
 
         # Construct graph data object
         x = torch.tensor(features, dtype=self._dtype)
@@ -175,10 +179,11 @@ class ParquetDataset(torch.utils.data.Dataset):
         graph.features = self._features
 
         # Write attributes, either target labels, truth info or original features.
-        add_these_to_graph = [
-            labels_dict,
-            truth_dict,
-        ]  # [labels_dict, truth_dict]
+        # add_these_to_graph = [
+        #    labels_dict,
+        #    truth_dict,
+        # ]  # [labels_dict, truth_dict]
+        add_these_to_graph = [truth_dict]  # [labels_dict, truth_dict]
         if node_truth is not None:
             add_these_to_graph.append(node_truth_dict)
         for write_dict in add_these_to_graph:
