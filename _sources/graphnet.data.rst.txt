@@ -47,14 +47,6 @@ graphnet.data.pipeline module
    :undoc-members:
    :show-inheritance:
 
-graphnet.data.sqlite\_dataset\_real\_g module
----------------------------------------------
-
-.. automodule:: graphnet.data.sqlite_dataset_real_g
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 Module contents
 ---------------
 
