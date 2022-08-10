@@ -19,7 +19,7 @@ from graphnet.models.utils import calculate_xyzt_homophily
 
 
 class DynEdge(GNN):
-    def __init__(self, nb_inputs, layer_size_scale=4):
+    def __init__(self, nb_inputs, layer_size_scale=4, node_pooling=None):
         """DynEdge model.
 
         Args:
@@ -28,6 +28,8 @@ class DynEdge(GNN):
             layer_size_scale (int, optional): Integer that scales the size of
                 hidden layers. Defaults to 4.
         """
+        #  Node Pooling
+        self._node_pooling = node_pooling
 
         # Architecture configuration
         c = layer_size_scale
@@ -110,6 +112,9 @@ class DynEdge(GNN):
         Returns:
             Tensor: Model output.
         """
+        # If node pooling is enabled
+        if self._node_pooling is not None:
+            data = self._node_pooling(data)
 
         # Convenience variables
         x, edge_index, batch = data.x, data.edge_index, data.batch
