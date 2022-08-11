@@ -236,6 +236,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             features_pulsemap = self._query_table(
                 pulsemap, self._features, index, self._selection
             )
+
             features.extend(features_pulsemap)
 
         truth = self._query_table(self._truth_table, self._truth, index)
@@ -306,6 +307,21 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
 
         # Construct graph data object
         x = torch.tensor(data, dtype=self._dtype)  # pylint: disable=C0103
+        x_time_sorted = x[x[:, 3].sort()[1]]
+        unique_doms, _, _ = torch.unique(
+            x_time_sorted[:, [0, 1, 2, 4, 5]],
+            return_counts=True,
+            return_inverse=True,
+            dim=0,
+        )
+        time_stamps = torch.arange(0, (len(unique_doms)), 1)
+        time_stamps = (
+            time_stamps - (torch.sum(time_stamps)) / len(time_stamps)
+        ) / len(unique_doms)
+        # print(time_stamps.shape)
+        # print(unique_doms.shape)
+        x = torch.cat([unique_doms, time_stamps.unsqueeze(1)], dim=1)
+
         n_pulses = torch.tensor(len(x), dtype=torch.int32)
         graph = Data(x=x, edge_index=None)
         graph.n_pulses = n_pulses
