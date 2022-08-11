@@ -264,3 +264,17 @@ class LoopBasedCoarsening:
             dim=1,
         )
         return data
+
+
+class SimpleNodePooling:
+    def __call__(self, data: Union[Data, Batch]) -> Union[Data, Batch]:
+
+        if data.batch is None:
+            data_list = [data]
+        else:
+            data_list = data.to_data_list()
+
+        for graph in data_list:
+            pass
+
+        return
