@@ -28,6 +28,8 @@ class DynEdge(GNN):
             layer_size_scale (int, optional): Integer that scales the size of
                 hidden layers. Defaults to 4.
         """
+        # node pooling is optional
+        self._node_pooling = node_pooling
 
         # Architecture configuration
         c = layer_size_scale
