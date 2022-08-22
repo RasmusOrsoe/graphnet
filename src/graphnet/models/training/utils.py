@@ -34,6 +34,7 @@ def make_dataloader(
     string_selection: List[int] = None,
     loss_weight_table: str = None,
     loss_weight_column: str = None,
+    sort_features_by: Optional[str] = None,
 ) -> DataLoader:
 
     # Check(s)
@@ -49,8 +50,9 @@ def make_dataloader(
         node_truth=node_truth,
         node_truth_table=node_truth_table,
         string_selection=string_selection,
-        # loss_weight_table=loss_weight_table,
-        # loss_weight_column=loss_weight_column,
+        loss_weight_table=loss_weight_table,
+        loss_weight_column=loss_weight_column,
+        sort_features_by=sort_features_by,
     )
 
     def collate_fn(graphs):
@@ -89,6 +91,7 @@ def make_train_validation_dataloader(
     string_selection: List[int] = None,
     loss_weight_column: str = None,
     loss_weight_table: str = None,
+    sort_features_by: Optional[str] = None,
 ) -> Tuple[DataLoader]:
 
     # Reproducibility
@@ -130,6 +133,7 @@ def make_train_validation_dataloader(
         string_selection=string_selection,
         loss_weight_column=loss_weight_column,
         loss_weight_table=loss_weight_table,
+        sort_features_by=sort_features_by,
     )
 
     training_dataloader = make_dataloader(

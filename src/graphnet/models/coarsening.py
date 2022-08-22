@@ -200,30 +200,6 @@ class CustomDOMCoarsening(DOMCoarsening):
         return x
 
 
-class RobustDOMCoarsening(DOMCoarsening):
-    def _additional_features(self, cluster: LongTensor, data: Data) -> Tensor:
-        """Additional poolings of feature tensor `x` on `data`."""
-        batch = data.batch
-
-        features = data.features
-        if batch is not None:
-            features = [feats[0] for feats in features]
-
-        ix_time = features.index("dom_time")
-        time = data.x[:, ix_time]
-
-        x = torch.stack(
-            (
-                min_pool_x(cluster, time, batch)[0],
-                max_pool_x(cluster, time, batch)[0],
-                std_pool_x(cluster, time, batch)[0],
-            ),
-            dim=1,
-        )
-
-        return x
-
-
 class LoopBasedCoarsening:
     def __call__(self, data: Data) -> Data:
         """Coarsening to DOM-level."""

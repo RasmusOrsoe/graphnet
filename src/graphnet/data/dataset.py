@@ -32,6 +32,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         loss_weight_table: str = None,
         loss_weight_column: str = None,
         loss_weight_default_value: Optional[float] = None,
+        sort_features_by: Optional[str] = None,
     ):
         # Check(s)
         if isinstance(pulsemaps, str):
@@ -49,6 +50,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         self._index_column = index_column
         self._truth_table = truth_table
         self._loss_weight_default_value = loss_weight_default_value
+        self._sort_features_by = sort_features_by
 
         if node_truth is not None:
             assert isinstance(node_truth_table, str)
@@ -310,6 +312,13 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         graph = Data(x=x, edge_index=None)
         graph.n_pulses = n_pulses
         graph.features = self._features[1:]
+        if self._sort_features_by is not None:
+            graph.x = graph.x[
+                graph.x[
+                    :, graph.features.index(self._sort_features_by)
+                ].argsort(),
+                :,
+            ]
 
         # Add loss weight to graph.
         if loss_weight is not None and self._loss_weight_column is not None:
