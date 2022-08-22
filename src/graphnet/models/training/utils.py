@@ -12,6 +12,7 @@ from torch_geometric.data.batch import Batch
 from tqdm import tqdm
 
 from graphnet.data.sqlite.sqlite_dataset import SQLiteDataset
+from graphnet.data.parquet.parquet_dataset import ParquetDataset
 from graphnet.models import Model
 from graphnet.utilities.logging import get_logger
 
@@ -19,7 +20,7 @@ logger = get_logger()
 
 
 def make_dataloader(
-    db: str,
+    data_path: str,
     pulsemaps: Union[str, List[str]],
     features: List[str],
     truth: List[str],
@@ -34,14 +35,15 @@ def make_dataloader(
     string_selection: List[int] = None,
     loss_weight_table: str = None,
     loss_weight_column: str = None,
+    parquet: bool = False,
 ) -> DataLoader:
 
     # Check(s)
     if isinstance(pulsemaps, str):
         pulsemaps = [pulsemaps]
 
-    dataset = SQLiteDataset(
-        path=db,
+    args = dict(
+        path=data_path,
         pulsemaps=pulsemaps,
         features=features,
         truth=truth,
@@ -49,9 +51,14 @@ def make_dataloader(
         node_truth=node_truth,
         node_truth_table=node_truth_table,
         string_selection=string_selection,
-        # loss_weight_table=loss_weight_table,
-        # loss_weight_column=loss_weight_column,
+        loss_weight_table=loss_weight_table,
+        loss_weight_column=loss_weight_column,
     )
+
+    if parquet:
+        dataset = ParquetDataset(args)
+    else:
+        dataset = SQLiteDataset(args)
 
     def collate_fn(graphs):
         # Remove graphs with less than two DOM hits. Should not occur in "production."

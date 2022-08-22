@@ -78,6 +78,7 @@ class LONE(GNN):
                 features_subset=features_subset,
             )
         )
+        # Number of hidden convolutional layers
         for i in range(n_conv - 1):
             self._convolution_layers.append(
                 LONEConv(
@@ -104,20 +105,19 @@ class LONE(GNN):
         Returns:
             Tensor: Model output.
         """
+        # Query Table
+        data = self._get_template(data)
 
         # Convenience variables
-        x, edge_index, batch = data.x, data.edge_index, data.batch
+        x = data.x
 
         # Calculate homophily (scalar variables)
-        h_x, h_y, h_z, h_t = calculate_xyzt_homophily(x, edge_index, batch)
+        # h_x, h_y, h_z, h_t = calculate_xyzt_homophily(x, edge_index, batch)
 
-        a, edge_index = self.conv_add1(x, edge_index, batch)
-        b, edge_index = self.conv_add2(a, edge_index, batch)
-        c, edge_index = self.conv_add3(b, edge_index, batch)
-        d, edge_index = self.conv_add4(c, edge_index, batch)
-
-        # Skip-cat
-        x = torch.cat((x, a, b, c, d), dim=1)
+        # Convolutions
+        for i in range(len(self._convolution_layers)):
+            data = self._convolution_layers[i](data)
+            x = torch.cat((x, data.x), dim=1)
 
         # Post-processing
         x = self.nn1(x)
@@ -143,6 +143,9 @@ class LONE(GNN):
                     template_idx, self._lookup_features.index("time")
                 ] = graph.x[pulse, self._time_idx]
             graph.x = template
+            graph["active_doms"] = (
+                template[:, self._lookup_features.index("time")] != 0
+            ).long()
         return Batch.from_data_list(data_list)
 
     def _query_lookup_table(self, string_idx, pmt_idx):
