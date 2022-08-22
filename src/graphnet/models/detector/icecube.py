@@ -53,9 +53,7 @@ class Prototype(Detector):
         "dom_x",
         "dom_y",
         "dom_z",
-        "dom_time",
         "rde",
-        "pmt_area",
     ]
 
     def _forward(self, data: Data) -> Data:
@@ -80,9 +78,9 @@ class Prototype(Detector):
         # data.x[:, 3] -= 1.0
         # data.x[:, 3] *= 20.0
         # data.x[:, 4] /= 1.0  # charge
-        data.x[:, 4] -= 1.25  # rde
-        data.x[:, 4] /= 0.25
-        data.x[:, 5] /= 0.05  # pmt_area
+        data.x[:, 3] -= 1.25  # rde
+        data.x[:, 3] /= 0.25
+        # data.x[:, 4] /= 0.05  # pmt_area
 
         return data
 
