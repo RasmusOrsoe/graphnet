@@ -162,7 +162,7 @@ class DOMCoarsening(Coarsening):
         """Perform clustering of nodes in `data` by assigning unique cluster indices to each."""
         # dom_index = group_pulses_to_dom(data)
         dom_index = group_by(
-            data, ["dom_x", "dom_y", "dom_z", "rde", "pmt_area"]
+            data, ["dom_x", "dom_y", "dom_z", "rde"]  # , "pmt_area"]
         )
         return dom_index
 
