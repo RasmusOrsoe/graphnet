@@ -8,12 +8,11 @@ Email: ###@###.###
 
 import torch
 from torch import Tensor
-from torch_geometric.data import Data
+from torch_geometric.data import Data, Batch
 from torch_geometric.nn import EdgeConv
 from torch_scatter import scatter_max, scatter_mean, scatter_min, scatter_sum
 from graphnet.components.layers import DynEdgeConv
 from graphnet.models.coarsening import DOMCoarsening
-
 from graphnet.models.gnn.gnn import GNN
 from graphnet.models.utils import calculate_xyzt_homophily
 
@@ -163,6 +162,44 @@ class DynEdge(GNN):
 
         x = self.lrelu(x)
 
+        return x
+
+
+class RobustDynedge(DynEdge):
+    def __init__(self, nb_inputs, layer_size_scale=4, time_idx=3):
+        """DynEdge model.
+
+        Args:
+            nb_inputs (int): Number of input features.
+            layer_size_scale (int, optional): Integer that scales the size of
+                hidden layers. Defaults to 4.
+        """
+
+        # Base class constructor
+        super().__init__(nb_inputs, layer_size_scale)
+
+        # Graph operations
+        self.coarsening = DOMCoarsening(reduce="min")
+
+        self._time_idx = time_idx
+
+    def _linearize_time(self, batch):
+        data_list = batch.to_data_list()
+        for graph in data_list:
+            graph.x = graph.x[
+                graph.x[:, self._time_idx].argsort(dim=0), :
+            ]  # sort in time
+            graph.x[:, self._time_idx] = torch.arange(0, len(graph.x), 1) / (
+                len(graph) - 1
+            )
+        return Batch.from_data_list(data_list)
+
+    def forward(self, data: Data) -> Tensor:
+        """Model forward pass."""
+        data.to_data_list()
+        data = self.coarsening(data)
+        data = self._linearize_time(data)
+        x = super().forward(data)
         return x
 
 

@@ -33,6 +33,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         loss_weight_column: str = None,
         loss_weight_default_value: Optional[float] = None,
         sort_features_by: Optional[str] = None,
+        node_pooling: str = None,
+        robust_time: bool = False,
     ):
         # Check(s)
         if isinstance(pulsemaps, str):
@@ -51,6 +53,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         self._truth_table = truth_table
         self._loss_weight_default_value = loss_weight_default_value
         self._sort_features_by = sort_features_by
+        self._node_pooling = node_pooling
+        self._robust_time = robust_time
 
         if node_truth is not None:
             assert isinstance(node_truth_table, str)
@@ -127,6 +131,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         columns: Union[List[str], str],
         index: int,
         selection: Optional[str] = None,
+        node_pooling: Optional[bool] = False,
     ) -> List[Tuple[Any]]:
         """Query a table at a specific index, optionally with some selection.
 
@@ -236,7 +241,11 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         features = []
         for pulsemap in self._pulsemaps:
             features_pulsemap = self._query_table(
-                pulsemap, self._features, index, self._selection
+                pulsemap,
+                self._features,
+                index,
+                self._selection,
+                self._node_pooling,
             )
             features.extend(features_pulsemap)
 
@@ -319,6 +328,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
                 ].argsort(),
                 :,
             ]
+        if self._robust_time:
+            graph = self._linearize_time(graph)
 
         # Add loss weight to graph.
         if loss_weight is not None and self._loss_weight_column is not None:
@@ -361,6 +372,18 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         for index, feature in enumerate(graph.features):
             graph[feature] = graph.x[:, index].detach()
 
+        return graph
+
+    def _linearize_time(self, graph):
+        # get time index in graph.x
+        time_idx = graph.features.index("dom_time")
+
+        # sort in time
+        graph.x = graph.x[graph.x[:, time_idx].argsort(dim=0), :]
+        # replace time with generic ordering variable.
+        graph.x[:, time_idx] = torch.arange(0, len(graph.x), 1) / (
+            len(graph.x) - 1
+        )
         return graph
 
     def _get_labels(self, truth_dict: Dict[str, Any]) -> Dict[str, Any]:

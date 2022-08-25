@@ -42,7 +42,7 @@ class SQLiteDataset(Dataset):
         columns: Union[List[str], str],
         index: int,
         selection: Optional[str] = None,
-        node_pooling: Optional[bool] = False,
+        node_pooling: str = None,
     ):
         """Query table at a specific index, optionally with some selection."""
         # Check(s)
@@ -59,22 +59,25 @@ class SQLiteDataset(Dataset):
 
         # Query table
         self._establish_connection(index)
+
         try:
-            if node_pooling:
-                result = self._conn.execute(
-                    f"SELECT {columns} FROM {table} WHERE "
-                    f"{self._index_column} = {index} and {selection} and dom_time IN (SELECT min(dom_time) FROM {table} WHERE event_no = {index} group by dom_x, dom_y, dom_z)"
-                ).fetchall()
-            else:
+            if node_pooling is None:
                 result = self._conn.execute(
                     f"SELECT {columns} FROM {table} WHERE "
                     f"{self._index_column} = {index} and {selection}"
+                ).fetchall()
+            elif node_pooling == "min":
+                # Takes the first pulse in case of same-pmt pulses
+                result = self._conn.execute(
+                    f"SELECT {columns} FROM {table} WHERE "
+                    f"{self._index_column} = {index} and {selection} and dom_time IN (SELECT min(dom_time) FROM {table} WHERE event_no = {index} group by dom_x, dom_y, dom_z)"
                 ).fetchall()
         except sqlite3.OperationalError as e:
             if "no such column" in str(e):
                 raise ColumnMissingException(str(e))
             else:
                 raise e
+
         return result
 
     def _get_all_indices(self):
