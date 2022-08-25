@@ -219,7 +219,7 @@
         <span class="n">pooled_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_transfer_attributes</span><span class="p">(</span><span class="n">cluster</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">pooled_data</span><span class="p">)</span>
 
         <span class="c1"># Reconstruct Batch Attributes</span>
-        <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">batch</span><span class="p">:</span>  <span class="c1"># if a Batch object</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">Batch</span><span class="p">):</span>  <span class="c1"># if a Batch object</span>
             <span class="n">pooled_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reconstruct_batch</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pooled_data</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">pooled_data</span></div>
 
