@@ -13,7 +13,11 @@ from graphnet.models.detector.detector import Detector
 class Orca115(Detector):
     """`Detector` class for Orca with 115 strings."""
 
-    features = ["x", "y", "z", "t"]
+    features = [
+        "sensor_id",
+        "sensor_string_id",
+        "t",
+    ]
 
     def _forward(self, data: Data) -> Data:
         """Ingests data, builds graph (connectivity/adjacency), and preprocesses features.
@@ -29,13 +33,13 @@ class Orca115(Detector):
         self._validate_features(data)
 
         # Preprocessing
-        data.x[:, 0] /= 100.0  # dom_x
-        data.x[:, 1] /= 100.0  # dom_y
-        data.x[:, 2] += 350.0  # dom_z
-        data.x[:, 2] /= 100.0
-        data.x[:, 3] /= 1.05e04  # dom_time
-        data.x[:, 3] -= 1.0
-        data.x[:, 3] *= 20.0
+        # data.x[:, 0] /= 100.0  # dom_x
+        # data.x[:, 1] /= 100.0  # dom_y
+        # data.x[:, 2] += 350.0  # dom_z
+        # data.x[:, 2] /= 100.0
+        # data.x[:, 3] /= 1.05e04  # dom_time
+        # data.x[:, 3] -= 1.0
+        # data.x[:, 3] *= 20.0
         # data.x[:, 4] /= 1.0  # charge
         # data.x[:, 5] -= 1.25  # rde
         # data.x[:, 5] /= 0.25

@@ -36,6 +36,10 @@ def make_dataloader(
     loss_weight_table: str = None,
     loss_weight_column: str = None,
     parquet: bool = False,
+    truth_table="truth",
+    pid_column="pid",
+    interaction_type_column="interaction_type",
+    index_column="event_no",
 ) -> DataLoader:
 
     # Check(s)
@@ -53,12 +57,16 @@ def make_dataloader(
         string_selection=string_selection,
         loss_weight_table=loss_weight_table,
         loss_weight_column=loss_weight_column,
+        truth_table=truth_table,
+        pid_column=pid_column,
+        interaction_type_column=interaction_type_column,
+        index_column=index_column,
     )
 
     if parquet:
-        dataset = ParquetDataset(args)
+        dataset = ParquetDataset(**args)
     else:
-        dataset = SQLiteDataset(args)
+        dataset = SQLiteDataset(**args)
 
     def collate_fn(graphs):
         # Remove graphs with less than two DOM hits. Should not occur in "production."

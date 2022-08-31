@@ -162,6 +162,16 @@ class BinaryClassificationTask(Task):
         return torch.sigmoid(x)
 
 
+class SuperResolutionClassification(Task):
+    # requires one feature: probability of being neutrino?
+    nb_inputs = 1
+
+    def _forward(self, data):
+        # transform probability of being muon
+        data.x = torch.sigmoid(data.x)
+        return data
+
+
 class BinaryClassificationTaskLogits(Task):
     nb_inputs = 1
 

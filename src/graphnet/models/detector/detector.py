@@ -28,7 +28,7 @@ class Detector(LoggerMixin, LightningModule):
 
     def __init__(
         self,
-        graph_builder: GraphBuilder,
+        graph_builder: GraphBuilder = None,
         scalers: List[dict] = None,
     ):
         # Base class constructor
@@ -57,7 +57,8 @@ class Detector(LoggerMixin, LightningModule):
 
         # Graph-bulding
         # @NOTE: `.clone` is necessary to avoid modifying original tensor in-place.
-        data = self._graph_builder(data).clone()
+        if self._graph_builder is not None:
+            data = self._graph_builder(data).clone()
 
         if self._scalers:
             # # Scaling individual features

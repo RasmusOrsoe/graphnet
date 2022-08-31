@@ -13,7 +13,7 @@ from torch_geometric.data import Data, Batch
 from torch_geometric.nn import EdgeConv
 from torch_scatter import scatter_max, scatter_mean, scatter_min, scatter_sum
 from graphnet.components.layers import DynEdgeConv, LONEConv
-from graphnet.models.coarsening import DOMCoarsening
+from graphnet.models.coarsening import LONECoarsening
 
 from graphnet.models.gnn.gnn import GNN
 from graphnet.models.utils import calculate_xyzt_homophily
@@ -23,7 +23,7 @@ class LONE(GNN):
     def __init__(
         self,
         nb_inputs: int = 4,
-        hidden_size: int = 256,
+        hidden_size: int = 12,
         n_conv: int = 1,
         max_k: int = 50,
         layer_size_scale: int = 4,
@@ -31,6 +31,7 @@ class LONE(GNN):
         string_idx: int = 1,
         time_idx: int = 2,
         custom_f2k=None,
+        device="cpu",
     ):
         """DynEdge model.
 
@@ -46,24 +47,22 @@ class LONE(GNN):
         # custom f2k file from prometheus
         self._setup_geometry(custom_f2k)
 
+        # pooling method
+        self._coarsening = LONECoarsening(reduce="min")
+
         # member variables
         self._pmt_idx = pmt_idx
         self._string_idx = string_idx
         self._time_idx = time_idx
+        if device != "cpu":
+            self._device = "cuda:%s" % device
 
         # Architecture configuration
-        c = layer_size_scale
-        l1, l2, l3, l4, l5, l6 = (
-            nb_inputs,
-            c * 16 * 2,
-            c * 32 * 2,
-            c * 42 * 2,
-            c * 32 * 2,
-            c * 16 * 2,
-        )
-        l2 = l2
+        l1 = layer_size_scale * 12
+        l2 = layer_size_scale * l1 * 4
+        l3 = layer_size_scale * l1 * 2
         # Base class constructor
-        super().__init__(nb_inputs, l6)
+        super().__init__(nb_inputs, l3)
 
         # Graph convolutional operations
         features_subset = slice(0, 3)
@@ -73,9 +72,10 @@ class LONE(GNN):
             LONEConv(
                 aggr="add",
                 max_k=max_k,
-                input_size=nb_inputs,
+                input_size=nb_inputs + 1,
                 hidden_size=hidden_size,
                 features_subset=features_subset,
+                device=self._device,
             )
         )
         # Number of hidden convolutional layers
@@ -87,13 +87,14 @@ class LONE(GNN):
                     input_size=hidden_size,
                     hidden_size=hidden_size,
                     features_subset=features_subset,
+                    device=self._device,
                 )
             )
 
         # Post-processing operations
-        self.nn1 = torch.nn.Linear(l3 * 4 + l1, l4)
-        self.nn2 = torch.nn.Linear(l4, l5)
-        self.nn3 = torch.nn.Linear(4 * l5 + 5, l6)
+        self.nn1 = torch.nn.Linear(nb_inputs + 1 + hidden_size * n_conv, l1)
+        self.nn2 = torch.nn.Linear(l1, l2)
+        self.nn3 = torch.nn.Linear(l2, l3)
         self.lrelu = torch.nn.LeakyReLU()
 
     def forward(self, data: Data) -> Tensor:
@@ -105,7 +106,9 @@ class LONE(GNN):
         Returns:
             Tensor: Model output.
         """
-        # Query Table
+        # DOM-Pooling - keeps only one pulse pr. pmt
+        data = self._coarsening(data)
+        # Query Table - matches keys to DOMs, including empty DOMs
         data = self._get_template(data)
 
         # Convenience variables
@@ -118,7 +121,7 @@ class LONE(GNN):
         for i in range(len(self._convolution_layers)):
             data = self._convolution_layers[i](data)
             x = torch.cat((x, data.x), dim=1)
-
+        x = x.to(self._device)
         # Post-processing
         x = self.nn1(x)
         x = self.lrelu(x)
@@ -127,29 +130,34 @@ class LONE(GNN):
         # Read-out
         x = self.lrelu(x)
         x = self.nn3(x)
-        x = self.lrelu(x)
-        return x
+        data.x = self.lrelu(x)
+        data.x
+        return data
 
     def _get_template(self, data):
-        data_list = data.to_list()
+        data_list = data.to_data_list()
         for graph in data_list:
             template = self._detector_template.clone()
             for pulse in range(len(graph.x)):
-                template_idx = self._query_lookup_table(
-                    graph.x[pulse, self._string_idx].item(),
-                    graph.x[pulse, self._string_idx].item(),
-                )
+                # because pmt_idx in pulsemap != pmt_idx in f2k-file
+                # template_idx = self._query_lookup_table(
+                #    graph.x[pulse, self._string_idx].item(),
+                #    graph.x[pulse, self._pmt_idx].item(),
+                # )
                 template[
-                    template_idx, self._lookup_features.index("time")
+                    int(graph.x[pulse, self._pmt_idx].item()),
+                    self._template_features.index("time"),
                 ] = graph.x[pulse, self._time_idx]
             graph.x = template
             graph["active_doms"] = (
-                template[:, self._lookup_features.index("time")] != 0
-            ).long()
+                (template[:, self._template_features.index("time")] != 0)
+                .long()
+                .reshape(-1, 1)
+            )
         return Batch.from_data_list(data_list)
 
     def _query_lookup_table(self, string_idx, pmt_idx):
-        return self._lookup_table[string_idx][pmt_idx]
+        return self._lookup_table[int(string_idx)][int(pmt_idx)]
 
     def _make_lookup_table(self, geometry_table):
         """Creates a lookup table that matches pmt and string indices with row index in geometry table
@@ -159,9 +167,12 @@ class LONE(GNN):
         """
         table = {}
         for table_idx in range(len(geometry_table)):
-            string_idx = geometry_table["string_idx"][table_idx]
-            pmt_idx = geometry_table["pmt_idx"][table_idx]
-            table[string_idx] = {}
+            string_idx = int(geometry_table["string_idx"][table_idx])
+            pmt_idx = int(geometry_table["pmt_idx"][table_idx])
+            try:
+                table[string_idx]
+            except KeyError:
+                table[string_idx] = {}
             table[string_idx][pmt_idx] = table_idx
         self._lookup_table = table
         return
@@ -174,7 +185,9 @@ class LONE(GNN):
         """
         template = geometry_table.loc[:, ["x", "y", "z"]]
         template["time"] = 0
-        self._detector_template = torch.tensor(template.values)
+        self._detector_template = torch.tensor(
+            template.values, dtype=torch.float
+        )
         return
 
     def _setup_geometry(self, custom_f2k):

@@ -89,8 +89,8 @@ class Model(LightningModule):
         if self._coarsening:
             data = self._coarsening(data)
         data = self._detector(data)
-        x = self._gnn(data)
-        preds = [task(x) for task in self._tasks]
+        data = self._gnn(data)
+        preds = [task(data) for task in self._tasks]
         return preds
 
     def shared_step(self, batch, batch_idx):

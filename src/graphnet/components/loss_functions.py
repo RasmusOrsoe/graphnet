@@ -19,6 +19,7 @@ import scipy.special
 import torch
 from torch import Tensor
 from torch.nn.modules.loss import _WeightedLoss
+from torch_geometric.data import Data
 
 
 class LossFunction(_WeightedLoss):
@@ -50,9 +51,9 @@ class LossFunction(_WeightedLoss):
         elements = self._forward(prediction, target)
         if weights is not None:
             elements = elements * weights
-        assert elements.size(dim=0) == target.size(
-            dim=0
-        ), "`_forward` should return elementwise loss terms."
+        # assert elements.size(dim=0) == target.size(
+        #    dim=0
+        # ), "`_forward` should return elementwise loss terms."
 
         return elements if return_elements else torch.mean(elements)
 
@@ -117,6 +118,21 @@ class BinaryCrossEntropyLoss(LossFunction):
     def _forward(self, prediction: Tensor, target: Tensor) -> Tensor:
         return torch.nn.functional.binary_cross_entropy(
             prediction.float(), target.float(), reduction="none"
+        )
+
+
+class BinaryCrossEntropyLossData(LossFunction):
+    """Computes binary cross entropy for a vector of predictions (between 0 and 1),
+    targets should be 0 and 1 for muon and neutrino respectively
+    where prediction is prob. the PID is neutrino (12,14,16)
+    loss should be reported elementwise, so set reduction to None
+    """
+
+    def _forward(self, predicted_graph: Data, graph: Data) -> Tensor:
+        return torch.nn.functional.binary_cross_entropy(
+            predicted_graph.x.float().cpu(),
+            predicted_graph["active_doms"].float().cpu(),
+            reduction="none",
         )
 
 

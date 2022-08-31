@@ -13,13 +13,13 @@ class ParquetDataset(Dataset):
     # Implementing abstract method(s)
     def _init(self):
         # Check(s)
-        if isinstance(self._path, list):
-            self.logger.error("Multiple files not supported")
-        assert isinstance(self._path, str)
+        # if isinstance(self._path, list):
+        #    self.logger.error("Multiple files not supported")
+        # assert isinstance(self._path, str)
 
-        assert self._path.endswith(
-            ".parquet"
-        ), f"Format of input file `{self._path}` is not supported"
+        # assert self._path.endswith(
+        #    ".parquet"
+        # ), f"Format of input file `{self._path}` is not supported"
 
         assert (
             self._node_truth is None
@@ -32,12 +32,15 @@ class ParquetDataset(Dataset):
         ), "Argument `string_selection` is currently not supported"
 
         # Set custom member variable(s)
-        self._parquet_hook = ak.from_parquet(self._path)
+        # self._parquet_hook = ak.from_parquet(self._path)
 
     def _get_all_indices(self):
-        return ak.to_numpy(
-            self._parquet_hook[self._truth_table][self._index_column]
-        ).tolist()
+        # return ak.to_numpy(
+        #    self._parquet_hook[self._truth_table][self._index_column]
+        # ).tolist()
+        return [
+            *range(0, len(ak.to_numpy(self._parquet_hook[self._truth_table])))
+        ]
 
     def _query_table(
         self,
@@ -51,10 +54,12 @@ class ParquetDataset(Dataset):
             selection is None
         ), "Argument `selection` is currently not supported"
 
-        sequential_index = self._indices.index(index)
-
+        sequential_index = self._indices[index]  # .index(index)
+        parquet_table = ak.from_parquet(
+            self._path, columns=[table], row_groups=sequential_index
+        )
         try:
-            ak_array = self._parquet_hook[table][columns][sequential_index]
+            ak_array = parquet_table[table][columns][sequential_index]
         except ValueError as e:
             if "does not exist (not in record)" in str(e):
                 raise ColumnMissingException(str(e))

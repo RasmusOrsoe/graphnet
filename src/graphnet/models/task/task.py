@@ -95,11 +95,12 @@ class Task(LightningModule):
         self._affine = Linear(hidden_size, self.nb_inputs)
 
     @final
-    def forward(self, x: Union[Tensor, Data]) -> Union[Tensor, Data]:
+    def forward(self, data: Union[Tensor, Data]) -> Union[Tensor, Data]:
         self._regularisation_loss = 0  # Reset
-        x = self._affine(x)
-        x = self._forward(x)
-        return self._transform_prediction(x)
+        data.x = self._affine(data.x)
+        data = self._forward(data)
+        data.x = self._transform_prediction(data.x)
+        return data
 
     @final
     def _transform_prediction(
@@ -111,24 +112,24 @@ class Task(LightningModule):
             return self._transform_prediction_training(prediction)
 
     @abstractmethod
-    def _forward(self, x: Union[Tensor, Data]) -> Union[Tensor, Data]:
+    def _forward(self, data: Union[Tensor, Data]) -> Union[Tensor, Data]:
         """Same syntax as `.forward` for implentation in inheriting classes."""
 
     @final
     def compute_loss(self, pred: Union[Tensor, Data], data: Data) -> Tensor:
-        target = torch.stack(
-            [data[label] for label in self._target_labels], dim=1
-        )
-        target = self._transform_target(target)
-        if self._loss_weight is not None:
-            weights = data[self._loss_weight]
-        else:
-            weights = None
-        loss = (
-            self._loss_function(pred, target, weights=weights)
-            + self._regularisation_loss
-        )
-        return loss
+        # target = torch.stack(
+        #    [pred[label] for label in self._target_labels], dim=1
+        # )
+        # target = self._transform_target(target)
+        # if self._loss_weight is not None:
+        #    weights = data[self._loss_weight]
+        # else:
+        #    weights = None
+        # loss = (
+        #    self._loss_function(pred, target, weights=weights)
+        #    + self._regularisation_loss
+        # )
+        return self._loss_function(pred, data, weights=None)
 
     @final
     def inference(self):

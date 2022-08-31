@@ -32,6 +32,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         loss_weight_table: str = None,
         loss_weight_column: str = None,
         loss_weight_default_value: Optional[float] = None,
+        pid_column="pid",
+        interaction_type_column="interaction_type",
     ):
         # Check(s)
         if isinstance(pulsemaps, str):
@@ -49,6 +51,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         self._index_column = index_column
         self._truth_table = truth_table
         self._loss_weight_default_value = loss_weight_default_value
+        self._pid_column = pid_column
+        self._interaction_type_column = interaction_type_column
 
         if node_truth is not None:
             assert isinstance(node_truth_table, str)
@@ -300,16 +304,16 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
 
         # Catch cases with no reconstructed pulses
         if len(features):
-            data = np.asarray(features)[:, 1:]
+            data = np.asarray(features)  # [:, 1:]
         else:
-            data = np.array([]).reshape((0, len(self._features) - 1))
+            data = np.array([]).reshape((0, len(self._features)))  # - 1))
 
         # Construct graph data object
         x = torch.tensor(data, dtype=self._dtype)  # pylint: disable=C0103
         n_pulses = torch.tensor(len(x), dtype=torch.int32)
         graph = Data(x=x, edge_index=None)
         graph.n_pulses = n_pulses
-        graph.features = self._features[1:]
+        graph.features = self._features  # [1:]
 
         # Add loss weight to graph.
         if loss_weight is not None and self._loss_weight_column is not None:
@@ -350,20 +354,20 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
 
         # Additionally add original features as (static) attributes
         for index, feature in enumerate(graph.features):
+            # print(index, feature,graph.x)
             graph[feature] = graph.x[:, index].detach()
-
         return graph
 
     def _get_labels(self, truth_dict: Dict[str, Any]) -> Dict[str, Any]:
         """Return dictionary of  labels, to be added as graph attributes."""
-        abs_pid = abs(truth_dict["pid"])
-        sim_type = truth_dict["sim_type"]
+        abs_pid = abs(truth_dict[self._pid_column])
+        # sim_type = truth_dict["sim_type"]
 
         labels_dict = {
-            "event_no": truth_dict["event_no"],
+            # "event_no": truth_dict[self._index_column],
             "muon": int(abs_pid == 13),
-            "muon_stopped": int(truth_dict.get("stopped_muon") == 1),
-            "noise": int((abs_pid == 1) & (sim_type != "data")),
+            # "muon_stopped": int(truth_dict.get("stopped_muon") == 1),
+            # "noise": int((abs_pid == 1) & (sim_type != "data")),
             "neutrino": int(
                 (abs_pid != 13) & (abs_pid != 1)
             ),  # @TODO: `abs_pid in [12,14,16]`?
@@ -371,7 +375,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             "v_u": int(abs_pid == 14),
             "v_t": int(abs_pid == 16),
             "track": int(
-                (abs_pid == 14) & (truth_dict["interaction_type"] == 1)
+                (abs_pid == 14)
+                & (truth_dict[self._interaction_type_column] == 1)
             ),
             "dbang": self._get_dbang_label(truth_dict),
             "corsika": int(abs_pid > 20),
