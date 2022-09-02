@@ -27,11 +27,16 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         truth_table: str = "truth",
         node_truth_table: Optional[str] = None,
         string_selection: Optional[List[int]] = None,
+        sensor_selection: Optional[List[int]] = None,
         selection: Optional[List[int]] = None,
         dtype: torch.dtype = torch.float32,
-        loss_weight_table: str = None,
-        loss_weight_column: str = None,
+        loss_weight_table: Optional[str] = None,
+        loss_weight_column: Optional[str] = None,
         loss_weight_default_value: Optional[float] = None,
+        pmt_idx_column: str = "sensor_id",
+        string_idx_column: str = "sensor_string_id",
+        geometry_file: Optional[str] = None,
+        include_inactive_sensors: bool = False,
     ):
         # Check(s)
         if isinstance(pulsemaps, str):
@@ -49,6 +54,10 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         self._index_column = index_column
         self._truth_table = truth_table
         self._loss_weight_default_value = loss_weight_default_value
+        self._pmt_idx_column = pmt_idx_column
+        self._string_idx_column = string_idx_column
+        self._geometry_file = geometry_file
+        self._include_inactive_sensors = include_inactive_sensors
 
         if node_truth is not None:
             assert isinstance(node_truth_table, str)
@@ -71,9 +80,30 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
 
         self._string_selection = string_selection
 
+        if sensor_selection is not None:
+            self.logger.warning(
+                (
+                    "Sensor selection detected.\n",
+                    f"Accepted sensors: {sensor_selection}\n",
+                    "All other sensors are ignored!",
+                )
+            )
+            if isinstance(sensor_selection, int):
+                sensor_selection = [sensor_selection]
+
+        self._sensor_selection = sensor_selection
+
         self._selection = None
         if self._string_selection:
-            self._selection = f"string in {str(tuple(self._string_selection))}"
+            self._selection = f"{self._string_idx_column} in {str(tuple(self._string_selection))}"
+        if self._sensor_selection:
+            if self._selection is None:
+                self._selection = f"{self._pmt_idx_column} in {str(tuple(self._sensor_selection))}"
+            else:
+                self._selection = (
+                    self._selection
+                    + f" AND {self._pmt_idx_column} in {str(tuple(self._sensor_selection))}"
+                )
 
         self._loss_weight_column = loss_weight_column
         self._loss_weight_table = loss_weight_table
