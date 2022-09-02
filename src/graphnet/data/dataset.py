@@ -3,6 +3,7 @@
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional, Tuple, Union
 import numpy as np
+import pandas as pd
 import torch
 from torch_geometric.data import Data
 from graphnet.utilities.logging import LoggerMixin
@@ -35,7 +36,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         loss_weight_default_value: Optional[float] = None,
         pmt_idx_column: str = "sensor_id",
         string_idx_column: str = "sensor_string_id",
-        geometry_file: Optional[str] = None,
+        geometry_table: Optional[str] = None,
         include_inactive_sensors: bool = False,
     ):
         # Check(s)
@@ -56,8 +57,13 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         self._loss_weight_default_value = loss_weight_default_value
         self._pmt_idx_column = pmt_idx_column
         self._string_idx_column = string_idx_column
-        self._geometry_file = geometry_file
+        self._geometry_file = geometry_table
         self._include_inactive_sensors = include_inactive_sensors
+        if geometry_table:
+            if self._include_inactive_sensors:
+                self._detector_template = self._make_detector_template(
+                    geometry_table
+                )
 
         if node_truth is not None:
             assert isinstance(node_truth_table, str)
@@ -188,6 +194,12 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             )
         features, truth, node_truth, loss_weight = self._query(index)
         graph = self._create_graph(features, truth, node_truth, loss_weight)
+        if self._include_inactive_sensors:
+            assert (
+                self._detector_template is not None
+            ), "Geometry file must be specified if inactive sensors are to be included"
+            graph = self._add_inactive_sensors(graph)
+            graph = self._add_active_sensor_labels(graph)
         return graph
 
     # Internal method(s)
@@ -316,7 +328,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         assert len(truth) == 1
 
         # Define custom labels
-        labels_dict = self._get_labels(truth_dict)
+        # labels_dict = self._get_labels(truth_dict)
 
         # Convert nested list to simple dict
         if node_truth is not None:
@@ -359,7 +371,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
 
         # Write attributes, either target labels, truth info or original
         # features.
-        add_these_to_graph = [labels_dict, truth_dict]
+        add_these_to_graph = [truth_dict]  # [labels_dict, truth_dict]
         if node_truth is not None:
             add_these_to_graph.append(node_truth_dict)
         for write_dict in add_these_to_graph:
@@ -413,3 +425,78 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             return label
         except KeyError:
             return -1
+
+    def _add_inactive_sensors(self, graph: Data):
+        template = self._detector_template.clone()
+        same_pmt_pulses = None
+        for pulse in range(len(graph.x)):
+            if (
+                template[
+                    int(
+                        graph.x[
+                            pulse, self._features.index(self._pmt_idx_column)
+                        ].item()
+                    ),
+                    3,
+                ]
+                == 0
+            ):
+                template[
+                    int(
+                        graph.x[
+                            pulse, self._features.index(self._pmt_idx_column)
+                        ].item()
+                    ),
+                    3,
+                ] = graph.x[pulse, self._features.index("dom_time")]
+            else:
+                if same_pmt_pulses is None:
+                    same_pmt_pulses = template[
+                        int(
+                            graph.x[
+                                pulse,
+                                self._features.index(self._pmt_idx_column),
+                            ].item()
+                        ),
+                        :,
+                    ].reshape(1, -1)
+                    same_pmt_pulses[:, 3] = graph.x[
+                        pulse, self._features.index("dom_time")
+                    ]
+                else:
+                    append_this = template[
+                        int(
+                            graph.x[
+                                pulse,
+                                self._features.index(self._pmt_idx_column),
+                            ].item()
+                        ),
+                        :,
+                    ].reshape(1, -1)
+                    append_this[:, 3] = graph.x[
+                        pulse, self._features.index("dom_time")
+                    ]
+                    same_pmt_pulses = torch.cat(
+                        [same_pmt_pulses, append_this], dim=0
+                    )
+        if same_pmt_pulses is not None:
+            template = torch.cat([template, same_pmt_pulses], dim=0)
+        graph.x = template
+        graph["full_grid_x"] = template[:, 0]
+        graph["full_grid_y"] = template[:, 1]
+        graph["full_grid_z"] = template[:, 2]
+        graph["full_grid_time"] = template[:, 3]
+        return graph
+
+    def _add_active_sensor_labels(self, graph: Data):
+        graph["active_doms"] = (graph.x[:, 3] != 0).long().reshape(-1, 1)
+
+    def _make_detector_template(self, geometry_table):
+        """Creates a template of the detector geometry for slicing later.
+        Args:
+            geometry_table (str): path the geometry table where each row is a sensor module. Must contain xyz positions of each module.
+        """
+        geometry_table = pd.read_csv(geometry_table)
+        template = geometry_table.loc[:, ["sensor_x", "sensor_y", "sensor_z"]]
+        template["time"] = 0
+        return torch.tensor(template.values, dtype=torch.float)
