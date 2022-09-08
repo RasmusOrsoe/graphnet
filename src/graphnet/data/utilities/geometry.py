@@ -1,9 +1,7 @@
 import pandas as pd
 
 
-def convert_f2k_to_geometry_table(
-    custom_f2k: str, outdir: str, source: str = "prometheus"
-):
+def convert_f2k_to_geometry_table(custom_f2k: str, source: str = "prometheus"):
     """Converts f2k files from simulation engines to graphnet compliant geometry tables. Other, future sources must comply with naming convention of the xyz of the sensors.
 
     Args:
@@ -25,5 +23,4 @@ def convert_f2k_to_geometry_table(
             "pmt_idx",
         ]
 
-    geometry_table.to_csv(outdir)
-    return
+    return geometry_table
