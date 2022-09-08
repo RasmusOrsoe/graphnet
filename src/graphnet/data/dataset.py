@@ -482,9 +482,9 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         if same_pmt_pulses is not None:
             template = torch.cat([template, same_pmt_pulses], dim=0)
         graph.x = template
-        graph["full_grid_x"] = template[:, 0]
-        graph["full_grid_y"] = template[:, 1]
-        graph["full_grid_z"] = template[:, 2]
+        graph["dom_x"] = template[:, 0]
+        graph["dom_y"] = template[:, 1]
+        graph["dom_z"] = template[:, 2]
         graph["full_grid_time"] = template[:, 3]
         return graph
 

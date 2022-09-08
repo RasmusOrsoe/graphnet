@@ -198,6 +198,14 @@ class DOMCoarsening(Coarsening):
         return dom_index
 
 
+class LONECoarsening(Coarsening):
+    def _perform_clustering(self, data: Union[Data, Batch]) -> LongTensor:
+        """Perform clustering of nodes in `data` by assigning unique cluster indices to each."""
+        # dom_index = group_pulses_to_dom(data)
+        dom_index = group_by(data, ["dom_x", "dom_y", "dom_z"])
+        return dom_index
+
+
 class CustomDOMCoarsening(DOMCoarsening):
     def _additional_features(self, cluster: LongTensor, data: Data) -> Tensor:
         """Additional poolings of feature tensor `x` on `data`."""
