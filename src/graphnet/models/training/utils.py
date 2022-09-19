@@ -37,12 +37,18 @@ def make_dataloader(
     loss_weight_column: str = None,
     truth_table: str = "truth",
     parquet: bool = False,
+    pid_column: str = "pid",
+    interaction_type_column: str = "interaction_type",
+    index_column: str = "event_no",
+    pmt_idx_column: str = "sensor_id",
+    string_idx_column: str = "sensor_string_id",
+    include_inactive_sensors: bool = False,
+    geometry_table: str = None,
 ) -> DataLoader:
-
     # Check(s)
     if isinstance(pulsemaps, str):
         pulsemaps = [pulsemaps]
-
+    print(parquet)
     if parquet:
         dataset = ParquetDataset(
             path=data_path,
@@ -56,6 +62,13 @@ def make_dataloader(
             loss_weight_table=loss_weight_table,
             loss_weight_column=loss_weight_column,
             truth_table=truth_table,
+            pid_column=pid_column,
+            interaction_type_column=interaction_type_column,
+            index_column=index_column,
+            pmt_idx_column=pmt_idx_column,
+            string_idx_column=string_idx_column,
+            include_inactive_sensors=include_inactive_sensors,
+            geometry_table=geometry_table,
         )
     else:
         dataset = SQLiteDataset(
@@ -69,6 +82,14 @@ def make_dataloader(
             string_selection=string_selection,
             loss_weight_table=loss_weight_table,
             loss_weight_column=loss_weight_column,
+            pid_column=pid_column,
+            interaction_type_column=interaction_type_column,
+            index_column=index_column,
+            pmt_idx_column=pmt_idx_column,
+            string_idx_column=string_idx_column,
+            include_inactive_sensors=include_inactive_sensors,
+            geometry_table=geometry_table,
+            truth_table=truth_table,
         )
 
     def collate_fn(graphs):

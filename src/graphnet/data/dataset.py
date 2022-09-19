@@ -38,7 +38,10 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         string_idx_column: str = "sensor_string_id",
         geometry_table: Optional[str] = None,
         include_inactive_sensors: bool = False,
+        pid_column: str = "pid",
+        interaction_type_column: str = "interaction_type",
     ):
+        print("dataset: %s" % truth_table)
         # Check(s)
         if isinstance(pulsemaps, str):
             pulsemaps = [pulsemaps]
@@ -59,7 +62,9 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         self._string_idx_column = string_idx_column
         self._geometry_file = geometry_table
         self._include_inactive_sensors = include_inactive_sensors
-        if geometry_table:
+        self._interaction_column = interaction_type_column
+        self._pid_column = pid_column
+        if geometry_table is not None:
             if self._include_inactive_sensors:
                 self._detector_template = self._make_detector_template(
                     geometry_table
@@ -328,7 +333,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         assert len(truth) == 1
 
         # Define custom labels
-        # labels_dict = self._get_labels(truth_dict)
+        labels_dict = self._get_labels(truth_dict)
 
         # Convert nested list to simple dict
         if node_truth is not None:
@@ -371,7 +376,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
 
         # Write attributes, either target labels, truth info or original
         # features.
-        add_these_to_graph = [truth_dict]  # [labels_dict, truth_dict]
+        add_these_to_graph = [labels_dict, truth_dict]
         if node_truth is not None:
             add_these_to_graph.append(node_truth_dict)
         for write_dict in add_these_to_graph:
@@ -396,35 +401,21 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
 
     def _get_labels(self, truth_dict: Dict[str, Any]) -> Dict[str, Any]:
         """Return dictionary of  labels, to be added as graph attributes."""
-        abs_pid = abs(truth_dict["pid"])
-        sim_type = truth_dict["sim_type"]
+        abs_pid = abs(truth_dict[self._pid_column])
 
         labels_dict = {
-            "event_no": truth_dict["event_no"],
+            self._index_column: truth_dict[self._index_column],
             "muon": int(abs_pid == 13),
-            "muon_stopped": int(truth_dict.get("stopped_muon") == 1),
-            "noise": int((abs_pid == 1) & (sim_type != "data")),
-            "neutrino": int(
-                (abs_pid != 13) & (abs_pid != 1)
-            ),  # @TODO: `abs_pid in [12,14,16]`?
+            "neutrino": int((abs_pid != 13) & (abs_pid != 1)),
             "v_e": int(abs_pid == 12),
             "v_u": int(abs_pid == 14),
             "v_t": int(abs_pid == 16),
             "track": int(
-                (abs_pid == 14) & (truth_dict["interaction_type"] == 1)
+                (abs_pid == 14)
+                & (truth_dict[self._interaction_type_column] == 1)
             ),
-            "dbang": self._get_dbang_label(truth_dict),
-            "corsika": int(abs_pid > 20),
         }
         return labels_dict
-
-    def _get_dbang_label(self, truth_dict: Dict[str, Any]) -> int:
-        """Get label for double-bang classification."""
-        try:
-            label = int(truth_dict["dbang_decay_length"] > -1)
-            return label
-        except KeyError:
-            return -1
 
     def _add_inactive_sensors(self, graph: Data):
         template = self._detector_template.clone()
@@ -496,7 +487,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         Args:
             geometry_table (str): path the geometry table where each row is a sensor module. Must contain xyz positions of each module.
         """
-        geometry_table = pd.read_csv(geometry_table)
+        # geometry_table = pd.read_csv(geometry_table)
         template = geometry_table.loc[:, ["sensor_x", "sensor_y", "sensor_z"]]
         template["time"] = 0
         return torch.tensor(template.values, dtype=torch.float)
