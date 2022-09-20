@@ -61,7 +61,10 @@ def plot_2D_contour(
                 )
                 match = model_data["mod_chi2"][idx]
                 if len(match) > 0:
-                    if model_data["converged"][idx].values is True:
+                    if (
+                        model_data["converged"][idx].values
+                        == True  # noqa: E712
+                    ):
                         match = float(match)
                     else:
                         match = 10000  # Sets the z value very high to exclude it from contour
