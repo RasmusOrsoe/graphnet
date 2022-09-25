@@ -41,7 +41,6 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         pid_column: str = "pid",
         interaction_type_column: str = "interaction_type",
     ):
-        print("dataset: %s" % truth_table)
         # Check(s)
         if isinstance(pulsemaps, str):
             pulsemaps = [pulsemaps]
@@ -62,7 +61,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         self._string_idx_column = string_idx_column
         self._geometry_file = geometry_table
         self._include_inactive_sensors = include_inactive_sensors
-        self._interaction_column = interaction_type_column
+        self._interaction_type_column = interaction_type_column
         self._pid_column = pid_column
         if geometry_table is not None:
             if self._include_inactive_sensors:
@@ -203,8 +202,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             assert (
                 self._detector_template is not None
             ), "Geometry file must be specified if inactive sensors are to be included"
-            graph = self._add_inactive_sensors(graph)
-            graph = self._add_active_sensor_labels(graph)
+            # graph = self._add_inactive_sensors(graph)
+            # graph = self._add_active_sensor_labels(graph)
         return graph
 
     # Internal method(s)
@@ -352,9 +351,22 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         # Construct graph data object
         x = torch.tensor(data, dtype=self._dtype)  # pylint: disable=C0103
         n_pulses = torch.tensor(len(x), dtype=torch.int32)
-        graph = Data(x=x, edge_index=None)
+        if self._include_inactive_sensors:
+            assert (
+                self._detector_template is not None
+            ), "Geometry file must be specified if inactive sensors are to be included"
+            x = self._add_inactive_sensors(x)
+            graph = Data(x=x, edge_index=None)
+            graph = self._add_active_sensor_labels(graph)
+            graph["dom_x"] = x[:, 0]
+            graph["dom_y"] = x[:, 1]
+            graph["dom_z"] = x[:, 2]
+            graph["full_grid_time"] = x[:, 3]
+            graph.features = ["dom_x", "dom_y", "dom_z", "full_grid_time"]
+        else:
+            graph = Data(x=x, edge_index=None)
+            graph.features = self._features[1:]
         graph.n_pulses = n_pulses
-        graph.features = self._features[1:]
 
         # Add loss weight to graph.
         if loss_weight is not None and self._loss_weight_column is not None:
@@ -396,7 +408,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         # Additionally add original features as (static) attributes
         for index, feature in enumerate(graph.features):
             graph[feature] = graph.x[:, index].detach()
-
+        # print(graph['event_no'])
         return graph
 
     def _get_labels(self, truth_dict: Dict[str, Any]) -> Dict[str, Any]:
@@ -417,14 +429,14 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         }
         return labels_dict
 
-    def _add_inactive_sensors(self, graph: Data):
+    def _add_inactive_sensors(self, x: torch.tensor):
         template = self._detector_template.clone()
         same_pmt_pulses = None
-        for pulse in range(len(graph.x)):
+        for pulse in range(len(x)):
             if (
                 template[
                     int(
-                        graph.x[
+                        x[
                             pulse, self._features.index(self._pmt_idx_column)
                         ].item()
                     ),
@@ -434,53 +446,48 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             ):
                 template[
                     int(
-                        graph.x[
+                        x[
                             pulse, self._features.index(self._pmt_idx_column)
                         ].item()
                     ),
                     3,
-                ] = graph.x[pulse, self._features.index("dom_time")]
+                ] = x[pulse, self._features.index("t") - 1]
             else:
                 if same_pmt_pulses is None:
                     same_pmt_pulses = template[
                         int(
-                            graph.x[
+                            x[
                                 pulse,
                                 self._features.index(self._pmt_idx_column),
                             ].item()
                         ),
                         :,
                     ].reshape(1, -1)
-                    same_pmt_pulses[:, 3] = graph.x[
-                        pulse, self._features.index("dom_time")
+                    same_pmt_pulses[:, 3] = x[
+                        pulse, self._features.index("t") - 1
                     ]
                 else:
                     append_this = template[
                         int(
-                            graph.x[
+                            x[
                                 pulse,
                                 self._features.index(self._pmt_idx_column),
                             ].item()
                         ),
                         :,
                     ].reshape(1, -1)
-                    append_this[:, 3] = graph.x[
-                        pulse, self._features.index("dom_time")
-                    ]
+                    append_this[:, 3] = x[pulse, self._features.index("t") - 1]
                     same_pmt_pulses = torch.cat(
                         [same_pmt_pulses, append_this], dim=0
                     )
         if same_pmt_pulses is not None:
-            template = torch.cat([template, same_pmt_pulses], dim=0)
-        graph.x = template
-        graph["dom_x"] = template[:, 0]
-        graph["dom_y"] = template[:, 1]
-        graph["dom_z"] = template[:, 2]
-        graph["full_grid_time"] = template[:, 3]
-        return graph
+            pass  # template = torch.cat([template, same_pmt_pulses], dim=0)
+
+        return template
 
     def _add_active_sensor_labels(self, graph: Data):
-        graph["active_doms"] = (graph.x[:, 3] != 0).long().reshape(-1, 1)
+        graph["active_doms"] = (graph.x[:, 3] != 0).long()  # .reshape(-1, 1)
+        return graph
 
     def _make_detector_template(self, geometry_table):
         """Creates a template of the detector geometry for slicing later.

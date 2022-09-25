@@ -43,7 +43,6 @@ class SQLiteDataset(Dataset):
         index: int,
         selection: Optional[str] = None,
     ):
-        print("query %s" % table)
         """Query table at a specific index, optionally with some selection."""
         # Check(s)
         if isinstance(columns, list):
@@ -69,7 +68,6 @@ class SQLiteDataset(Dataset):
                 raise ColumnMissingException(str(e))
             else:
                 raise e
-        print("query %s done" % table)
         return result
 
     def _get_all_indices(self):

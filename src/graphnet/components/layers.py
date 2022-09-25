@@ -20,7 +20,8 @@ class LONEConv(MessagePassing):
         input_size: int = 4,
         hidden_size: int = 256,
         features_subset: Optional[Sequence] = None,
-        device: str = "cpu",
+        device=None,
+        **kwargs,
     ):
         super(LONEConv, self).__init__()
         # Check(s)
@@ -29,7 +30,6 @@ class LONEConv(MessagePassing):
         assert isinstance(features_subset, (list, slice))
 
         # Additional member variables
-        self._device = device
         self.features_subset = features_subset
         self.input_mlp = Sequential(
             Linear(input_size, hidden_size),
@@ -64,13 +64,12 @@ class LONEConv(MessagePassing):
 
     def forward(self, data: Union[Data, Batch]) -> Tensor:
         # fork data flow to k predictor
-        data = data.to(self._device)
         x = self.input_mlp(data.x)
         # Simple Node Aggregation
-        a, _ = scatter_max(data.x, data.batch.cpu(), dim=0)
-        b, _ = scatter_min(data.x, data.batch.cpu(), dim=0)
-        c = scatter_sum(data.x, data.batch.cpu(), dim=0)
-        d = scatter_mean(data.x, data.batch.cpu(), dim=0)
+        a, _ = scatter_max(data.x, data.batch, dim=0)
+        b, _ = scatter_min(data.x, data.batch, dim=0)
+        c = scatter_sum(data.x, data.batch, dim=0)
+        d = scatter_mean(data.x, data.batch, dim=0)
         x = torch.cat((a, b, c, d), dim=1)
         # Pass aggregated data through MLP
         x = self.scalar_mlp(x)

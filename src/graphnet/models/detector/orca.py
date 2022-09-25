@@ -13,10 +13,17 @@ from graphnet.models.detector.detector import Detector
 class Orca115(Detector):
     """`Detector` class for Orca with 115 strings."""
 
+    # features = [
+    #    "sensor_id",
+    #    "sensor_string_id",
+    #    "t",
+    # ]
+
     features = [
-        "sensor_id",
-        "sensor_string_id",
-        "t",
+        "dom_x",
+        "dom_y",
+        "dom_z",
+        "full_grid_time",
     ]
 
     def _forward(self, data: Data) -> Data:

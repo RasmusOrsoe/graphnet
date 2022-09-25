@@ -55,4 +55,4 @@ def knn_graph_batch(batch: Batch, k: List[int], columns: List[int]):
         data_list[i].edge_index = knn_graph(
             x=data_list[i].x[:, columns], k=k[i]
         )
-    return Batch.from_data_list(data_list)
+    return Batch.from_data_list(data_list).to(batch.x.device)

@@ -27,6 +27,7 @@ class LONE(GNN):
         n_conv: int = 1,
         max_k: int = 50,
         layer_size_scale: int = 4,
+        device=None,
     ):
         """DynEdge model.
 
@@ -55,10 +56,10 @@ class LONE(GNN):
             LONEConv(
                 aggr="add",
                 max_k=max_k,
-                input_size=nb_inputs + 1,
+                input_size=nb_inputs,
                 hidden_size=hidden_size,
                 features_subset=features_subset,
-                device=self._device,
+                device=device,
             )
         )
         # Number of hidden convolutional layers
@@ -70,12 +71,12 @@ class LONE(GNN):
                     input_size=hidden_size,
                     hidden_size=hidden_size,
                     features_subset=features_subset,
-                    device=self._device,
+                    device=device,
                 )
             )
 
         # Post-processing operations
-        self.nn1 = torch.nn.Linear(nb_inputs + 1 + hidden_size * n_conv, l1)
+        self.nn1 = torch.nn.Linear(nb_inputs + hidden_size * n_conv, l1)
         self.nn2 = torch.nn.Linear(l1, l2)
         self.nn3 = torch.nn.Linear(l2, l3)
         self.lrelu = torch.nn.LeakyReLU()
@@ -112,5 +113,4 @@ class LONE(GNN):
         x = self.lrelu(x)
         x = self.nn3(x)
         data.x = self.lrelu(x)
-        data.x
-        return data
+        return data.x
