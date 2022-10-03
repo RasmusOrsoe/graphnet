@@ -40,6 +40,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         include_inactive_sensors: bool = False,
         pid_column: str = "pid",
         interaction_type_column: str = "interaction_type",
+        sensor_mask: np.Array = None,
     ):
         # Check(s)
         if isinstance(pulsemaps, str):
@@ -63,6 +64,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         self._include_inactive_sensors = include_inactive_sensors
         self._interaction_type_column = interaction_type_column
         self._pid_column = pid_column
+        self._sensor_mask = sensor_mask
         if geometry_table is not None:
             if self._include_inactive_sensors:
                 self._detector_template = self._make_detector_template(
@@ -358,6 +360,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             x = self._add_inactive_sensors(x)
             graph = Data(x=x, edge_index=None)
             graph = self._add_active_sensor_labels(graph)
+            if self._sensor_mask is not None:
+                graph.x[self._sensor_mask, 3] = 0
             graph["dom_x"] = x[:, 0]
             graph["dom_y"] = x[:, 1]
             graph["dom_z"] = x[:, 2]
