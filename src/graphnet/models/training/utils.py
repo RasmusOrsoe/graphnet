@@ -44,6 +44,7 @@ def make_dataloader(
     string_idx_column: str = "sensor_string_id",
     include_inactive_sensors: bool = False,
     geometry_table: str = None,
+    sensor_mask: np.Array = None,
 ) -> DataLoader:
     # Check(s)
     if isinstance(pulsemaps, str):
@@ -69,6 +70,7 @@ def make_dataloader(
             string_idx_column=string_idx_column,
             include_inactive_sensors=include_inactive_sensors,
             geometry_table=geometry_table,
+            sensor_mask=sensor_mask,
         )
     else:
         dataset = SQLiteDataset(
@@ -90,6 +92,7 @@ def make_dataloader(
             include_inactive_sensors=include_inactive_sensors,
             geometry_table=geometry_table,
             truth_table=truth_table,
+            sensor_mask=sensor_mask,
         )
 
     def collate_fn(graphs):
@@ -128,6 +131,7 @@ def make_train_validation_dataloader(
     string_selection: List[int] = None,
     loss_weight_column: str = None,
     loss_weight_table: str = None,
+    sensor_mask: np.Array = None,
 ) -> Tuple[DataLoader]:
 
     # Reproducibility
@@ -169,6 +173,7 @@ def make_train_validation_dataloader(
         string_selection=string_selection,
         loss_weight_column=loss_weight_column,
         loss_weight_table=loss_weight_table,
+        sensor_mask=sensor_mask,
     )
 
     training_dataloader = make_dataloader(
