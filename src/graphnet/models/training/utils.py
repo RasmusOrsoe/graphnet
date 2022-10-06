@@ -44,7 +44,7 @@ def make_dataloader(
     string_idx_column: str = "sensor_string_id",
     include_inactive_sensors: bool = False,
     geometry_table: str = None,
-    sensor_mask: np.Array = None,
+    sensor_mask: np.array = None,
 ) -> DataLoader:
     # Check(s)
     if isinstance(pulsemaps, str):
@@ -131,7 +131,7 @@ def make_train_validation_dataloader(
     string_selection: List[int] = None,
     loss_weight_column: str = None,
     loss_weight_table: str = None,
-    sensor_mask: np.Array = None,
+    sensor_mask: np.array = None,
 ) -> Tuple[DataLoader]:
 
     # Reproducibility

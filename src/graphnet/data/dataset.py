@@ -40,7 +40,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         include_inactive_sensors: bool = False,
         pid_column: str = "pid",
         interaction_type_column: str = "interaction_type",
-        sensor_mask: np.Array = None,
+        sensor_mask: np.array = None,
     ):
         # Check(s)
         if isinstance(pulsemaps, str):
@@ -362,10 +362,10 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             graph = self._add_active_sensor_labels(graph)
             if self._sensor_mask is not None:
                 graph.x[self._sensor_mask, 3] = 0
-            graph["dom_x"] = x[:, 0]
-            graph["dom_y"] = x[:, 1]
-            graph["dom_z"] = x[:, 2]
-            graph["full_grid_time"] = x[:, 3]
+            graph["true_dom_x"] = x[:, 0]
+            graph["true_dom_y"] = x[:, 1]
+            graph["true_dom_z"] = x[:, 2]
+            graph["true_full_grid_time"] = x[:, 3]
             graph.features = ["dom_x", "dom_y", "dom_z", "full_grid_time"]
         else:
             graph = Data(x=x, edge_index=None)
@@ -434,6 +434,11 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         return labels_dict
 
     def _add_inactive_sensors(self, x: torch.tensor):
+        x = x[x[:, 3].argsort()]
+        unique_xyz, inverse_indices = torch.consecutive(
+            x[:, [0, 1, 2]], return_inverse=True
+        )
+
         template = self._detector_template.clone()
         same_pmt_pulses = None
         for pulse in range(len(x)):
@@ -471,19 +476,20 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
                         pulse, self._features.index("t") - 1
                     ]
                 else:
-                    append_this = template[
-                        int(
-                            x[
-                                pulse,
-                                self._features.index(self._pmt_idx_column),
-                            ].item()
-                        ),
-                        :,
-                    ].reshape(1, -1)
-                    append_this[:, 3] = x[pulse, self._features.index("t") - 1]
-                    same_pmt_pulses = torch.cat(
-                        [same_pmt_pulses, append_this], dim=0
-                    )
+                    pass
+                    # append_this = template[
+                    #    int(
+                    #        x[
+                    #            pulse,
+                    #            self._features.index(self._pmt_idx_column),
+                    #        ].item()
+                    #    ),
+                    #    :,
+                    # ].reshape(1, -1)
+                    # append_this[:, 3] = x[pulse, self._features.index("t") - 1]
+                    # same_pmt_pulses = torch.cat(
+                    #    [same_pmt_pulses, append_this], dim=0
+                    # )
         if same_pmt_pulses is not None:
             pass  # template = torch.cat([template, same_pmt_pulses], dim=0)
 
