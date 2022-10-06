@@ -435,9 +435,9 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
 
     def _add_inactive_sensors(self, x: torch.tensor):
         x = x[x[:, 3].argsort()]
-        unique_xyz, inverse_indices = torch.consecutive(
-            x[:, [0, 1, 2]], return_inverse=True
-        )
+        # unique_xyz, inverse_indices = torch.consecutive(
+        #    x[:, [0, 1, 2]], return_inverse=True
+        # )
 
         template = self._detector_template.clone()
         same_pmt_pulses = None
@@ -462,6 +462,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
                     3,
                 ] = x[pulse, self._features.index("t") - 1]
             else:
+                pass
                 if same_pmt_pulses is None:
                     same_pmt_pulses = template[
                         int(
