@@ -16,6 +16,7 @@
         <script src="_static/underscore.js"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" /> 
@@ -39,12 +40,94 @@
               <!-- Local TOC -->
               <div class="local-toc"><ul>
 <li><a class="reference internal" href="#">graphnet.data.extractors package</a><ul>
+<li><a class="reference internal" href="#subpackages">Subpackages</a></li>
 <li><a class="reference internal" href="#submodules">Submodules</a></li>
-<li><a class="reference internal" href="#module-graphnet.data.extractors.i3extractor">graphnet.data.extractors.i3extractor module</a></li>
-<li><a class="reference internal" href="#module-graphnet.data.extractors.i3featureextractor">graphnet.data.extractors.i3featureextractor module</a></li>
-<li><a class="reference internal" href="#module-graphnet.data.extractors.i3retroextractor">graphnet.data.extractors.i3retroextractor module</a></li>
-<li><a class="reference internal" href="#module-graphnet.data.extractors.i3truthextractor">graphnet.data.extractors.i3truthextractor module</a></li>
-<li><a class="reference internal" href="#module-graphnet.data.extractors.utilities">graphnet.data.extractors.utilities module</a></li>
+<li><a class="reference internal" href="#module-graphnet.data.extractors.i3extractor">graphnet.data.extractors.i3extractor module</a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3extractor.I3Extractor"><code class="docutils literal notranslate"><span class="pre">I3Extractor</span></code></a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3extractor.I3Extractor.__call__"><code class="docutils literal notranslate"><span class="pre">I3Extractor.__call__()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3extractor.I3Extractor._load_gcd_data"><code class="docutils literal notranslate"><span class="pre">I3Extractor._load_gcd_data()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3extractor.I3Extractor.name"><code class="docutils literal notranslate"><span class="pre">I3Extractor.name</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3extractor.I3Extractor.set_files"><code class="docutils literal notranslate"><span class="pre">I3Extractor.set_files()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3extractor.I3ExtractorCollection"><code class="docutils literal notranslate"><span class="pre">I3ExtractorCollection</span></code></a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3extractor.I3ExtractorCollection.set_files"><code class="docutils literal notranslate"><span class="pre">I3ExtractorCollection.set_files()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-graphnet.data.extractors.i3featureextractor">graphnet.data.extractors.i3featureextractor module</a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3featureextractor.I3FeatureExtractor"><code class="docutils literal notranslate"><span class="pre">I3FeatureExtractor</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3featureextractor.I3FeatureExtractorIceCube86"><code class="docutils literal notranslate"><span class="pre">I3FeatureExtractorIceCube86</span></code></a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3featureextractor.I3FeatureExtractorIceCube86.__call__"><code class="docutils literal notranslate"><span class="pre">I3FeatureExtractorIceCube86.__call__()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3featureextractor.I3FeatureExtractorIceCubeDeepCore"><code class="docutils literal notranslate"><span class="pre">I3FeatureExtractorIceCubeDeepCore</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3featureextractor.I3FeatureExtractorIceCubeUpgrade"><code class="docutils literal notranslate"><span class="pre">I3FeatureExtractorIceCubeUpgrade</span></code></a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3featureextractor.I3FeatureExtractorIceCubeUpgrade.__call__"><code class="docutils literal notranslate"><span class="pre">I3FeatureExtractorIceCubeUpgrade.__call__()</span></code></a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3featureextractor.I3PulseNoiseTruthFlagIceCubeUpgrade"><code class="docutils literal notranslate"><span class="pre">I3PulseNoiseTruthFlagIceCubeUpgrade</span></code></a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3featureextractor.I3PulseNoiseTruthFlagIceCubeUpgrade.__call__"><code class="docutils literal notranslate"><span class="pre">I3PulseNoiseTruthFlagIceCubeUpgrade.__call__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-graphnet.data.extractors.i3genericextractor">graphnet.data.extractors.i3genericextractor module</a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor"><code class="docutils literal notranslate"><span class="pre">I3GenericExtractor</span></code></a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor.__call__"><code class="docutils literal notranslate"><span class="pre">I3GenericExtractor.__call__()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor.__init__"><code class="docutils literal notranslate"><span class="pre">I3GenericExtractor.__init__()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._cast_mc_tree"><code class="docutils literal notranslate"><span class="pre">I3GenericExtractor._cast_mc_tree()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._cast_triggers"><code class="docutils literal notranslate"><span class="pre">I3GenericExtractor._cast_triggers()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._extract_per_pulse_attribute"><code class="docutils literal notranslate"><span class="pre">I3GenericExtractor._extract_per_pulse_attribute()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._extract_pulse_series_map"><code class="docutils literal notranslate"><span class="pre">I3GenericExtractor._extract_pulse_series_map()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._flatten_result"><code class="docutils literal notranslate"><span class="pre">I3GenericExtractor._flatten_result()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._flatten_result_mctree"><code class="docutils literal notranslate"><span class="pre">I3GenericExtractor._flatten_result_mctree()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._get_keys"><code class="docutils literal notranslate"><span class="pre">I3GenericExtractor._get_keys()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-graphnet.data.extractors.i3hybridrecoextractor">graphnet.data.extractors.i3hybridrecoextractor module</a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3hybridrecoextractor.I3GalacticPlaneHybridRecoExtractor"><code class="docutils literal notranslate"><span class="pre">I3GalacticPlaneHybridRecoExtractor</span></code></a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3hybridrecoextractor.I3GalacticPlaneHybridRecoExtractor.__call__"><code class="docutils literal notranslate"><span class="pre">I3GalacticPlaneHybridRecoExtractor.__call__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-graphnet.data.extractors.i3retroextractor">graphnet.data.extractors.i3retroextractor module</a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3retroextractor.I3RetroExtractor"><code class="docutils literal notranslate"><span class="pre">I3RetroExtractor</span></code></a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3retroextractor.I3RetroExtractor.__call__"><code class="docutils literal notranslate"><span class="pre">I3RetroExtractor.__call__()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3retroextractor.I3RetroExtractor._try_get_key"><code class="docutils literal notranslate"><span class="pre">I3RetroExtractor._try_get_key()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-graphnet.data.extractors.i3splinempeextractor">graphnet.data.extractors.i3splinempeextractor module</a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3splinempeextractor.I3SplineMPEICExtractor"><code class="docutils literal notranslate"><span class="pre">I3SplineMPEICExtractor</span></code></a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3splinempeextractor.I3SplineMPEICExtractor.__call__"><code class="docutils literal notranslate"><span class="pre">I3SplineMPEICExtractor.__call__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-graphnet.data.extractors.i3truthextractor">graphnet.data.extractors.i3truthextractor module</a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3truthextractor.I3TruthExtractor"><code class="docutils literal notranslate"><span class="pre">I3TruthExtractor</span></code></a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3truthextractor.I3TruthExtractor.__call__"><code class="docutils literal notranslate"><span class="pre">I3TruthExtractor.__call__()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3truthextractor.I3TruthExtractor._find_data_type"><code class="docutils literal notranslate"><span class="pre">I3TruthExtractor._find_data_type()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3truthextractor.I3TruthExtractor._get_primary_particle_interaction_type_and_elasticity"><code class="docutils literal notranslate"><span class="pre">I3TruthExtractor._get_primary_particle_interaction_type_and_elasticity()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3truthextractor.I3TruthExtractor._get_primary_track_energy_and_inelasticity"><code class="docutils literal notranslate"><span class="pre">I3TruthExtractor._get_primary_track_energy_and_inelasticity()</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3truthextractor.I3TruthExtractor._muon_stopped"><code class="docutils literal notranslate"><span class="pre">I3TruthExtractor._muon_stopped()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a class="reference internal" href="#module-graphnet.data.extractors.i3tumextractor">graphnet.data.extractors.i3tumextractor module</a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3tumextractor.I3TUMExtractor"><code class="docutils literal notranslate"><span class="pre">I3TUMExtractor</span></code></a><ul>
+<li><a class="reference internal" href="#graphnet.data.extractors.i3tumextractor.I3TUMExtractor.__call__"><code class="docutils literal notranslate"><span class="pre">I3TUMExtractor.__call__()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#module-graphnet.data.extractors">Module contents</a></li>
 </ul>
 </li>
@@ -76,6 +159,42 @@
              
   <section id="graphnet-data-extractors-package">
 <h1>graphnet.data.extractors package<a class="headerlink" href="#graphnet-data-extractors-package" title="Permalink to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="graphnet.data.extractors.utilities.html">graphnet.data.extractors.utilities package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="graphnet.data.extractors.utilities.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="graphnet.data.extractors.utilities.html#module-graphnet.data.extractors.utilities.collections">graphnet.data.extractors.utilities.collections module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.collections.flatten_nested_dictionary"><code class="docutils literal notranslate"><span class="pre">flatten_nested_dictionary()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.collections.serialise"><code class="docutils literal notranslate"><span class="pre">serialise()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.collections.transpose_list_of_dicts"><code class="docutils literal notranslate"><span class="pre">transpose_list_of_dicts()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="graphnet.data.extractors.utilities.html#module-graphnet.data.extractors.utilities.frames">graphnet.data.extractors.utilities.frames module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.frames.frame_is_montecarlo"><code class="docutils literal notranslate"><span class="pre">frame_is_montecarlo()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.frames.frame_is_noise"><code class="docutils literal notranslate"><span class="pre">frame_is_noise()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.frames.get_om_keys_and_pulseseries"><code class="docutils literal notranslate"><span class="pre">get_om_keys_and_pulseseries()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="graphnet.data.extractors.utilities.html#module-graphnet.data.extractors.utilities.types">graphnet.data.extractors.utilities.types module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.types.break_cyclic_recursion"><code class="docutils literal notranslate"><span class="pre">break_cyclic_recursion()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.types.cast_object_to_pure_python"><code class="docutils literal notranslate"><span class="pre">cast_object_to_pure_python()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.types.cast_pulse_series_to_pure_python"><code class="docutils literal notranslate"><span class="pre">cast_pulse_series_to_pure_python()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.types.get_member_variables"><code class="docutils literal notranslate"><span class="pre">get_member_variables()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.types.is_boost_class"><code class="docutils literal notranslate"><span class="pre">is_boost_class()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.types.is_boost_enum"><code class="docutils literal notranslate"><span class="pre">is_boost_enum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.types.is_icecube_class"><code class="docutils literal notranslate"><span class="pre">is_icecube_class()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.types.is_method"><code class="docutils literal notranslate"><span class="pre">is_method()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.types.is_type"><code class="docutils literal notranslate"><span class="pre">is_type()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="graphnet.data.extractors.utilities.html#module-graphnet.data.extractors.utilities">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
 </section>
@@ -129,24 +248,6 @@
 <dt class="sig sig-object py" id="graphnet.data.extractors.i3featureextractor.I3FeatureExtractor">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphnet.data.extractors.i3featureextractor.</span></span><span class="sig-name descname"><span class="pre">I3FeatureExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pulsemap</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphnet/data/extractors/i3featureextractor.html#I3FeatureExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3featureextractor.I3FeatureExtractor" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#graphnet.data.extractors.i3extractor.I3Extractor" title="graphnet.data.extractors.i3extractor.I3Extractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">I3Extractor</span></code></a></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="graphnet.data.extractors.i3featureextractor.I3FeatureExtractor._get_om_keys_and_pulseseries">
-<span class="sig-name descname"><span class="pre">_get_om_keys_and_pulseseries</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphnet/data/extractors/i3featureextractor.html#I3FeatureExtractor._get_om_keys_and_pulseseries"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3featureextractor.I3FeatureExtractor._get_om_keys_and_pulseseries" title="Permalink to this definition"></a></dt>
-<dd><p>Gets the indicies for the gcd_dict and the pulse series</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>frame</strong> (<em>i3 physics frame</em>) – i3 physics frame</p>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>the indicies for the gcd_dict
-data    (??)   : the pulse series</p>
-</dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>om_keys (index)</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py class">
@@ -193,6 +294,118 @@ data    (??)   : the pulse series</p>
 </dd></dl>
 
 </section>
+<section id="module-graphnet.data.extractors.i3genericextractor">
+<span id="graphnet-data-extractors-i3genericextractor-module"></span><h2>graphnet.data.extractors.i3genericextractor module<a class="headerlink" href="#module-graphnet.data.extractors.i3genericextractor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3genericextractor.I3GenericExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphnet.data.extractors.i3genericextractor.</span></span><span class="sig-name descname"><span class="pre">I3GenericExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphnet/data/extractors/i3genericextractor.html#I3GenericExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#graphnet.data.extractors.i3extractor.I3Extractor" title="graphnet.data.extractors.i3extractor.I3Extractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">I3Extractor</span></code></a></p>
+<p>Dynamically and generically extract information from frames.</p>
+<p>This class parses all keys in the I3Frame objects it is called on, and
+tries to automatically cast all of the available information to pure-python
+classes. This is done recursively, for each object in the I3Frame, by
+looking for member variables that can be parsed; by looking for objects
+that have signatures similar to python lists or dicts; and by handling a
+handful of special cases:
+- Pulse series maps,
+- Per-pulse maps,
+- MC tree, and
+- Triggers.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3genericextractor.I3GenericExtractor.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">icetray.I3Frame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphnet/data/extractors/i3genericextractor.html#I3GenericExtractor.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor.__call__" title="Permalink to this definition"></a></dt>
+<dd><p>Extract all possible data from <cite>frame</cite>.</p>
+<p>The following types of objects are handled as special cases:
+- Pulse series maps,
+- Per-pulse maps,
+- MC tree, and
+- Triggers.</p>
+<p>All other fields are cast to pure-python classes by generically parsing
+member variables, and checking if the object has a signature similar to
+python lists or dicts.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><dl class="simple">
+<dt>Dictionary containing each parsed key in <cite>frame</cite>, and the</dt><dd><p>corresponding, extracted data in pure-python format.</p>
+</dd>
+</dl>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3genericextractor.I3GenericExtractor.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_keys</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphnet/data/extractors/i3genericextractor.html#I3GenericExtractor.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Constructor.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3genericextractor.I3GenericExtractor._cast_mc_tree">
+<span class="sig-name descname"><span class="pre">_cast_mc_tree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dataclasses.I3MCTree</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphnet/data/extractors/i3genericextractor.html#I3GenericExtractor._cast_mc_tree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._cast_mc_tree" title="Permalink to this definition"></a></dt>
+<dd><p>Cast I3MCTree to dict.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3genericextractor.I3GenericExtractor._cast_triggers">
+<span class="sig-name descname"><span class="pre">_cast_triggers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dataclasses.I3TriggerHierarchy</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphnet/data/extractors/i3genericextractor.html#I3GenericExtractor._cast_triggers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._cast_triggers" title="Permalink to this definition"></a></dt>
+<dd><p>Cast trigger hierarchy to dict</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3genericextractor.I3GenericExtractor._extract_per_pulse_attribute">
+<span class="sig-name descname"><span class="pre">_extract_per_pulse_attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">icetray.I3Frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphnet/data/extractors/i3genericextractor.html#I3GenericExtractor._extract_per_pulse_attribute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._extract_per_pulse_attribute" title="Permalink to this definition"></a></dt>
+<dd><p>Extract per-pulse attribute <cite>key</cite> from <cite>frame</cite></p>
+<p>A per-pulse attribute (e.g., dataclasses.I3MapKeyUInt) is a dictionary-
+like mapping from an OM key to some attribute, e.g., an integer or a
+vector properties.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3genericextractor.I3GenericExtractor._extract_pulse_series_map">
+<span class="sig-name descname"><span class="pre">_extract_pulse_series_map</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">icetray.I3Frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphnet/data/extractors/i3genericextractor.html#I3GenericExtractor._extract_pulse_series_map"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._extract_pulse_series_map" title="Permalink to this definition"></a></dt>
+<dd><p>Extract pulse-series map <cite>key</cite> from <cite>frame</cite></p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3genericextractor.I3GenericExtractor._flatten_result">
+<span class="sig-name descname"><span class="pre">_flatten_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphnet/data/extractors/i3genericextractor.html#I3GenericExtractor._flatten_result"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._flatten_result" title="Permalink to this definition"></a></dt>
+<dd><p>Flatten results from casting any other instance to pure python.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3genericextractor.I3GenericExtractor._flatten_result_mctree">
+<span class="sig-name descname"><span class="pre">_flatten_result_mctree</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphnet/data/extractors/i3genericextractor.html#I3GenericExtractor._flatten_result_mctree"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._flatten_result_mctree" title="Permalink to this definition"></a></dt>
+<dd><p>Flatten results from casting I3MCTree to pure python.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3genericextractor.I3GenericExtractor._get_keys">
+<span class="sig-name descname"><span class="pre">_get_keys</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">icetray.I3Frame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/graphnet/data/extractors/i3genericextractor.html#I3GenericExtractor._get_keys"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._get_keys" title="Permalink to this definition"></a></dt>
+<dd><p>Get the list of keys to be queried from <cite>frame</cite>.</p>
+<p>If a list of keys was provided by the user, return this.  Otherwise,
+return all keys, possibly except ones that the user have explicitly
+excluded.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-graphnet.data.extractors.i3hybridrecoextractor">
+<span id="graphnet-data-extractors-i3hybridrecoextractor-module"></span><h2>graphnet.data.extractors.i3hybridrecoextractor module<a class="headerlink" href="#module-graphnet.data.extractors.i3hybridrecoextractor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3hybridrecoextractor.I3GalacticPlaneHybridRecoExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphnet.data.extractors.i3hybridrecoextractor.</span></span><span class="sig-name descname"><span class="pre">I3GalacticPlaneHybridRecoExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dnn_hybrid'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphnet/data/extractors/i3hybridrecoextractor.html#I3GalacticPlaneHybridRecoExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3hybridrecoextractor.I3GalacticPlaneHybridRecoExtractor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#graphnet.data.extractors.i3extractor.I3Extractor" title="graphnet.data.extractors.i3extractor.I3Extractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">I3Extractor</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3hybridrecoextractor.I3GalacticPlaneHybridRecoExtractor.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/graphnet/data/extractors/i3hybridrecoextractor.html#I3GalacticPlaneHybridRecoExtractor.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3hybridrecoextractor.I3GalacticPlaneHybridRecoExtractor.__call__" title="Permalink to this definition"></a></dt>
+<dd><p>Extracts TUMs DNN Recos and associated variables</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-graphnet.data.extractors.i3retroextractor">
 <span id="graphnet-data-extractors-i3retroextractor-module"></span><h2>graphnet.data.extractors.i3retroextractor module<a class="headerlink" href="#module-graphnet.data.extractors.i3retroextractor" title="Permalink to this heading"></a></h2>
 <dl class="py class">
@@ -209,6 +422,21 @@ data    (??)   : the pulse series</p>
 <dt class="sig sig-object py" id="graphnet.data.extractors.i3retroextractor.I3RetroExtractor._try_get_key">
 <span class="sig-name descname"><span class="pre">_try_get_key</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">key</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphnet/data/extractors/i3retroextractor.html#I3RetroExtractor._try_get_key"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3retroextractor.I3RetroExtractor._try_get_key" title="Permalink to this definition"></a></dt>
 <dd><p>Return <cite>key</cite> in <cite>frame</cite> if it exists; otherwise return <a href="#id1"><span class="problematic" id="id2">`</span></a>default_value.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-graphnet.data.extractors.i3splinempeextractor">
+<span id="graphnet-data-extractors-i3splinempeextractor-module"></span><h2>graphnet.data.extractors.i3splinempeextractor module<a class="headerlink" href="#module-graphnet.data.extractors.i3splinempeextractor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3splinempeextractor.I3SplineMPEICExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphnet.data.extractors.i3splinempeextractor.</span></span><span class="sig-name descname"><span class="pre">I3SplineMPEICExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'spline_mpe_ic'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphnet/data/extractors/i3splinempeextractor.html#I3SplineMPEICExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3splinempeextractor.I3SplineMPEICExtractor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#graphnet.data.extractors.i3extractor.I3Extractor" title="graphnet.data.extractors.i3extractor.I3Extractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">I3Extractor</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3splinempeextractor.I3SplineMPEICExtractor.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/graphnet/data/extractors/i3splinempeextractor.html#I3SplineMPEICExtractor.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3splinempeextractor.I3SplineMPEICExtractor.__call__" title="Permalink to this definition"></a></dt>
+<dd><p>Extracts SplineMPE pointing predictions.</p>
 </dd></dl>
 
 </dd></dl>
@@ -325,17 +553,19 @@ IMPORTANT: The final position of the muon is saved in truth extractor/databases 
 </dd></dl>
 
 </section>
-<section id="module-graphnet.data.extractors.utilities">
-<span id="graphnet-data-extractors-utilities-module"></span><h2>graphnet.data.extractors.utilities module<a class="headerlink" href="#module-graphnet.data.extractors.utilities" title="Permalink to this heading"></a></h2>
-<dl class="py function">
-<dt class="sig sig-object py" id="graphnet.data.extractors.utilities.frame_is_montecarlo">
-<span class="sig-prename descclassname"><span class="pre">graphnet.data.extractors.utilities.</span></span><span class="sig-name descname"><span class="pre">frame_is_montecarlo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphnet/data/extractors/utilities.html#frame_is_montecarlo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.utilities.frame_is_montecarlo" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<section id="module-graphnet.data.extractors.i3tumextractor">
+<span id="graphnet-data-extractors-i3tumextractor-module"></span><h2>graphnet.data.extractors.i3tumextractor module<a class="headerlink" href="#module-graphnet.data.extractors.i3tumextractor" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3tumextractor.I3TUMExtractor">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphnet.data.extractors.i3tumextractor.</span></span><span class="sig-name descname"><span class="pre">I3TUMExtractor</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'tum_dnn'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphnet/data/extractors/i3tumextractor.html#I3TUMExtractor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3tumextractor.I3TUMExtractor" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#graphnet.data.extractors.i3extractor.I3Extractor" title="graphnet.data.extractors.i3extractor.I3Extractor"><code class="xref py py-class docutils literal notranslate"><span class="pre">I3Extractor</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.data.extractors.i3tumextractor.I3TUMExtractor.__call__">
+<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="_modules/graphnet/data/extractors/i3tumextractor.html#I3TUMExtractor.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.i3tumextractor.I3TUMExtractor.__call__" title="Permalink to this definition"></a></dt>
+<dd><p>Extracts TUM DNN Recos and associated variables</p>
+</dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="graphnet.data.extractors.utilities.frame_is_noise">
-<span class="sig-prename descclassname"><span class="pre">graphnet.data.extractors.utilities.</span></span><span class="sig-name descname"><span class="pre">frame_is_noise</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">frame</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphnet/data/extractors/utilities.html#frame_is_noise"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.extractors.utilities.frame_is_noise" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+</dd></dl>
 
 </section>
 <section id="module-graphnet.data.extractors">
