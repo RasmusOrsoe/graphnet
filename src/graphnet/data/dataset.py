@@ -357,7 +357,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             assert (
                 self._detector_template is not None
             ), "Geometry file must be specified if inactive sensors are to be included"
-            x = self._add_inactive_sensors(x)
+            x = self._add_inactive_sensors(x, truth_dict)
             graph = Data(x=x, edge_index=None)
             graph = self._add_active_sensor_labels(graph)
             if self._sensor_mask is not None:
@@ -367,10 +367,11 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             graph["true_dom_z"] = x[:, 2]
             graph["true_full_grid_time"] = x[:, 3]
             graph.features = ["dom_x", "dom_y", "dom_z", "full_grid_time"]
+            graph["n_pulses"] = torch.tensor(len(graph.x), dtype=torch.int32)
         else:
             graph = Data(x=x, edge_index=None)
             graph.features = self._features[1:]
-        graph.n_pulses = n_pulses
+            graph.n_pulses = n_pulses
 
         # Add loss weight to graph.
         if loss_weight is not None and self._loss_weight_column is not None:
@@ -433,8 +434,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         }
         return labels_dict
 
-    def _add_inactive_sensors(self, x: torch.tensor):
-        x = x[x[:, 3].argsort()]
+    def _add_inactive_sensors(self, x: torch.tensor, truth_dict: dict):
+        x = x[x[:, 2].argsort()]
         # unique_xyz, inverse_indices = torch.consecutive(
         #    x[:, [0, 1, 2]], return_inverse=True
         # )
@@ -442,6 +443,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         template = self._detector_template.clone()
         same_pmt_pulses = None
         for pulse in range(len(x)):
+            # print(pulse, truth_dict[self._index_column])
             if (
                 template[
                     int(
