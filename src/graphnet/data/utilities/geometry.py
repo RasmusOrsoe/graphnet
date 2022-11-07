@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 
 
 def convert_f2k_to_geometry_table(custom_f2k: str, source: str = "prometheus"):
@@ -22,5 +23,18 @@ def convert_f2k_to_geometry_table(custom_f2k: str, source: str = "prometheus"):
             "string_idx",
             "pmt_idx",
         ]
+
+    if source == "prometheus_v2":
+        geometry_table = pd.read_csv(
+            custom_f2k, sep="\t", skiprows=(0, 1, 2, 3), header=None
+        )
+        geometry_table.columns = [
+            "dom_x",
+            "dom_y",
+            "dom_z",
+            "string_idx",
+            "pmt_idx_string",
+        ]
+        geometry_table["pmt_idx_global"] = np.arange(0, len(geometry_table), 1)
 
     return geometry_table
