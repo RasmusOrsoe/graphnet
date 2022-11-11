@@ -25,16 +25,14 @@ def convert_f2k_to_geometry_table(custom_f2k: str, source: str = "prometheus"):
         ]
 
     if source == "prometheus_v2":
-        geometry_table = pd.read_csv(
-            custom_f2k, sep="\t", skiprows=(0, 1, 2, 3), header=None
-        )
+        geometry_table = pd.read_csv(custom_f2k).drop(columns=["Unnamed: 0"])
+        print(geometry_table.columns)
         geometry_table.columns = [
-            "dom_x",
-            "dom_y",
-            "dom_z",
+            "pmt_idx",
+            "sensor_x",
+            "sensor_y",
+            "sensor_z",
             "string_idx",
-            "pmt_idx_string",
         ]
-        geometry_table["pmt_idx_global"] = np.arange(0, len(geometry_table), 1)
 
     return geometry_table
