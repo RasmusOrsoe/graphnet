@@ -362,11 +362,14 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             graph = self._add_active_sensor_labels(graph)
             if self._sensor_mask is not None:
                 graph.x[self._sensor_mask, 3] = 0
-            graph["true_dom_x"] = x[:, 0]
-            graph["true_dom_y"] = x[:, 1]
-            graph["true_dom_z"] = x[:, 2]
-            graph["true_full_grid_time"] = x[:, 3]
+            # graph["true_dom_x"] = x[:, 0]
+            # graph["true_dom_y"] = x[:, 1]
+            # graph["true_dom_z"] = x[:, 2]
+            # graph["true_full_grid_time"] = x[:, 3]
             graph.features = ["dom_x", "dom_y", "dom_z", "full_grid_time"]
+            graph["pmt_mask"] = torch.tensor(
+                self._sensor_mask, dtype=torch.int
+            )
             graph["n_pulses"] = torch.tensor(len(graph.x), dtype=torch.int32)
         else:
             graph = Data(x=x, edge_index=None)
