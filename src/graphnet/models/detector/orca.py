@@ -40,11 +40,12 @@ class Orca115(Detector):
         self._validate_features(data)
 
         # Preprocessing
-        # data.x[:, 0] /= 100.0  # dom_x
-        # data.x[:, 1] /= 100.0  # dom_y
-        # data.x[:, 2] += 350.0  # dom_z
-        # data.x[:, 2] /= 100.0
-        # data.x[:, 3] /= 1.05e04  # dom_time
+        data.x[:, 0] /= 100.0  # dom_x
+        data.x[:, 1] /= 100.0  # dom_y
+        data.x[:, 2] /= 100.0  # dom_z
+
+        data.x[:, 3] += 3.143776  # dom_time
+        data.x[:, 3] /= 1.0e03
         # data.x[:, 3] -= 1.0
         # data.x[:, 3] *= 20.0
         # data.x[:, 4] /= 1.0  # charge

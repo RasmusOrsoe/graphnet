@@ -360,6 +360,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             x = self._add_inactive_sensors(x, truth_dict)
             graph = Data(x=x, edge_index=None)
             graph = self._add_active_sensor_labels(graph)
+            graph = self._add_phantom_string_label(graph)
             if self._sensor_mask is not None:
                 graph.x[self._sensor_mask, 3] = 0
             # graph["true_dom_x"] = x[:, 0]
@@ -371,6 +372,9 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
                 self._sensor_mask, dtype=torch.int
             )
             graph["n_pulses"] = torch.tensor(len(graph.x), dtype=torch.int32)
+            graph = self._add_pmt_idx(graph)
+            graph = self._add_xyz(graph)
+
         else:
             graph = Data(x=x, edge_index=None)
             graph.features = self._features[1:]
@@ -436,6 +440,11 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             ),
         }
         return labels_dict
+
+    def _add_phantom_string_label(self, graph):
+        graph["phantom_string"] = torch.ones(len(graph.x))
+        graph["phantom_string"][self._sensor_mask] = 0
+        return graph
 
     def _add_inactive_sensors(self, x: torch.tensor, truth_dict: dict):
         x = x[x[:, 2].argsort()]
@@ -503,6 +512,19 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
 
     def _add_active_sensor_labels(self, graph: Data):
         graph["active_doms"] = (graph.x[:, 3] != 0).long()  # .reshape(-1, 1)
+        return graph
+
+    def _add_pmt_idx(self, graph: Data):
+        graph["pmt_idx"] = torch.tensor(
+            self._geometry_file["pmt_idx"], dtype=torch.int
+        )
+        return graph
+
+    def _add_xyz(self, graph: Data):
+        for key in ["x", "y", "z"]:
+            graph[f"sensor_{key}"] = torch.tensor(
+                self._geometry_file[f"sensor_{key}"], dtype=torch.float
+            )
         return graph
 
     def _make_detector_template(self, geometry_table):
