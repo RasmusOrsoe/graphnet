@@ -451,7 +451,6 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         # unique_xyz, inverse_indices = torch.consecutive(
         #    x[:, [0, 1, 2]], return_inverse=True
         # )
-
         template = self._detector_template.clone()
         same_pmt_pulses = None
         for pulse in range(len(x)):
@@ -460,7 +459,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
                 template[
                     int(
                         x[
-                            pulse, self._features.index(self._pmt_idx_column)
+                            pulse,
+                            self._features.index(self._pmt_idx_column) - 1,
                         ].item()
                     ),
                     3,
@@ -470,7 +470,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
                 template[
                     int(
                         x[
-                            pulse, self._features.index(self._pmt_idx_column)
+                            pulse,
+                            self._features.index(self._pmt_idx_column) - 1,
                         ].item()
                     ),
                     3,
@@ -482,7 +483,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
                         int(
                             x[
                                 pulse,
-                                self._features.index(self._pmt_idx_column),
+                                self._features.index(self._pmt_idx_column) - 1,
                             ].item()
                         ),
                         :,

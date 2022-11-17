@@ -25,7 +25,7 @@ def convert_f2k_to_geometry_table(custom_f2k: str, source: str = "prometheus"):
         ]
 
     if source == "prometheus_v2":
-        geometry_table = pd.read_csv(custom_f2k).drop(columns=["Unnamed: 0"])
+        geometry_table = pd.read_csv(custom_f2k)
         print(geometry_table.columns)
         geometry_table.columns = [
             "pmt_idx",
