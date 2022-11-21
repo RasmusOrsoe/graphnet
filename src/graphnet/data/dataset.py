@@ -442,8 +442,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         return labels_dict
 
     def _add_phantom_string_label(self, graph):
-        graph["phantom_string"] = torch.ones(len(graph.x))
-        graph["phantom_string"][self._sensor_mask] = 0
+        graph["phantom_string"] = torch.zeros(len(graph.x))
+        graph["phantom_string"][self._sensor_mask] = 1
         return graph
 
     def _add_inactive_sensors(self, x: torch.tensor, truth_dict: dict):
