@@ -363,6 +363,12 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         for key, fn in self._label_fns.items():
             graph[key] = fn(graph)
 
+        # add vertex
+        # print(add_these_to_graph)
+        # print(graph['position_x'])
+        # graph['vertex'] = torch.cat([graph['position_x'].unsqueeze(0), graph['position_y'].unsqueeze(0), graph['position_z'].unsqueeze(0)],dim=0).reshape(-1,3)
+        # print(graph['vertex'].shape)
+
         return graph
 
     def _get_labels(self, truth_dict: Dict[str, Any]) -> Dict[str, Any]:

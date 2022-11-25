@@ -158,29 +158,29 @@ class Task(LightningModule):
             transform_inference is not None
         ), "Please specify both `transform_inference` and `transform_target`"
 
-        if transform_target is not None:
-            if transform_support is not None:
-                assert (
-                    len(transform_support) == 2
-                ), "Please specify min and max for transformation support."
-                x_test = torch.from_numpy(
-                    np.linspace(transform_support[0], transform_support[1], 10)
-                )
-            else:
-                x_test = np.logspace(-6, 6, 12 + 1)
-                x_test = torch.from_numpy(
-                    np.concatenate([-x_test[::-1], [0], x_test])
-                )
+        # if transform_target is not None:
+        #    if transform_support is not None:
+        #        assert (
+        #            len(transform_support) == 2
+        #        ), "Please specify min and max for transformation support."
+        #        x_test = torch.from_numpy(
+        #            np.linspace(transform_support[0], transform_support[1], 10)
+        #        )
+        #    else:
+        #        x_test = np.logspace(-6, 6, 12 + 1)
+        #        x_test = torch.from_numpy(
+        #            np.concatenate([-x_test[::-1], [0], x_test])
+        #        )
 
-            # Add feature dimension before inference transformation to make it match the dimensions of a standard prediction. Remove it again before comparison. Temporary
-            t_test = torch.unsqueeze(transform_target(x_test), -1)
-            t_test = torch.squeeze(transform_inference(t_test), -1)
-            valid = torch.isfinite(t_test)
+        # Add feature dimension before inference transformation to make it match the dimensions of a standard prediction. Remove it again before comparison. Temporary
+        #    t_test = torch.unsqueeze(transform_target(x_test), -1)
+        #    t_test = torch.squeeze(transform_inference(t_test), -1)
+        #    valid = torch.isfinite(t_test)
 
-            assert torch.allclose(
-                t_test[valid], x_test[valid]
-            ), "The provided transforms for targets during training and predictions during inference are not inverse. Please adjust transformation functions or support."
-            del x_test, t_test, valid
+        #    assert torch.allclose(
+        #        t_test[valid], x_test[valid]
+        #    ), "The provided transforms for targets during training and predictions during inference are not inverse. Please adjust transformation functions or support."
+        #    del x_test, t_test, valid
 
         # Set transforms
         if transform_prediction_and_target is not None:
