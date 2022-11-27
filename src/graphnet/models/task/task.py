@@ -116,9 +116,15 @@ class Task(LightningModule):
 
     @final
     def compute_loss(self, pred: Union[Tensor, Data], data: Data) -> Tensor:
-        target = torch.stack(
-            [data[label] for label in self._target_labels], dim=1
-        )
+        if (len(self._target_labels) == 1) & (
+            data[self._target_labels[0]].shape[1] > 1
+        ):
+            target = data[self._target_labels[0]]
+        else:
+            target = torch.stack(
+                [data[label] for label in self._target_labels], dim=1
+            )
+
         target = self._transform_target(target)
         if self._loss_weight is not None:
             weights = data[self._loss_weight]

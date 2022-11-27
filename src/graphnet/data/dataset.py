@@ -367,9 +367,11 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         # print(add_these_to_graph)
         # print(graph['position_x'])
         graph["vertex"] = torch.tensor(
-            torch.stack(
-                [graph["position_x"], graph["position_y"], graph["position_z"]]
-            ),
+            [
+                truth_dict["position_x"],
+                truth_dict["position_y"],
+                truth_dict["position_z"],
+            ],
             dtype=torch.float,
         ).reshape(1, -1)
         # print(graph['vertex'].shape)
