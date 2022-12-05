@@ -30,6 +30,7 @@ class DynEdge(GNN):
         readout_layer_sizes: Optional[List[int]] = None,
         global_pooling_schemes: Optional[Union[str, List[str]]] = None,
         add_global_variables_after_pooling: bool = False,
+        coarsening=None,
     ):
         """DynEdge (dynamical edge convolutional) model.
 
@@ -67,6 +68,10 @@ class DynEdge(GNN):
                 added (distribute) them to the individual nodes before any
                 convolutional operations. Defaults to False.
         """
+        # coarsening
+
+        self._coarsening = coarsening
+
         # Latent feature subset for computing nearest neighbours in DynEdge.
         if features_subset is None:
             features_subset = slice(0, 3)
@@ -281,6 +286,10 @@ class DynEdge(GNN):
         Returns:
             Tensor: Model output.
         """
+
+        # coarsening
+        if self._coarsening is not None:
+            data = self._coarsening(data)
 
         # Convenience variables
         x, edge_index, batch = data.x, data.edge_index, data.batch

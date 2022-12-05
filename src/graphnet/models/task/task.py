@@ -116,10 +116,17 @@ class Task(LightningModule):
 
     @final
     def compute_loss(self, pred: Union[Tensor, Data], data: Data) -> Tensor:
-        if (len(self._target_labels) == 1) & (
-            data[self._target_labels[0]].shape[1] > 1
-        ):
-            target = data[self._target_labels[0]]
+        if len(self._target_labels) == 1:
+            try:
+                data[self._target_labels[0]].shape[1]
+                if data[self._target_labels[0]].shape[1] > 1:
+                    target = data[self._target_labels[0]]
+
+            except IndexError:
+                target = torch.stack(
+                    [data[label] for label in self._target_labels], dim=1
+                )
+
         else:
             target = torch.stack(
                 [data[label] for label in self._target_labels], dim=1
