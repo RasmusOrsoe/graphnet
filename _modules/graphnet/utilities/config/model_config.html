@@ -178,6 +178,11 @@
     <span class="kn">from</span> <span class="nn">graphnet.models</span> <span class="kn">import</span> <span class="n">Model</span>
 
 
+<span class="n">FUNCTION_DEFINITION_PATTERN</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="sa">r</span><span class="s2">&quot;^def (?P&lt;function_name&gt;[a-zA-Z]</span><span class="si">{1}</span><span class="s2">[a-zA-Z0-9_]+) *\(.*\) *:&quot;</span>
+<span class="p">)</span>
+
+
 <div class="viewcode-block" id="ModelConfig"><a class="viewcode-back" href="../../../../graphnet.utilities.config.html#graphnet.utilities.config.model_config.ModelConfig">[docs]</a><span class="k">class</span> <span class="nc">ModelConfig</span><span class="p">(</span><span class="n">BaseConfig</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Configuration for all `Model`s.&quot;&quot;&quot;</span>
 
@@ -298,6 +303,22 @@
                     <span class="s2">&quot;reconstruct the model again.&quot;</span>
                 <span class="p">)</span>
 
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;!function&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">trust</span><span class="p">:</span>
+                <span class="n">source</span> <span class="o">=</span> <span class="n">obj</span><span class="p">[</span><span class="mi">10</span><span class="p">:]</span>
+                <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">FUNCTION_DEFINITION_PATTERN</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+                <span class="k">assert</span> <span class="n">match</span>
+                <span class="n">exec</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+                <span class="n">fn</span> <span class="o">=</span> <span class="nb">eval</span><span class="p">(</span><span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;function_name&quot;</span><span class="p">))</span>
+                <span class="k">return</span> <span class="n">fn</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">&quot;Constructing model containing a function (</span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2">) with &quot;</span>
+                    <span class="s2">&quot;`trust=False`. If you trust the functions in this &quot;</span>
+                    <span class="s2">&quot;ModelConfig, set `trust=True` and reconstruct the model &quot;</span>
+                    <span class="s2">&quot;again.&quot;</span>
+                <span class="p">)</span>
+
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;!class&quot;</span><span class="p">):</span>
             <span class="k">if</span> <span class="n">trust</span><span class="p">:</span>
                 <span class="n">module</span><span class="p">,</span> <span class="n">class_name</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">split</span><span class="p">()[</span><span class="mi">1</span><span class="p">:]</span>
@@ -318,22 +339,31 @@
     <span class="k">def</span> <span class="nf">_serialise</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Serialise `obj` to a format that can be saved to file.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">ModelConfig</span><span class="p">):</span>
-            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">_as_dict</span><span class="p">()</span>
+            <span class="k">return</span> <span class="n">obj</span><span class="o">.</span><span class="n">as_dict</span><span class="p">()</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
             <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;!class </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="vm">__module__</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">&quot;</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">Callable</span><span class="p">):</span>  <span class="c1"># type: ignore[arg-type]</span>
             <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="s2">&quot;__name__&quot;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;&lt;lambda&gt;&quot;</span><span class="p">:</span>
                 <span class="k">return</span> <span class="s2">&quot;!&quot;</span> <span class="o">+</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getsource</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;=&quot;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> ,&quot;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
-                    <span class="sa">f</span><span class="s2">&quot;Object `</span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2">` is callable but not a lambda function. &quot;</span>
-                    <span class="s2">&quot;Please wrap in a lambda function to allow for saving &quot;</span>
-                    <span class="s2">&quot;this function verbatim in a model config file.&quot;</span>
-                <span class="p">)</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">source</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getsource</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+                    <span class="n">match</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">FUNCTION_DEFINITION_PATTERN</span><span class="p">,</span> <span class="n">source</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">match</span> <span class="ow">and</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;function_name&quot;</span><span class="p">):</span>
+                        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;!function </span><span class="si">{</span><span class="n">source</span><span class="si">}</span><span class="s2">&quot;</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span>
+                <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="sa">f</span><span class="s2">&quot;Object `</span><span class="si">{</span><span class="n">obj</span><span class="si">}</span><span class="s2">` is callable but not a lambda or &quot;</span>
+                        <span class="s2">&quot;regular function. Please wrap in a, e.g., lambda &quot;</span>
+                        <span class="s2">&quot;function to allow for saving this function verbatim &quot;</span>
+                        <span class="s2">&quot;in a model config file.&quot;</span>
+                    <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">obj</span></div>
 
-<div class="viewcode-block" id="ModelConfig._as_dict"><a class="viewcode-back" href="../../../../graphnet.utilities.config.html#graphnet.utilities.config.model_config.ModelConfig._as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">_as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
+<div class="viewcode-block" id="ModelConfig.as_dict"><a class="viewcode-back" href="../../../../graphnet.utilities.config.html#graphnet.utilities.config.model_config.ModelConfig.as_dict">[docs]</a>    <span class="k">def</span> <span class="nf">as_dict</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Represent ModelConfig as a dict.</span>
 
 <span class="sd">        This builds on `BaseModel.dict()` but wraps the output in a single-key</span>
