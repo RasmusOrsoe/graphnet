@@ -2,6 +2,7 @@ from collections import OrderedDict
 import os
 from typing import List, Optional, Tuple, Union
 
+from pickle import PickleError
 import numpy as np
 import pandas as pd
 from pytorch_lightning import Trainer
@@ -32,6 +33,8 @@ def make_dataloader(
     string_selection: List[int] = None,
     loss_weight_table: str = None,
     loss_weight_column: str = None,
+    geometry_table: str = None,
+    add_inactive_sensors: bool = False,
 ) -> DataLoader:
     """Construct `DataLoader` instance."""
 
@@ -50,6 +53,8 @@ def make_dataloader(
         string_selection=string_selection,
         loss_weight_table=loss_weight_table,
         loss_weight_column=loss_weight_column,
+        geometry_table=geometry_table,
+        add_inactive_sensors=add_inactive_sensors,
     )
 
     def collate_fn(graphs):
@@ -217,6 +222,12 @@ def save_results(
     path = archive + "/" + db_name + "/" + tag
     os.makedirs(path, exist_ok=True)
     results.to_csv(path + "/results.csv")
-    model.save_state_dict(path + "/" + tag + "_state_dict.pth")
-    model.save(path + "/" + tag + "_model.pth")
+    try:
+        model.save_state_dict(path + "/" + tag + "_state_dict.pth")
+    except PickleError:
+        pass
+    try:
+        model.save(path + "/" + tag + "_model.pth")
+    except PickleError:
+        pass
     logger.info("Results saved at: \n %s" % path)

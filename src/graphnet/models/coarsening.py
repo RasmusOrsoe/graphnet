@@ -192,9 +192,7 @@ class DOMCoarsening(Coarsening):
     def _perform_clustering(self, data: Union[Data, Batch]) -> LongTensor:
         """Perform clustering of nodes in `data` by assigning unique cluster indices to each."""
         # dom_index = group_pulses_to_dom(data)
-        dom_index = group_by(
-            data, ["dom_x", "dom_y", "dom_z", "rde", "pmt_area"]
-        )
+        dom_index = group_by(data, ["dom_x", "dom_y", "dom_z", "rde"])
         return dom_index
 
 

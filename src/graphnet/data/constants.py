@@ -21,6 +21,8 @@ class FEATURES:
         "pmt_dir_z",
         "dom_type",
     ]
+    ROBUST = ["dom_x", "dom_y", "dom_z", "rde"]
+    ROBUST_WITH_TIME = ["dom_x", "dom_y", "dom_z", "dom_time", "rde"]
 
 
 class TRUTH:

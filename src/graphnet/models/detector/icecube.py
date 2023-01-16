@@ -45,6 +45,65 @@ class IceCube86(Detector):
         return data
 
 
+class IceCube86RobustWithTime(Detector):
+    """`Detector` class for IceCube-86."""
+
+    # Implementing abstract class attribute
+    features = FEATURES.ROBUST_WITH_TIME
+
+    def _forward(self, data: Data) -> Data:
+        """Ingests data, builds graph (connectivity/adjacency), and preprocesses features.
+
+        Args:
+            data (Data): Input graph data.
+
+        Returns:
+            Data: Connected and preprocessed graph data.
+        """
+
+        # Check(s)
+        self._validate_features(data)
+
+        # Preprocessing
+        data.x[:, 0] /= 100.0  # dom_x
+        data.x[:, 1] /= 100.0  # dom_y
+        data.x[:, 2] += 350.0  # dom_z
+        data.x[:, 2] /= 100.0
+        data.x[:, 3] /= 1.05e04  # dom_time
+        data.x[:, 3] -= 1.0
+        data.x[:, 3] *= 20.0
+        data.x[:, 4] -= 1.25  # rde
+        return data
+
+
+class IceCube86Robust(Detector):
+    """`Detector` class for IceCube-86."""
+
+    # Implementing abstract class attribute
+    features = FEATURES.ROBUST
+
+    def _forward(self, data: Data) -> Data:
+        """Ingests data, builds graph (connectivity/adjacency), and preprocesses features.
+
+        Args:
+            data (Data): Input graph data.
+
+        Returns:
+            Data: Connected and preprocessed graph data.
+        """
+
+        # Check(s)
+        self._validate_features(data)
+
+        # Preprocessing
+        data.x[:, 0] /= 100.0  # dom_x
+        data.x[:, 1] /= 100.0  # dom_y
+        data.x[:, 2] += 350.0  # dom_z
+        data.x[:, 2] /= 100.0
+        data.x[:, 3] -= 1.25  # rde
+        return data
+
+
 class IceCubeDeepCore(IceCube86):
     """`Detector` class for IceCube-DeepCore."""
 

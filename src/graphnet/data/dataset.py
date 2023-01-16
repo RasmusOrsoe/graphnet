@@ -32,6 +32,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         loss_weight_table: str = None,
         loss_weight_column: str = None,
         loss_weight_default_value: Optional[float] = None,
+        add_inactive_sensors: bool = False,
+        geometry_table: str = "geometry_table",
     ):
         # Check(s)
         if isinstance(pulsemaps, str):
@@ -49,6 +51,8 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         self._index_column = index_column
         self._truth_table = truth_table
         self._loss_weight_default_value = loss_weight_default_value
+        self._add_inactive_sensors = add_inactive_sensors
+        self._geometry_table = geometry_table
 
         if node_truth is not None:
             assert isinstance(node_truth_table, str)

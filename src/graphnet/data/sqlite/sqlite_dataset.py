@@ -1,7 +1,7 @@
 from typing import List, Optional, Union
 import pandas as pd
 import sqlite3
-
+import numpy as np
 from graphnet.data.dataset import Dataset, ColumnMissingException
 
 
@@ -46,6 +46,7 @@ class SQLiteDataset(Dataset):
         """Query table at a specific index, optionally with some selection."""
         # Check(s)
         if isinstance(columns, list):
+            n_features = len(columns)
             columns = ", ".join(columns)
 
         if not selection:  # I.e., `None` or `""`
@@ -59,10 +60,38 @@ class SQLiteDataset(Dataset):
         # Query table
         self._establish_connection(index)
         try:
-            result = self._conn.execute(
-                f"SELECT {columns} FROM {table} WHERE "
-                f"{self._index_column} = {index} and {selection}"
-            ).fetchall()
+            if (
+                self._add_inactive_sensors
+                and "dom_x" in columns
+                and n_features > 1
+            ):  # last condition is to check if this is a pulsemap query
+                active_query = f"select (CAST(dom_x AS str) || '_' || CAST(dom_y AS str) || '_' || CAST(dom_z AS str)) as UID, {columns} from {table} where {self._index_column} = {index} and {selection}"
+                active_result = self._conn.execute(active_query).fetchall()
+                if len(columns.split(", ")) > 1:
+                    columns = ", ".join(
+                        columns.split(", ")[1:]
+                    )  # event_no not in geometry table
+                query = f"select {columns} from {self._geometry_table} where UID not in {str(tuple(np.array(active_result)[:,0]))}"
+                inactive_result = self._conn.execute(query).fetchall()
+                result = []
+                active_result = np.asarray(active_result)[
+                    :, 2:
+                ].tolist()  # drops UID column & event_no
+                result.extend(active_result)
+                result.extend(inactive_result)
+                result = (
+                    np.concatenate(
+                        [np.repeat(index, len(result)).reshape(-1, 1), result],
+                        axis=1,
+                    )
+                    .astype("float64")
+                    .tolist()
+                )
+            else:
+                result = self._conn.execute(
+                    f"SELECT {columns} FROM {table} WHERE "
+                    f"{self._index_column} = {index} and {selection}"
+                ).fetchall()
         except sqlite3.OperationalError as e:
             if "no such column" in str(e):
                 raise ColumnMissingException(str(e))
