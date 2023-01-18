@@ -44,6 +44,9 @@ class SQLiteDataset(Dataset):
         selection: Optional[str] = None,
     ):
         """Query table at a specific index, optionally with some selection."""
+
+        max_pulses = 300
+
         # Check(s)
         if isinstance(columns, list):
             n_features = len(columns)
@@ -71,14 +74,20 @@ class SQLiteDataset(Dataset):
                     columns = ", ".join(
                         columns.split(", ")[1:]
                     )  # event_no not in geometry table
-                query = f"select {columns} from {self._geometry_table} where UID not in {str(tuple(np.array(active_result)[:,0]))}"
+                query = f"select {columns} from {self._geometry_table} where UID not in {str(tuple(np.array(active_result)[:,0]))} limit {max_pulses}"
                 inactive_result = self._conn.execute(query).fetchall()
-                result = []
                 active_result = np.asarray(active_result)[
                     :, 2:
                 ].tolist()  # drops UID column & event_no
-                result.extend(active_result)
-                result.extend(inactive_result)
+
+                result = []
+                if len(active_result) >= max_pulses:
+                    result = active_result
+                else:
+                    result.extend(active_result)
+                    result.extend(
+                        inactive_result[0 : (max_pulses - len(active_result))]
+                    )
                 result = (
                     np.concatenate(
                         [np.repeat(index, len(result)).reshape(-1, 1), result],

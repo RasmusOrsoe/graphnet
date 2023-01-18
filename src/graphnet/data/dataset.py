@@ -311,7 +311,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
 
         # Catch cases with no reconstructed pulses
         if len(features):
-            data = np.asarray(features)[:, 1:]
+            data = np.asarray(features)[:, 1:].astype("float64")
         else:
             data = np.array([]).reshape((0, len(self._features) - 1))
 
