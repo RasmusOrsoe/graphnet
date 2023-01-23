@@ -33,7 +33,7 @@ def save_to_sql(df: pd.DataFrame, table_name: str, database: str) -> None:
     engine.dispose()
 
 
-def attach_index(database: str, table_name: str) -> None:
+def attach_index(database: str, table_name: str, index_column: str) -> None:
     """Attaches the table index.
 
     Important for query times!
@@ -41,7 +41,7 @@ def attach_index(database: str, table_name: str) -> None:
     code = (
         "PRAGMA foreign_keys=off;\n"
         "BEGIN TRANSACTION;\n"
-        f"CREATE INDEX event_no_{table_name} ON {table_name} (event_no);\n"
+        f"CREATE INDEX event_no_{table_name} ON {table_name} ({index_column});\n"
         "COMMIT TRANSACTION;\n"
         "PRAGMA foreign_keys=on;"
     )
@@ -53,6 +53,7 @@ def create_table(
     table_name: str,
     database_path: str,
     is_pulse_map: bool = False,
+    index_column: str = "event_no",
 ) -> None:
     """Create a table.
 
@@ -61,10 +62,11 @@ def create_table(
         table_name: Name of the table.
         database_path: Path to the database.
         is_pulse_map: Whether or not this is a pulse map table.
+        index_column: the column of the table index
     """
     query_columns = list()
     for column in df.columns:
-        if column == "event_no":
+        if column == index_column:
             if not is_pulse_map:
                 type_ = "INTEGER PRIMARY KEY NOT NULL"
             else:

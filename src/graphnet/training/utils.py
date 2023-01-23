@@ -222,6 +222,12 @@ def save_results(
     path = archive + "/" + db_name + "/" + tag
     os.makedirs(path, exist_ok=True)
     results.to_csv(path + "/results.csv")
-    model.save_state_dict(path + "/" + tag + "_state_dict.pth")
-    model.save(path + "/" + tag + "_model.pth")
-    logger.info("Results saved at: \n %s" % path)
+    try:
+        model.save_state_dict(path + "/" + tag + "_state_dict.pth")
+    except:  # noqa: E722
+        pass
+    try:
+        model.save(path + "/" + tag + "_model.pth")
+    except:  # noqa: E722
+        pass
+    logger.info(f"Results saved at: \n {path}")
