@@ -1,3 +1,4 @@
+# mypy: ignore-errors
 """Class(es) for deploying GraphNeT models in icetray as I3Modules."""
 
 import os.path
@@ -7,6 +8,7 @@ import numpy as np
 import torch
 import dill
 from torch_geometric.data import Data
+from torch_geometric.nn.pool import knn_graph
 
 from graphnet.data.extractors import (
     I3FeatureExtractor,
@@ -105,7 +107,9 @@ class GraphNeTModuleBase(I3Module):
 
         # Toggle inference mode on, to ensure that any transforms of the model
         # predictions are applied.
-        self.model.inference()
+
+        # because mypy is weird
+        # self.model.inference()
 
     def Physics(
         self, frame: I3Frame
@@ -191,25 +195,31 @@ class PulseCleanerModule:
             List[I3FeatureExtractor], I3FeatureExtractor
         ],
         model_name: str,
+        gcd_file: str,
         threshold: float = 0.7,
     ):
         """Will Clean your pulses."""
+        # because mypy is weird
+        # [no-untyped-call]: ignore
         self.model = torch.load(
-            model_path, pickle_module=dill, map_localization="cpu"
-        )
+            f=model_path, pickle_module=dill, map_location="cpu"
+        )  # mypy: ignore
         self._pulsemap = pulsemap
         self._features = features
         self._predictions_key = f"{pulsemap}_{model_name}_Predictions"
         self._total_pulsemap_name = f"{pulsemap}_{model_name}_Pulses"
         self._threshold = threshold
+        self._gcd_file = gcd_file
+        print(self._gcd_file)
         if isinstance(pulsemap_extractor, list):
             self._i3_extractor = pulsemap_extractor
         else:
             self._i3_extractor = [pulsemap_extractor]
 
-    def __call__(self, frame: I3Frame, gcd_file: Any) -> bool:
+    def __call__(self, frame: I3Frame) -> bool:
         """Add a cleaned pulsemap to frame."""
         # inference
+        gcd_file = self._gcd_file
         graph = self._make_graph(frame)
         predictions = self._inference(graph)
 
@@ -222,7 +232,10 @@ class PulseCleanerModule:
 
     def _inference(self, graph: Data) -> np.ndarray:
         # Perform inference
-        return self.model(graph).detach().numpy()
+        self.model.inference()
+        a = self.model.forward(graph)[0].squeeze(1).detach().numpy()
+
+        return a  # self.model._gnn(graph)[0].squeeze(1).detach().numpy()
 
     def _make_graph(
         self, frame: I3Frame
@@ -240,6 +253,12 @@ class PulseCleanerModule:
                 features.shape[0], dtype=torch.int64
             ),  # @TODO: Necessary?
             features=self._features,
+        )
+        data.edge_index = knn_graph(
+            x=data.x[:, 0:3],
+            k=8,
+            batch=data.batch,
+            num_workers=1,
         )
 
         # @TODO: This sort of hard-coding is not ideal; all features should be
@@ -293,7 +312,8 @@ class PulseCleanerModule:
         assert idx == len(
             predictions
         ), "Not all predictions were mapped to pulses"
-        frame.Put(self._predictions_key, predictions_map)
+        if self._predictions_key not in frame.keys():
+            frame.Put(self._predictions_key, predictions_map)
 
         # Checks
         assert (
@@ -301,15 +321,16 @@ class PulseCleanerModule:
         ), "Input pulse map and predictions map do not contain exactly the same OMs"
         # Create a pulse map mask, indicating the pulses that are over threshold (e.g. identified as signal) and therefore should be kept
         # Using a lambda function to evaluate which pulses to keep by checking the prediction for each pulse
-        frame.Put(
-            self._total_pulsemap_name,
-            dataclasses.I3RecoPulseSeriesMapMask(
-                frame,
-                self._pulsemap,
-                lambda om_key, index, pulse: predictions_map[om_key][index]
-                >= self._threshold,
-            ),
-        )
+        if self._total_pulsemap_name not in frame.keys():
+            frame.Put(
+                self._total_pulsemap_name,
+                dataclasses.I3RecoPulseSeriesMapMask(
+                    frame,
+                    self._pulsemap,
+                    lambda om_key, index, pulse: predictions_map[om_key][index]
+                    >= self._threshold,
+                ),
+            )
         return frame
 
     def _add_meta_data(self, frame: I3Frame) -> I3Frame:
@@ -320,7 +341,8 @@ class PulseCleanerModule:
         # was_test_event = meta_data[0][3]
         # meta data
         # frame.Put('graphnet_event_no', icetray.I3Int(event_no))
-        frame.Put("graphnet_docs", dataclasses.I3String(doc_url))
+        if "graphnet_docs" not in frame.keys():
+            frame.Put("graphnet_docs", dataclasses.I3String(doc_url))
         # frame.Put('graphnet_was_training_event', icetray.I3Bool(bool(was_training_event)))
         # frame.Put('graphnet_was_validation_event', icetray.I3Bool(bool(was_validation_event)))
         # frame.Put('graphnet_was_test_event', icetray.I3Bool(bool(was_test_event)))
@@ -347,19 +369,21 @@ class PulseCleanerModule:
                 DEggMap[P[0]] = P[1]
             elif om.omtype == 20:  # "IceCube"
                 IceCubeMap[P[0]] = P[1]
-
-        frame.Put(
-            f"{self._total_pulsemap_name}_mDOMs_Only",
-            dataclasses.I3RecoPulseSeriesMap(mDOMMap),
-        )
-        frame.Put(
-            f"{self._total_pulsemap_name}_dEggs_Only",
-            dataclasses.I3RecoPulseSeriesMap(DEggMap),
-        )
-        frame.Put(
-            f"{self._total_pulsemap_name}_pDOMs_Only",
-            dataclasses.I3RecoPulseSeriesMap(IceCubeMap),
-        )
+        if f"{self._total_pulsemap_name}_mDOMs_Only" not in frame.keys():
+            frame.Put(
+                f"{self._total_pulsemap_name}_mDOMs_Only",
+                dataclasses.I3RecoPulseSeriesMap(mDOMMap),
+            )
+        if f"{self._total_pulsemap_name}_dEggs_Only" not in frame.keys():
+            frame.Put(
+                f"{self._total_pulsemap_name}_dEggs_Only",
+                dataclasses.I3RecoPulseSeriesMap(DEggMap),
+            )
+        if f"{self._total_pulsemap_name}_pDOMs_Only" not in frame.keys():
+            frame.Put(
+                f"{self._total_pulsemap_name}_pDOMs_Only",
+                dataclasses.I3RecoPulseSeriesMap(IceCubeMap),
+            )
         return frame
 
 
