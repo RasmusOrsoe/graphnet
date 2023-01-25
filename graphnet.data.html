@@ -94,6 +94,7 @@
 <li><a class="reference internal" href="#graphnet.data.constants.FEATURES"><code class="docutils literal notranslate"><span class="pre">FEATURES</span></code></a><ul>
 <li><a class="reference internal" href="#graphnet.data.constants.FEATURES.DEEPCORE"><code class="docutils literal notranslate"><span class="pre">FEATURES.DEEPCORE</span></code></a></li>
 <li><a class="reference internal" href="#graphnet.data.constants.FEATURES.ICECUBE86"><code class="docutils literal notranslate"><span class="pre">FEATURES.ICECUBE86</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.constants.FEATURES.KAGGLE"><code class="docutils literal notranslate"><span class="pre">FEATURES.KAGGLE</span></code></a></li>
 <li><a class="reference internal" href="#graphnet.data.constants.FEATURES.PROMETHEUS"><code class="docutils literal notranslate"><span class="pre">FEATURES.PROMETHEUS</span></code></a></li>
 <li><a class="reference internal" href="#graphnet.data.constants.FEATURES.UPGRADE"><code class="docutils literal notranslate"><span class="pre">FEATURES.UPGRADE</span></code></a></li>
 </ul>
@@ -101,6 +102,7 @@
 <li><a class="reference internal" href="#graphnet.data.constants.TRUTH"><code class="docutils literal notranslate"><span class="pre">TRUTH</span></code></a><ul>
 <li><a class="reference internal" href="#graphnet.data.constants.TRUTH.DEEPCORE"><code class="docutils literal notranslate"><span class="pre">TRUTH.DEEPCORE</span></code></a></li>
 <li><a class="reference internal" href="#graphnet.data.constants.TRUTH.ICECUBE86"><code class="docutils literal notranslate"><span class="pre">TRUTH.ICECUBE86</span></code></a></li>
+<li><a class="reference internal" href="#graphnet.data.constants.TRUTH.KAGGLE"><code class="docutils literal notranslate"><span class="pre">TRUTH.KAGGLE</span></code></a></li>
 <li><a class="reference internal" href="#graphnet.data.constants.TRUTH.PROMETHEUS"><code class="docutils literal notranslate"><span class="pre">TRUTH.PROMETHEUS</span></code></a></li>
 <li><a class="reference internal" href="#graphnet.data.constants.TRUTH.UPGRADE"><code class="docutils literal notranslate"><span class="pre">TRUTH.UPGRADE</span></code></a></li>
 </ul>
@@ -166,14 +168,7 @@
 </li>
 </ul>
 </li>
-<li><a class="reference internal" href="#module-graphnet.data.pipeline">graphnet.data.pipeline module</a><ul>
-<li><a class="reference internal" href="#graphnet.data.pipeline.InSQLitePipeline"><code class="docutils literal notranslate"><span class="pre">InSQLitePipeline</span></code></a><ul>
-<li><a class="reference internal" href="#graphnet.data.pipeline.InSQLitePipeline.__call__"><code class="docutils literal notranslate"><span class="pre">InSQLitePipeline.__call__()</span></code></a></li>
-<li><a class="reference internal" href="#graphnet.data.pipeline.InSQLitePipeline.__init__"><code class="docutils literal notranslate"><span class="pre">InSQLitePipeline.__init__()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li><a class="reference internal" href="#graphnet-data-pipeline-module">graphnet.data.pipeline module</a></li>
 <li><a class="reference internal" href="#module-graphnet.data">Module contents</a></li>
 </ul>
 </li>
@@ -492,6 +487,11 @@
 <dd></dd></dl>
 
 <dl class="py attribute">
+<dt class="sig sig-object py" id="graphnet.data.constants.FEATURES.KAGGLE">
+<span class="sig-name descname"><span class="pre">KAGGLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['x',</span> <span class="pre">'y',</span> <span class="pre">'z',</span> <span class="pre">'time',</span> <span class="pre">'charge',</span> <span class="pre">'auxiliary']</span></em><a class="headerlink" href="#graphnet.data.constants.FEATURES.KAGGLE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="graphnet.data.constants.FEATURES.PROMETHEUS">
 <span class="sig-name descname"><span class="pre">PROMETHEUS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['sensor_pos_x',</span> <span class="pre">'sensor_pos_y',</span> <span class="pre">'sensor_pos_z',</span> <span class="pre">'t']</span></em><a class="headerlink" href="#graphnet.data.constants.FEATURES.PROMETHEUS" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -516,6 +516,11 @@
 <dl class="py attribute">
 <dt class="sig sig-object py" id="graphnet.data.constants.TRUTH.ICECUBE86">
 <span class="sig-name descname"><span class="pre">ICECUBE86</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['energy',</span> <span class="pre">'energy_track',</span> <span class="pre">'position_x',</span> <span class="pre">'position_y',</span> <span class="pre">'position_z',</span> <span class="pre">'azimuth',</span> <span class="pre">'zenith',</span> <span class="pre">'pid',</span> <span class="pre">'elasticity',</span> <span class="pre">'sim_type',</span> <span class="pre">'interaction_type',</span> <span class="pre">'interaction_time',</span> <span class="pre">'inelasticity',</span> <span class="pre">'stopped_muon']</span></em><a class="headerlink" href="#graphnet.data.constants.TRUTH.ICECUBE86" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="graphnet.data.constants.TRUTH.KAGGLE">
+<span class="sig-name descname"><span class="pre">KAGGLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['zenith',</span> <span class="pre">'azimuth']</span></em><a class="headerlink" href="#graphnet.data.constants.TRUTH.KAGGLE" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -848,7 +853,7 @@ files output by the current instance are merged.</p></li>
 <li><p><strong>shuffle</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – </p></li>
 <li><p><strong>num_workers</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">10</span></code>) – </p></li>
 <li><p><strong>persistent_workers</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – </p></li>
-<li><p><strong>collate_fn</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>, default: <code class="docutils literal notranslate"><span class="pre">&lt;function</span> <span class="pre">collate_fn</span> <span class="pre">at</span> <span class="pre">0x7f61d418a0e0&gt;</span></code>) – </p></li>
+<li><p><strong>collate_fn</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>, default: <code class="docutils literal notranslate"><span class="pre">&lt;function</span> <span class="pre">collate_fn</span> <span class="pre">at</span> <span class="pre">0x7f5bc33e2170&gt;</span></code>) – </p></li>
 <li><p><strong>kwargs</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>) – </p></li>
 </ul>
 </dd>
@@ -865,7 +870,7 @@ files output by the current instance are merged.</p></li>
 <li><p><strong>shuffle</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – </p></li>
 <li><p><strong>num_workers</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">10</span></code>) – </p></li>
 <li><p><strong>persistent_workers</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>, default: <code class="docutils literal notranslate"><span class="pre">True</span></code>) – </p></li>
-<li><p><strong>collate_fn</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>, default: <code class="docutils literal notranslate"><span class="pre">&lt;function</span> <span class="pre">collate_fn</span> <span class="pre">at</span> <span class="pre">0x7f61d418a0e0&gt;</span></code>) – </p></li>
+<li><p><strong>collate_fn</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>, default: <code class="docutils literal notranslate"><span class="pre">&lt;function</span> <span class="pre">collate_fn</span> <span class="pre">at</span> <span class="pre">0x7f5bc33e2170&gt;</span></code>) – </p></li>
 <li><p><strong>kwargs</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code>) – </p></li>
 </ul>
 </dd>
@@ -1291,76 +1296,8 @@ fixed number of events to randomly sample, e.g., <code class="docutils literal n
 </dd></dl>
 
 </section>
-<section id="module-graphnet.data.pipeline">
-<span id="graphnet-data-pipeline-module"></span><h2>graphnet.data.pipeline module<a class="headerlink" href="#module-graphnet.data.pipeline" title="Permalink to this heading">¶</a></h2>
-<p>Class(es) used for analysis in PISA.</p>
-<dl class="py class">
-<dt class="sig sig-object py" id="graphnet.data.pipeline.InSQLitePipeline">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphnet.data.pipeline.</span></span><span class="sig-name descname"><span class="pre">InSQLitePipeline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retro_table_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'retro'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipeline_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pipeline'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphnet/data/pipeline.html#InSQLitePipeline"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.pipeline.InSQLitePipeline" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
-<p>Create a SQLite database for PISA analysis.</p>
-<p>The database will contain truth and GNN predictions and, if available,
-RETRO reconstructions.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>module_dict</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>) – </p></li>
-<li><p><strong>features</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>truth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – </p></li>
-<li><p><strong>device</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">device</span></code>) – </p></li>
-<li><p><strong>retro_table_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'retro'</span></code>) – </p></li>
-<li><p><strong>outdir</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – </p></li>
-<li><p><strong>batch_size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">100</span></code>) – </p></li>
-<li><p><strong>n_workers</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">10</span></code>) – </p></li>
-<li><p><strong>pipeline_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'pipeline'</span></code>) – </p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="graphnet.data.pipeline.InSQLitePipeline.__call__">
-<span class="sig-name descname"><span class="pre">__call__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">database</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pulsemap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">chunk_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000000</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphnet/data/pipeline.html#InSQLitePipeline.__call__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.pipeline.InSQLitePipeline.__call__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Run inference of each field in self._module_dict[target][‘’].</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>database</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Path to database with pulsemap and truth.</p></li>
-<li><p><strong>pulsemap</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>) – Name of pulsemaps.</p></li>
-<li><p><strong>chunk_size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">1000000</span></code>) – database will be sliced in chunks of size <cite>chunk_size</cite>.
-Use this parameter to control memory usage.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="graphnet.data.pipeline.InSQLitePipeline.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">module_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">device</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">retro_table_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'retro'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outdir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_workers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pipeline_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'pipeline'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/graphnet/data/pipeline.html#InSQLitePipeline.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.pipeline.InSQLitePipeline.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialise the pipeline.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>module_dict</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>) – A dictionary with GNN modules from GraphNet. E.g.
-{‘energy’: gnn_module_for_energy_regression}</p></li>
-<li><p><strong>features</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – List of input features for the GNN modules.</p></li>
-<li><p><strong>truth</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>]) – List of truth for the GNN ModuleList.</p></li>
-<li><p><strong>device</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">device</span></code>) – The device used for computation.</p></li>
-<li><p><strong>retro_table_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'retro'</span></code>) – Name of the retro table for.</p></li>
-<li><p><strong>outdir</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – the directory in which the pipeline database will be
-stored.</p></li>
-<li><p><strong>batch_size</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">100</span></code>) – Batch size for inference.</p></li>
-<li><p><strong>n_workers</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, default: <code class="docutils literal notranslate"><span class="pre">10</span></code>) – Number of workers used in dataloading.</p></li>
-<li><p><strong>pipeline_name</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, default: <code class="docutils literal notranslate"><span class="pre">'pipeline'</span></code>) – Name of the pipeline. If such a pipeline already
-exists, an error will be prompted to avoid overwriting.</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
+<section id="graphnet-data-pipeline-module">
+<h2>graphnet.data.pipeline module<a class="headerlink" href="#graphnet-data-pipeline-module" title="Permalink to this heading">¶</a></h2>
 </section>
 <section id="module-graphnet.data">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-graphnet.data" title="Permalink to this heading">¶</a></h2>
