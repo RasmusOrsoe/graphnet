@@ -11,7 +11,9 @@ from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
 from torch_geometric.data import Batch, Data
 
-from graphnet.data.sqlite.sqlite_dataset import SQLiteDataset
+from graphnet.data.dataset import Dataset
+from graphnet.data.sqlite import SQLiteDataset
+from graphnet.data.parquet import ParquetDataset
 from graphnet.models import Model
 from graphnet.utilities.logging import get_logger
 
@@ -105,6 +107,23 @@ def make_train_validation_dataloader(
     # Checks(s)
     if isinstance(pulsemaps, str):
         pulsemaps = [pulsemaps]
+
+    if selection is None:
+        # If no selection is provided, use all events in dataset.
+        dataset: Dataset
+        if db.endswith(".db"):
+            dataset = SQLiteDataset(
+                db, pulsemaps, features, truth, truth_table=truth_table
+            )
+        elif db.endswith(".parquet"):
+            dataset = ParquetDataset(
+                db, pulsemaps, features, truth, truth_table=truth_table
+            )
+        else:
+            raise RuntimeError(
+                f"File {db} with format {db.split('.'[-1])} not supported."
+            )
+        selection = dataset._get_all_indices()
 
     # Perform train/validation split
     if isinstance(db, list):
