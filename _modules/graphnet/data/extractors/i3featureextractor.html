@@ -215,11 +215,14 @@
         <span class="p">}</span>
 
         <span class="c1"># Get OM data</span>
-        <span class="n">om_keys</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_om_keys_and_pulseseries</span><span class="p">(</span>
-            <span class="n">frame</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_pulsemap</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_calibration</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pulsemap</span> <span class="ow">in</span> <span class="n">frame</span><span class="p">:</span>
+            <span class="n">om_keys</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_om_keys_and_pulseseries</span><span class="p">(</span>
+                <span class="n">frame</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_pulsemap</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_calibration</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">output</span>
 
         <span class="c1"># Added these :</span>
         <span class="n">bright_doms</span> <span class="o">=</span> <span class="kc">None</span>
@@ -344,11 +347,14 @@
         <span class="n">output</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">output_icecube86</span><span class="p">)</span>
 
         <span class="c1"># Get OM data</span>
-        <span class="n">om_keys</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_om_keys_and_pulseseries</span><span class="p">(</span>
-            <span class="n">frame</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_pulsemap</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_calibration</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pulsemap</span> <span class="ow">in</span> <span class="n">frame</span><span class="p">:</span>
+            <span class="n">om_keys</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_om_keys_and_pulseseries</span><span class="p">(</span>
+                <span class="n">frame</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_pulsemap</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_calibration</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">output</span>
 
         <span class="k">for</span> <span class="n">om_key</span> <span class="ow">in</span> <span class="n">om_keys</span><span class="p">:</span>
             <span class="c1"># Common values for each OM</span>
@@ -397,11 +403,14 @@
         <span class="n">output</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">output_icecube_upgrade</span><span class="p">)</span>
 
         <span class="c1"># Get OM data</span>
-        <span class="n">om_keys</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_om_keys_and_pulseseries</span><span class="p">(</span>
-            <span class="n">frame</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_pulsemap</span><span class="p">,</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_calibration</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pulsemap</span> <span class="ow">in</span> <span class="n">frame</span><span class="p">:</span>
+            <span class="n">om_keys</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">get_om_keys_and_pulseseries</span><span class="p">(</span>
+                <span class="n">frame</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_pulsemap</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_calibration</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">output</span>
 
         <span class="k">for</span> <span class="n">om_key</span> <span class="ow">in</span> <span class="n">om_keys</span><span class="p">:</span>
             <span class="c1"># Loop over pulses for each OM</span>

@@ -174,12 +174,16 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Extract quantities required by PISA.&quot;&quot;&quot;</span>
         <span class="n">output</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="n">required_keys</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;OneWeight&quot;</span><span class="p">,</span> <span class="s2">&quot;gen_ratio&quot;</span><span class="p">,</span> <span class="s2">&quot;NEvents&quot;</span><span class="p">,</span> <span class="s2">&quot;GENIEWeight&quot;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">:</span>
+            <span class="n">output</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">padding_value</span><span class="p">})</span>  <span class="c1"># pads the entry</span>
         <span class="k">if</span> <span class="s2">&quot;I3MCWeightDict&quot;</span> <span class="ow">in</span> <span class="n">frame</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">required_keys</span><span class="p">:</span>
                 <span class="k">try</span><span class="p">:</span>
-                    <span class="n">output</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">frame</span><span class="p">[</span><span class="s2">&quot;I3MCWeightDict&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]})</span>
+                    <span class="n">output</span><span class="o">.</span><span class="n">update</span><span class="p">(</span>
+                        <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="n">frame</span><span class="p">[</span><span class="s2">&quot;I3MCWeightDict&quot;</span><span class="p">][</span><span class="n">key</span><span class="p">]}</span>
+                    <span class="p">)</span>  <span class="c1"># removes the padding if value is in frame</span>
                 <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-                    <span class="n">output</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">key</span><span class="p">:</span> <span class="n">padding_value</span><span class="p">})</span>
+                    <span class="k">pass</span>
 
         <span class="k">return</span> <span class="n">output</span></div></div>
 </pre></div>
