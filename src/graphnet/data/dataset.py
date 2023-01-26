@@ -556,6 +556,8 @@ class Dataset(torch.utils.data.Dataset, Configurable, LoggerMixin, ABC):
         x = torch.tensor(data, dtype=self._dtype)  # pylint: disable=C0103
         n_pulses = torch.tensor(len(x), dtype=torch.int32)
         graph = Data(x=x, edge_index=None)
+        if len(graph.x.shape) == 1:
+            graph.x = graph.x.unsqueeze(1)
         graph.n_pulses = n_pulses
         graph.features = self._features[1:]
 
@@ -608,26 +610,41 @@ class Dataset(torch.utils.data.Dataset, Configurable, LoggerMixin, ABC):
 
     def _get_labels(self, truth_dict: Dict[str, Any]) -> Dict[str, Any]:
         """Return dictionary of  labels, to be added as graph attributes."""
-        abs_pid = abs(truth_dict["pid"])
-        sim_type = truth_dict["sim_type"]
+        if "pid" in truth_dict.keys():
+            abs_pid = abs(truth_dict["pid"])
+            sim_type = truth_dict["sim_type"]
 
-        labels_dict = {
-            "event_no": truth_dict["event_no"],
-            "muon": int(abs_pid == 13),
-            "muon_stopped": int(truth_dict.get("stopped_muon") == 1),
-            "noise": int((abs_pid == 1) & (sim_type != "data")),
-            "neutrino": int(
-                (abs_pid != 13) & (abs_pid != 1)
-            ),  # @TODO: `abs_pid in [12,14,16]`?
-            "v_e": int(abs_pid == 12),
-            "v_u": int(abs_pid == 14),
-            "v_t": int(abs_pid == 16),
-            "track": int(
-                (abs_pid == 14) & (truth_dict["interaction_type"] == 1)
-            ),
-            "dbang": self._get_dbang_label(truth_dict),
-            "corsika": int(abs_pid > 20),
-        }
+            labels_dict = {
+                self._index_column: truth_dict[self._index_column],
+                "muon": int(abs_pid == 13),
+                "muon_stopped": int(truth_dict.get("stopped_muon") == 1),
+                "noise": int((abs_pid == 1) & (sim_type != "data")),
+                "neutrino": int(
+                    (abs_pid != 13) & (abs_pid != 1)
+                ),  # @TODO: `abs_pid in [12,14,16]`?
+                "v_e": int(abs_pid == 12),
+                "v_u": int(abs_pid == 14),
+                "v_t": int(abs_pid == 16),
+                "track": int(
+                    (abs_pid == 14) & (truth_dict["interaction_type"] == 1)
+                ),
+                "dbang": self._get_dbang_label(truth_dict),
+                "corsika": int(abs_pid > 20),
+            }
+        else:
+            labels_dict = {
+                self._index_column: truth_dict[self._index_column],
+                "muon": -1,
+                "muon_stopped": -1,
+                "noise": -1,
+                "neutrino": -1,
+                "v_e": -1,
+                "v_u": -1,
+                "v_t": -1,
+                "track": -1,
+                "dbang": -1,
+                "corsika": -1,
+            }
         return labels_dict
 
     def _get_dbang_label(self, truth_dict: Dict[str, Any]) -> int:
