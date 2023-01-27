@@ -169,6 +169,7 @@
  | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
+ | <a href="#Q"><strong>Q</strong></a>
  | <a href="#R"><strong>R</strong></a>
  | <a href="#S"><strong>S</strong></a>
  | <a href="#T"><strong>T</strong></a>
@@ -208,6 +209,8 @@
 </li>
         <li><a href="graphnet.data.extractors.html#graphnet.data.extractors.i3tumextractor.I3TUMExtractor.__call__">(graphnet.data.extractors.i3tumextractor.I3TUMExtractor method)</a>
 </li>
+        <li><a href="graphnet.data.html#graphnet.data.pipeline.InSQLitePipeline.__call__">(graphnet.data.pipeline.InSQLitePipeline method)</a>
+</li>
         <li><a href="graphnet.training.html#graphnet.training.labels.Direction.__call__">(graphnet.training.labels.Direction method)</a>
 </li>
         <li><a href="graphnet.training.html#graphnet.training.labels.Label.__call__">(graphnet.training.labels.Label method)</a>
@@ -246,9 +249,13 @@
 </li>
         <li><a href="graphnet.data.extractors.html#graphnet.data.extractors.i3tumextractor.I3TUMExtractor.__init__">(graphnet.data.extractors.i3tumextractor.I3TUMExtractor method)</a>
 </li>
+        <li><a href="graphnet.data.html#graphnet.data.pipeline.InSQLitePipeline.__init__">(graphnet.data.pipeline.InSQLitePipeline method)</a>
+</li>
         <li><a href="graphnet.data.sqlite.html#graphnet.data.sqlite.sqlite_dataset_perturbed.SQLiteDatasetPerturbed.__init__">(graphnet.data.sqlite.sqlite_dataset_perturbed.SQLiteDatasetPerturbed method)</a>
 </li>
         <li><a href="graphnet.data.utilities.html#graphnet.data.utilities.parquet_to_sqlite.ParquetToSQLiteConverter.__init__">(graphnet.data.utilities.parquet_to_sqlite.ParquetToSQLiteConverter method)</a>
+</li>
+        <li><a href="graphnet.data.utilities.html#graphnet.data.utilities.string_selection_resolver.StringSelectionResolver.__init__">(graphnet.data.utilities.string_selection_resolver.StringSelectionResolver method)</a>
 </li>
         <li><a href="graphnet.models.html#graphnet.models.coarsening.AttributeCoarsening.__init__">(graphnet.models.coarsening.AttributeCoarsening method)</a>
 </li>
@@ -337,7 +344,9 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset._construct_datasets">_construct_datasets() (graphnet.data.dataset.Dataset class method)</a>
+      <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset._construct_dataset_from_list_of_strings">_construct_dataset_from_list_of_strings() (graphnet.data.dataset.Dataset class method)</a>
+</li>
+      <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset._construct_datasets_from_dict">_construct_datasets_from_dict() (graphnet.data.dataset.Dataset class method)</a>
 </li>
       <li><a href="graphnet.models.gnn.html#graphnet.models.gnn.dynedge.DynEdge._construct_layers">_construct_layers() (graphnet.models.gnn.dynedge.DynEdge method)</a>
 </li>
@@ -380,9 +389,9 @@
       <ul>
         <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCube86._forward">(graphnet.models.detector.icecube.IceCube86 method)</a>
 </li>
-        <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCube86Kaggle._forward">(graphnet.models.detector.icecube.IceCube86Kaggle method)</a>
-</li>
         <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCubeDeepCore._forward">(graphnet.models.detector.icecube.IceCubeDeepCore method)</a>
+</li>
+        <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCubeKaggle._forward">(graphnet.models.detector.icecube.IceCubeKaggle method)</a>
 </li>
         <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCubeUpgrade._forward">(graphnet.models.detector.icecube.IceCubeUpgrade method)</a>
 </li>
@@ -413,6 +422,10 @@
 </li>
       <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset._get_dbang_label">_get_dbang_label() (graphnet.data.dataset.Dataset method)</a>
 </li>
+      <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset._get_event_index">_get_event_index() (graphnet.data.dataset.Dataset method)</a>
+</li>
+      <li><a href="graphnet.data.utilities.html#graphnet.data.utilities.string_selection_resolver.StringSelectionResolver._get_index_cache_path">_get_index_cache_path() (graphnet.data.utilities.string_selection_resolver.StringSelectionResolver method)</a>
+</li>
       <li><a href="graphnet.data.extractors.html#graphnet.data.extractors.i3genericextractor.I3GenericExtractor._get_keys">_get_keys() (graphnet.data.extractors.i3genericextractor.I3GenericExtractor method)</a>
 </li>
       <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset._get_labels">_get_labels() (graphnet.data.dataset.Dataset method)</a>
@@ -423,9 +436,11 @@
 </li>
       <li><a href="graphnet.data.extractors.html#graphnet.data.extractors.i3truthextractor.I3TruthExtractor._get_primary_track_energy_and_inelasticity">_get_primary_track_energy_and_inelasticity() (graphnet.data.extractors.i3truthextractor.I3TruthExtractor method)</a>
 </li>
-      <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset._get_random_events_from_selection">_get_random_events_from_selection() (graphnet.data.dataset.Dataset method)</a>
+      <li><a href="graphnet.data.utilities.html#graphnet.data.utilities.string_selection_resolver.StringSelectionResolver._get_random_events_from_selection">_get_random_events_from_selection() (graphnet.data.utilities.string_selection_resolver.StringSelectionResolver method)</a>
 </li>
       <li><a href="graphnet.training.html#graphnet.training.weight_fitting.WeightFitter._get_truth">_get_truth() (graphnet.training.weight_fitting.WeightFitter method)</a>
+</li>
+      <li><a href="graphnet.data.utilities.html#graphnet.data.utilities.string_selection_resolver.StringSelectionResolver._get_values_cache_path">_get_values_cache_path() (graphnet.data.utilities.string_selection_resolver.StringSelectionResolver method)</a>
 </li>
       <li><a href="graphnet.models.gnn.html#graphnet.models.gnn.dynedge.DynEdge._global_pooling">_global_pooling() (graphnet.models.gnn.dynedge.DynEdge method)</a>
 </li>
@@ -451,6 +466,8 @@
 </li>
       <li><a href="graphnet.utilities.config.html#graphnet.utilities.config.model_config.ModelConfig._parse_if_model_config_entry">_parse_if_model_config_entry() (graphnet.utilities.config.model_config.ModelConfig method)</a>
 </li>
+      <li><a href="graphnet.data.utilities.html#graphnet.data.utilities.string_selection_resolver.StringSelectionResolver._parse_variable_names">_parse_variable_names() (graphnet.data.utilities.string_selection_resolver.StringSelectionResolver method)</a>
+</li>
       <li><a href="graphnet.models.html#graphnet.models.coarsening.AttributeCoarsening._perform_clustering">_perform_clustering() (graphnet.models.coarsening.AttributeCoarsening method)</a>
 
       <ul>
@@ -465,12 +482,6 @@
 </li>
       <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset._query">_query() (graphnet.data.dataset.Dataset method)</a>
 </li>
-      <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset._query_table">_query_table() (graphnet.data.dataset.Dataset method)</a>
-
-      <ul>
-        <li><a href="graphnet.data.sqlite.html#graphnet.data.sqlite.sqlite_dataset.SQLiteDataset._query_table">(graphnet.data.sqlite.sqlite_dataset.SQLiteDataset method)</a>
-</li>
-      </ul></li>
       <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset._remove_missing_columns">_remove_missing_columns() (graphnet.data.dataset.Dataset method)</a>
 </li>
       <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset._resolve_string_selection_to_indices">_resolve_string_selection_to_indices() (graphnet.data.dataset.Dataset method)</a>
@@ -573,10 +584,12 @@
         <li><a href="graphnet.models.task.html#graphnet.models.task.task.Task.compute_loss">(graphnet.models.task.task.Task method)</a>
 </li>
       </ul></li>
-      <li><a href="graphnet.utilities.config.html#graphnet.utilities.config.configurable.Configurable.config">config (graphnet.utilities.config.configurable.Configurable property)</a>
+      <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset.concatenate">concatenate() (graphnet.data.dataset.Dataset class method)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graphnet.utilities.config.html#graphnet.utilities.config.configurable.Configurable.config">config (graphnet.utilities.config.configurable.Configurable property)</a>
+</li>
       <li><a href="graphnet.pisa.html#graphnet.pisa.fitting.config_updater">config_updater() (in module graphnet.pisa.fitting)</a>
 </li>
       <li><a href="graphnet.utilities.config.html#graphnet.utilities.config.configurable.Configurable">Configurable (class in graphnet.utilities.config.configurable)</a>
@@ -690,9 +703,9 @@
       <ul>
         <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCube86.features">(graphnet.models.detector.icecube.IceCube86 attribute)</a>
 </li>
-        <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCube86Kaggle.features">(graphnet.models.detector.icecube.IceCube86Kaggle attribute)</a>
-</li>
         <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCubeDeepCore.features">(graphnet.models.detector.icecube.IceCubeDeepCore attribute)</a>
+</li>
+        <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCubeKaggle.features">(graphnet.models.detector.icecube.IceCubeKaggle attribute)</a>
 </li>
         <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCubeUpgrade.features">(graphnet.models.detector.icecube.IceCubeUpgrade attribute)</a>
 </li>
@@ -818,6 +831,8 @@
       <li><a href="graphnet.training.html#graphnet.training.callbacks.ProgressBar.get_metrics">get_metrics() (graphnet.training.callbacks.ProgressBar method)</a>
 </li>
       <li><a href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.frames.get_om_keys_and_pulseseries">get_om_keys_and_pulseseries() (in module graphnet.data.extractors.utilities.frames)</a>
+</li>
+      <li><a href="graphnet.training.html#graphnet.training.utils.get_predictions">get_predictions() (in module graphnet.training.utils)</a>
 </li>
       <li><a href="graphnet.models.gnn.html#graphnet.models.gnn.gnn.GNN">GNN (class in graphnet.models.gnn.gnn)</a>
 </li>
@@ -992,6 +1007,13 @@
 </li>
       </ul></li>
       <li>
+    graphnet.data.pipeline
+
+      <ul>
+        <li><a href="graphnet.data.html#module-graphnet.data.pipeline">module</a>
+</li>
+      </ul></li>
+      <li>
     graphnet.data.sqlite
 
       <ul>
@@ -1052,6 +1074,13 @@
 
       <ul>
         <li><a href="graphnet.data.utilities.html#module-graphnet.data.utilities.random">module</a>
+</li>
+      </ul></li>
+      <li>
+    graphnet.data.utilities.string_selection_resolver
+
+      <ul>
+        <li><a href="graphnet.data.utilities.html#module-graphnet.data.utilities.string_selection_resolver">module</a>
 </li>
       </ul></li>
       <li>
@@ -1267,6 +1296,13 @@
 </li>
       </ul></li>
       <li>
+    graphnet.training.utils
+
+      <ul>
+        <li><a href="graphnet.training.html#module-graphnet.training.utils">module</a>
+</li>
+      </ul></li>
+      <li>
     graphnet.training.weight_fitting
 
       <ul>
@@ -1437,9 +1473,9 @@
         <li><a href="graphnet.data.html#graphnet.data.constants.TRUTH.ICECUBE86">(graphnet.data.constants.TRUTH attribute)</a>
 </li>
       </ul></li>
-      <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCube86Kaggle">IceCube86Kaggle (class in graphnet.models.detector.icecube)</a>
-</li>
       <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCubeDeepCore">IceCubeDeepCore (class in graphnet.models.detector.icecube)</a>
+</li>
+      <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCubeKaggle">IceCubeKaggle (class in graphnet.models.detector.icecube)</a>
 </li>
       <li><a href="graphnet.models.detector.html#graphnet.models.detector.icecube.IceCubeUpgrade">IceCubeUpgrade (class in graphnet.models.detector.icecube)</a>
 </li>
@@ -1470,6 +1506,8 @@
       <li><a href="graphnet.training.html#graphnet.training.callbacks.ProgressBar.init_train_tqdm">init_train_tqdm() (graphnet.training.callbacks.ProgressBar method)</a>
 </li>
       <li><a href="graphnet.training.html#graphnet.training.callbacks.ProgressBar.init_validation_tqdm">init_validation_tqdm() (graphnet.training.callbacks.ProgressBar method)</a>
+</li>
+      <li><a href="graphnet.data.html#graphnet.data.pipeline.InSQLitePipeline">InSQLitePipeline (class in graphnet.data.pipeline)</a>
 </li>
       <li><a href="graphnet.data.extractors.utilities.html#graphnet.data.extractors.utilities.types.is_boost_class">is_boost_class() (in module graphnet.data.extractors.utilities.types)</a>
 </li>
@@ -1557,6 +1595,10 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graphnet.training.html#graphnet.training.utils.make_dataloader">make_dataloader() (in module graphnet.training.utils)</a>
+</li>
+      <li><a href="graphnet.training.html#graphnet.training.utils.make_train_validation_dataloader">make_train_validation_dataloader() (in module graphnet.training.utils)</a>
+</li>
       <li><a href="graphnet.data.html#graphnet.data.dataconverter.DataConverter.merge_files">merge_files() (graphnet.data.dataconverter.DataConverter method)</a>
 
       <ul>
@@ -1625,6 +1667,8 @@
 </li>
         <li><a href="graphnet.data.parquet.html#module-graphnet.data.parquet.parquet_dataset">graphnet.data.parquet.parquet_dataset</a>
 </li>
+        <li><a href="graphnet.data.html#module-graphnet.data.pipeline">graphnet.data.pipeline</a>
+</li>
         <li><a href="graphnet.data.sqlite.html#module-graphnet.data.sqlite">graphnet.data.sqlite</a>
 </li>
         <li><a href="graphnet.data.sqlite.html#module-graphnet.data.sqlite.sqlite_dataconverter">graphnet.data.sqlite.sqlite_dataconverter</a>
@@ -1642,6 +1686,8 @@
         <li><a href="graphnet.data.utilities.html#module-graphnet.data.utilities.parquet_to_sqlite">graphnet.data.utilities.parquet_to_sqlite</a>
 </li>
         <li><a href="graphnet.data.utilities.html#module-graphnet.data.utilities.random">graphnet.data.utilities.random</a>
+</li>
+        <li><a href="graphnet.data.utilities.html#module-graphnet.data.utilities.string_selection_resolver">graphnet.data.utilities.string_selection_resolver</a>
 </li>
         <li><a href="graphnet.deployment.html#module-graphnet.deployment">graphnet.deployment</a>
 </li>
@@ -1702,6 +1748,8 @@
         <li><a href="graphnet.training.html#module-graphnet.training.labels">graphnet.training.labels</a>
 </li>
         <li><a href="graphnet.training.html#module-graphnet.training.loss_functions">graphnet.training.loss_functions</a>
+</li>
+        <li><a href="graphnet.training.html#module-graphnet.training.utils">graphnet.training.utils</a>
 </li>
         <li><a href="graphnet.training.html#module-graphnet.training.weight_fitting">graphnet.training.weight_fitting</a>
 </li>
@@ -1828,18 +1876,22 @@
 </li>
       <li><a href="graphnet.data.utilities.html#graphnet.data.utilities.parquet_to_sqlite.ParquetToSQLiteConverter">ParquetToSQLiteConverter (class in graphnet.data.utilities.parquet_to_sqlite)</a>
 </li>
-      <li><a href="graphnet.utilities.config.html#graphnet.utilities.config.dataset_config.DatasetConfig.path">path (graphnet.utilities.config.dataset_config.DatasetConfig attribute)</a>
+      <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset.path">path (graphnet.data.dataset.Dataset property)</a>
+
+      <ul>
+        <li><a href="graphnet.utilities.config.html#graphnet.utilities.config.dataset_config.DatasetConfig.path">(graphnet.utilities.config.dataset_config.DatasetConfig attribute)</a>
 </li>
+      </ul></li>
       <li><a href="graphnet.training.html#graphnet.training.callbacks.PiecewiseLinearLR">PiecewiseLinearLR (class in graphnet.training.callbacks)</a>
 </li>
       <li><a href="graphnet.pisa.html#graphnet.pisa.plotting.plot_1D_contour">plot_1D_contour() (in module graphnet.pisa.plotting)</a>
 </li>
       <li><a href="graphnet.pisa.html#graphnet.pisa.plotting.plot_2D_contour">plot_2D_contour() (in module graphnet.pisa.plotting)</a>
 </li>
-      <li><a href="graphnet.utilities.html#graphnet.utilities.argparse.Options.pop_default">pop_default() (graphnet.utilities.argparse.Options method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graphnet.utilities.html#graphnet.utilities.argparse.Options.pop_default">pop_default() (graphnet.utilities.argparse.Options method)</a>
+</li>
       <li><a href="graphnet.models.task.html#graphnet.models.task.reconstruction.PositionReconstruction">PositionReconstruction (class in graphnet.models.task.reconstruction)</a>
 </li>
       <li><a href="graphnet.models.html#graphnet.models.model.Model.predict">predict() (graphnet.models.model.Model method)</a>
@@ -1865,6 +1917,20 @@
   </ul></td>
 </tr></table>
 
+<h2 id="Q">Q</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset.query_table">query_table() (graphnet.data.dataset.Dataset method)</a>
+
+      <ul>
+        <li><a href="graphnet.data.parquet.html#graphnet.data.parquet.parquet_dataset.ParquetDataset.query_table">(graphnet.data.parquet.parquet_dataset.ParquetDataset method)</a>
+</li>
+        <li><a href="graphnet.data.sqlite.html#graphnet.data.sqlite.sqlite_dataset.SQLiteDataset.query_table">(graphnet.data.sqlite.sqlite_dataset.SQLiteDataset method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+</tr></table>
+
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
@@ -1879,6 +1945,8 @@
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="graphnet.utilities.html#graphnet.utilities.imports.requires_icecube">requires_icecube() (in module graphnet.utilities.imports)</a>
+</li>
+      <li><a href="graphnet.data.utilities.html#graphnet.data.utilities.string_selection_resolver.StringSelectionResolver.resolve">resolve() (graphnet.data.utilities.string_selection_resolver.StringSelectionResolver method)</a>
 </li>
       <li><a href="graphnet.training.html#graphnet.training.loss_functions.RMSELoss">RMSELoss (class in graphnet.training.loss_functions)</a>
 </li>
@@ -1907,6 +1975,8 @@
       <li><a href="graphnet.utilities.config.html#graphnet.utilities.config.dataset_config.save_dataset_config">save_dataset_config() (in module graphnet.utilities.config.dataset_config)</a>
 </li>
       <li><a href="graphnet.utilities.config.html#graphnet.utilities.config.model_config.save_model_config">save_model_config() (in module graphnet.utilities.config.model_config)</a>
+</li>
+      <li><a href="graphnet.training.html#graphnet.training.utils.save_results">save_results() (in module graphnet.training.utils)</a>
 </li>
       <li><a href="graphnet.models.html#graphnet.models.model.Model.save_state_dict">save_state_dict() (graphnet.models.model.Model method)</a>
 </li>
@@ -1946,6 +2016,8 @@
 </li>
       <li><a href="graphnet.utilities.config.html#graphnet.utilities.config.dataset_config.DatasetConfig.string_selection">string_selection (graphnet.utilities.config.dataset_config.DatasetConfig attribute)</a>
 </li>
+      <li><a href="graphnet.data.utilities.html#graphnet.data.utilities.string_selection_resolver.StringSelectionResolver">StringSelectionResolver (class in graphnet.data.utilities.string_selection_resolver)</a>
+</li>
       <li><a href="graphnet.models.components.html#graphnet.models.components.pool.sum_pool">sum_pool() (in module graphnet.models.components.pool)</a>
 </li>
       <li><a href="graphnet.models.components.html#graphnet.models.components.pool.sum_pool_and_distribute">sum_pool_and_distribute() (in module graphnet.models.components.pool)</a>
@@ -1982,8 +2054,12 @@
 </li>
       <li><a href="graphnet.utilities.config.html#graphnet.utilities.config.dataset_config.DatasetConfig.truth">truth (graphnet.utilities.config.dataset_config.DatasetConfig attribute)</a>
 </li>
-      <li><a href="graphnet.utilities.config.html#graphnet.utilities.config.dataset_config.DatasetConfig.truth_table">truth_table (graphnet.utilities.config.dataset_config.DatasetConfig attribute)</a>
+      <li><a href="graphnet.data.html#graphnet.data.dataset.Dataset.truth_table">truth_table (graphnet.data.dataset.Dataset property)</a>
+
+      <ul>
+        <li><a href="graphnet.utilities.config.html#graphnet.utilities.config.dataset_config.DatasetConfig.truth_table">(graphnet.utilities.config.dataset_config.DatasetConfig attribute)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
