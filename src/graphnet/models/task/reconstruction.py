@@ -8,6 +8,15 @@ from graphnet.models.task import Task
 from graphnet.utilities.maths import eps_like
 
 
+class PassOutput1(Task):
+    """Passes 1 output without interference."""
+
+    nb_inputs = 1
+
+    def _forward(self, x: Tensor) -> Tensor:
+        return x
+
+
 class AzimuthReconstructionWithKappa(Task):
     """Reconstructs azimuthal angle and associated kappa (1/var)."""
 
