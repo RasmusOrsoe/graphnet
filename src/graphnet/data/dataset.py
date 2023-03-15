@@ -193,13 +193,30 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
     def __len__(self):
         return len(self._indices)
 
+    def _get_active_sensor_info(self, index):
+        if self._database_list is None:
+            index = self._indices[index]
+        else:
+            index = self._indices[index][0]
+
+        # Query table
+        self._establish_connection(index)
+        # print(self._sensor_mask.columns)
+        result = self._conn.execute(
+            f"SELECT DISTINCT sensor_id FROM total WHERE {self._index_column} = {index} and sensor_id in {str(tuple(self._sensor_mask))}"
+        ).fetchall()
+        return result
+
     def __getitem__(self, index: int) -> Data:
         if not (0 <= index < len(self)):
             raise IndexError(
                 f"Index {index} not in range [0, {len(self) - 1}]"
             )
         features, truth, node_truth, loss_weight = self._query(index)
-        graph = self._create_graph(features, truth, node_truth, loss_weight)
+        active_sensor_info = self._get_active_sensor_info(index)
+        graph = self._create_graph(
+            features, truth, node_truth, loss_weight, active_sensor_info
+        )
         if self._include_inactive_sensors:
             assert (
                 self._detector_template is not None
@@ -311,6 +328,7 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         truth: List[Tuple[Any]],
         node_truth: Optional[List[Tuple[Any]]] = None,
         loss_weight: Optional[float] = None,
+        active_sensor_info: List = None,
     ) -> Data:
         """Create Pytorch Data (i.e.graph) object.
 
@@ -353,7 +371,9 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
         # Construct graph data object
         x = torch.tensor(data, dtype=self._dtype)  # pylint: disable=C0103
         n_pulses = torch.tensor(len(x), dtype=torch.int32)
-        if self._include_inactive_sensors:
+        sparse_method = True
+        # print('WARNING SPARSE METHOD HARDCODED')
+        if (self._include_inactive_sensors) & (not sparse_method):
             assert (
                 self._detector_template is not None
             ), "Geometry file must be specified if inactive sensors are to be included"
@@ -374,6 +394,58 @@ class Dataset(ABC, torch.utils.data.Dataset, LoggerMixin):
             graph["n_pulses"] = torch.tensor(len(graph.x), dtype=torch.int32)
             graph = self._add_pmt_idx(graph)
             graph = self._add_xyz(graph)
+        elif sparse_method:
+            x = x[x[:, 2].argsort()]  # sort in time
+            template = self._detector_template
+            template[self._sensor_mask, 3] = -100  # phantom module tag hack
+            x_geom = template[
+                x[:, self._features.index(self._pmt_idx_column) - 1].long(), :
+            ].clone()  # = x[:, self._features.index("t") - 1]
+            x_geom_w_time = torch.cat(
+                [x_geom, x[:, self._features.index("t") - 1].reshape(-1, 1)],
+                dim=1,
+            )
+            x_input = x_geom_w_time[x_geom_w_time[:, 3] != -100.0, :]
+            x_input = x_input[:, [0, 1, 2, 4]]  # remove hack
+
+            # active_label = torch.zeros(len(self._sensor_mask))
+            # print(active_label.shape)
+            # print(torch.tensor(np.asarray(active_sensor_info)).shape)
+            # print(asd)
+            # if torch.tensor(np.asarray(active_sensor_info)).shape[0] != 0:
+            #    active_label[torch.tensor(np.asarray(active_sensor_info)).squeeze(1).long()] = 1
+
+            active_label = torch.zeros(self._detector_template.shape[0])
+            if torch.tensor(np.asarray(active_sensor_info)).shape[0] != 0:
+                active_label[
+                    torch.tensor(np.asarray(active_sensor_info))
+                    .squeeze(1)
+                    .long()
+                ] = 1
+            active_label = active_label[self._sensor_mask]
+            # c = 0
+            # for phantom_module in self._sensor_mask:
+            #    if phantom_module in np.asarray(active_sensor_info):
+            #        active_label[c] = 1
+            #    c +=1
+            # print(active_label.sum())
+
+            graph = Data(x=x_input, edge_index=None)
+            graph["active_doms"] = active_label.long()
+            # graph = self._add_active_sensor_labels(graph)
+            # graph['phantom_string'] = torch.zeros(len(template))
+            # graph = self._add_phantom_string_label(graph)
+            # graph.x = graph.x[graph["phantom_string"] == 0, :] #input is not phantom
+            # graph['active_doms'] = graph['active_doms'][graph["phantom_string"] == 1].reshape(-1,sum(graph["phantom_string"] == 1))
+            graph.features = ["dom_x", "dom_y", "dom_z", "full_grid_time"]
+
+            # print(graph.x.shape)
+            graph["n_pulses"] = torch.log10(
+                torch.tensor(len(graph.x), dtype=torch.int32)
+            )
+            # graph = self._add_pmt_idx(graph)
+            # graph["pmt_idx"][graph["phantom_string"] == 1]
+            # graph = self._add_xyz(graph)
 
         else:
             graph = Data(x=x, edge_index=None)

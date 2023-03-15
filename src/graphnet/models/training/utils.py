@@ -215,15 +215,16 @@ def get_predictions(
     # Get predictions
     predictions_torch = trainer.predict(model, dataloader)
     predictions = [
-        p[0].detach().cpu().numpy() for p in predictions_torch
+        p[0].detach().cpu().flatten().numpy() for p in predictions_torch
     ]  # Assuming single task
-    predictions = np.concatenate(predictions, axis=0)
+    predictions = np.concatenate(predictions, axis=0)  # .T
+    print(predictions.shape, prediction_columns)
     try:
         assert len(prediction_columns) == predictions.shape[1]
     except IndexError:
         predictions = predictions.reshape((-1, 1))
         assert len(prediction_columns) == predictions.shape[1]
-
+    print(predictions.shape)
     # Get additional attributes
     attributes = OrderedDict([(attr, []) for attr in additional_attributes])
     for batch in dataloader:
@@ -231,11 +232,14 @@ def get_predictions(
             attribute = batch[attr].detach().cpu().numpy()
             if node_level:
                 if attr == "event_no":
-                    attribute = np.repeat(
-                        attribute, batch["n_pulses"].detach().cpu().numpy()
-                    )
+                    # print(torch.pow(10,batch["n_pulses"]).detach().cpu().numpy())
+                    attribute = np.repeat(attribute, 1496)
             attributes[attr].extend(attribute)
-
+    # print(attributes)
+    print(prediction_columns)
+    print(additional_attributes)
+    for attribute in attributes.keys():
+        print(attribute, len(attributes[attribute]))
     data = np.concatenate(
         [predictions]
         + [
@@ -247,7 +251,7 @@ def get_predictions(
     results = pd.DataFrame(
         data, columns=prediction_columns + additional_attributes
     )
-    return results
+    return results  # , pd.DataFrame(predictions, columns = prediction_columns), pd.DataFrame(attributes)
 
 
 def save_results(db, tag, results, archive, model):
