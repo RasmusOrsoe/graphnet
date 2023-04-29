@@ -412,12 +412,12 @@
 <span class="sd">                (...)</span>
 <span class="sd">            }</span>
 <span class="sd">            &gt;&gt;&gt; dataset.config.dump("dataset.yml")</span>
-<span class="sd">            &gt;&gt;&gt; datasets: Dict[str, ConcatDataset] = Dataset.from_config(</span>
+<span class="sd">            &gt;&gt;&gt; datasets: Dict[str, EnsembleDataset] = Dataset.from_config(</span>
 <span class="sd">                "dataset.yml"</span>
 <span class="sd">            )</span>
 <span class="sd">            &gt;&gt;&gt; datasets</span>
 <span class="sd">            {</span>
-<span class="sd">                "train": ConcatDataset(...),</span>
+<span class="sd">                "train": EnsembleDataset(...),</span>
 <span class="sd">                (...)</span>
 <span class="sd">            }</span>
 
@@ -509,7 +509,7 @@
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 6.1.3.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 6.2.1.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>
