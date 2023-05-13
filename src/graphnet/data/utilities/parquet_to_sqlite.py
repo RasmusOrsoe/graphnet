@@ -2,12 +2,13 @@
 
 import glob
 import os
-from typing import List, Optional, Union
+from typing import List, Optional, Union, Dict
 
 import awkward as ak
 import numpy as np
 import pandas as pd
 from tqdm.auto import trange
+from pyarrow.lib import ArrowInvalid
 
 from graphnet.data.sqlite.sqlite_utilities import create_table_and_save_to_sql
 from graphnet.utilities.logging import Logger
@@ -26,6 +27,8 @@ class ParquetToSQLiteConverter(Logger):
         parquet_path: Union[str, List[str]],
         mc_truth_table: str = "mc_truth",
         excluded_fields: Optional[Union[str, List[str]]] = None,
+        max_table_size: Optional[int] = None,
+        max_event_size: Optional[Dict[str, int]] = None,
     ):
         """Construct `ParquetToSQLiteConverter`."""
         # checks
@@ -48,6 +51,18 @@ class ParquetToSQLiteConverter(Logger):
             self._excluded_fields = excluded_fields
         else:
             self._excluded_fields = []
+
+        if max_event_size is not None:
+            assert isinstance(
+                max_event_size, dict
+            ), "max_event_size must be dict"
+
+        self._max_event_size = max_event_size
+        self._max_table_size = max_table_size
+        if self._max_table_size is not None:
+            self._row_counts: Dict = {}
+            self._partition_count = 1
+
         self._mc_truth_table = mc_truth_table
         self._event_counter = 0
 
@@ -67,6 +82,77 @@ class ParquetToSQLiteConverter(Logger):
         assert len(files) > 0, f"No files found in {paths}"
         return files
 
+    def _reset_row_counts(self) -> None:
+        """Build dictionary with row counts.
+
+        Initialized with 0.
+        """
+        for table_name in self._row_counts.keys():
+            self._row_counts[table_name] = 0
+        return
+
+    def _update_row_counts(
+        self,
+        parquet_file: ak.Array,
+        field: str,
+    ) -> None:
+        if field in self._row_counts.keys():
+            self._row_counts[field] += ak.count(
+                parquet_file[field][parquet_file[field].fields[0]]
+            )
+        else:
+            self._row_counts[field] = ak.count(
+                parquet_file[field][parquet_file[field].fields[0]]
+            )
+        return
+
+    def _has_maximum_table_size(self) -> bool:
+        """Determine if any one table has reached or exceeded maximum size."""
+        if self._max_table_size is not None:
+            for key in self._row_counts.keys():
+                if self._row_counts[key] >= self._max_table_size:
+                    return True
+            return False
+        else:
+            return False
+
+    def _adjust_output_file_name(self, output_file: str) -> str:
+        if "_part_" in output_file:
+            root = (
+                output_file.split("_part_")[0]
+                + output_file.split("_part_")[1][1:]
+            )
+        else:
+            root = output_file
+        str_list = root.split(".db")
+        return str_list[0] + f"_part_{self._partition_count}" + ".db"
+
+    def _create_max_event_mask(self, parquet_file: ak.Array) -> List:
+        """Produce mask that removes events larger than specified size."""
+        masks = {}
+        for pulsemap in self._max_event_size.keys():  # type: ignore
+            mask = []
+            if pulsemap in parquet_file.fields:
+                sub_array = parquet_file[pulsemap]
+                for event in range(len(parquet_file)):
+                    if (
+                        ak.count(sub_array[sub_array.fields[0]][event])
+                        <= self._max_event_size[pulsemap]  # type: ignore
+                    ):
+                        mask.append(True)
+                    else:
+                        mask.append(False)
+            masks[pulsemap] = np.array(mask, dtype=np.bool)
+
+        is_first = True
+        for pulsemap in masks.keys():
+            if is_first:
+                combined_mask = masks[pulsemap]
+                is_first = False
+            else:
+                combined_mask += masks[pulsemap]  # True + False = False
+        return combined_mask
+
     def run(self, outdir: str, database_name: str) -> None:
         """Run Parquet to SQLite conversion.
 
@@ -78,6 +164,8 @@ class ParquetToSQLiteConverter(Logger):
         database_path = os.path.join(
             outdir, database_name, "data", database_name + ".db"
         )
+        if self._max_table_size is not None:
+            database_path = self._adjust_output_file_name(database_path)
         self.info(f"Processing {len(self._parquet_files)} Parquet file(s)")
         for i in trange(
             len(self._parquet_files),
@@ -85,23 +173,48 @@ class ParquetToSQLiteConverter(Logger):
             colour="green",
             position=0,
         ):
-            parquet_file = ak.from_parquet(self._parquet_files[i])
-            n_events_in_file = self._count_events(parquet_file)
-            for j in trange(
-                len(parquet_file.fields),
-                desc="%s" % (self._parquet_files[i].split("/")[-1]),
-                colour="#ffa500",
-                position=1,
-                leave=False,
-            ):
-                if parquet_file.fields[j] not in self._excluded_fields:
-                    self._save_to_sql(
-                        database_path,
-                        parquet_file,
-                        parquet_file.fields[j],
-                        n_events_in_file,
+            try:
+                parquet_file = ak.from_parquet(self._parquet_files[i])
+            except ArrowInvalid as error:
+                # Catches corrupt files.
+                # See https://github.com/aws/aws-sdk-pandas/issues/1043
+                self.warning(f"{self._parquet_files[i]} : {error}")
+                parquet_file = None
+
+            if parquet_file is not None:
+                if self._max_event_size is not None:
+                    # Removes events that are larger than specified size.
+                    mask = self._create_max_event_mask(parquet_file)
+                    parquet_file = parquet_file[mask]
+                n_events_in_file = self._count_events(parquet_file)
+                for j in trange(
+                    len(parquet_file.fields),
+                    desc="%s" % (self._parquet_files[i].split("/")[-1]),
+                    colour="#ffa500",
+                    position=1,
+                    leave=False,
+                ):
+                    if parquet_file.fields[j] not in self._excluded_fields:
+                        self._save_to_sql(
+                            database_path,
+                            parquet_file,
+                            parquet_file.fields[j],
+                            n_events_in_file,
+                        )
+                        self._update_row_counts(
+                            parquet_file, parquet_file.fields[j]
+                        )
+                self._event_counter += n_events_in_file
+                if self._has_maximum_table_size():
+                    self._reset_row_counts()
+                    self._partition_count += 1
+                    database_path = self._adjust_output_file_name(
+                        database_path
                     )
-            self._event_counter += n_events_in_file
+                    self.info(
+                        f"Maximum table size reached. Starting new partition at: \n {database_path}."
+                    )
+
         self._save_config(outdir, database_name)
         self.info(
             "Database saved at: \n"
