@@ -316,6 +316,7 @@
   <h1 id="modules-graphnet-models-detector-icecube--page-root">Source code for graphnet.models.detector.icecube</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""IceCube-specific `Detector` class(es)."""</span>
 
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Callable</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">torch_geometric.data</span> <span class="kn">import</span> <span class="n">Data</span>
 
@@ -331,32 +332,33 @@
 <div class="viewcode-block" id="IceCube86"><a class="viewcode-back" href="../../../../api/graphnet.models.detector.icecube.html#graphnet.models.detector.icecube.IceCube86">[docs]</a><span class="k">class</span> <span class="nc">IceCube86</span><span class="p">(</span><span class="n">Detector</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""`Detector` class for IceCube-86."""</span>
 
-    <span class="c1"># Implementing abstract class attribute</span>
-    <span class="n">features</span> <span class="o">=</span> <span class="n">FEATURES</span><span class="o">.</span><span class="n">ICECUBE86</span>
+<div class="viewcode-block" id="IceCube86.feature_map"><a class="viewcode-back" href="../../../../api/graphnet.models.detector.icecube.html#graphnet.models.detector.icecube.IceCube86.feature_map">[docs]</a>    <span class="k">def</span> <span class="nf">feature_map</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Callable</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Map standardization functions to each dimension."""</span>
+        <span class="n">feature_map</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">"dom_x"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom_xyz</span><span class="p">,</span>
+            <span class="s2">"dom_y"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom_xyz</span><span class="p">,</span>
+            <span class="s2">"dom_z"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom_xyz</span><span class="p">,</span>
+            <span class="s2">"dom_time"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dom_time</span><span class="p">,</span>
+            <span class="s2">"charge"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_charge</span><span class="p">,</span>
+            <span class="s2">"rde"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rde</span><span class="p">,</span>
+            <span class="s2">"pmt_area"</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pmt_area</span><span class="p">,</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">feature_map</span></div>
 
-    <span class="k">def</span> <span class="nf">_forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Data</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">"""Ingest data, build graph, and preprocess features.</span>
+    <span class="k">def</span> <span class="nf">_dom_xyz</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="mf">500.0</span>
 
-<span class="sd">        Args:</span>
-<span class="sd">            data: Input graph data.</span>
+    <span class="k">def</span> <span class="nf">_dom_time</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">-</span> <span class="mf">1.0e04</span> <span class="o">/</span> <span class="mf">3.0e4</span>
 
-<span class="sd">        Returns:</span>
-<span class="sd">            Connected and preprocessed graph data.</span>
-<span class="sd">        """</span>
-        <span class="c1"># Check(s)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_validate_features</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_charge</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 
-        <span class="c1"># Preprocessing</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/=</span> <span class="mf">500.0</span>  <span class="c1"># dom_x</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/=</span> <span class="mf">500.0</span>  <span class="c1"># dom_y</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">/=</span> <span class="mf">500.0</span>  <span class="c1"># dom_z</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">-</span> <span class="mf">1.0e04</span><span class="p">)</span> <span class="o">/</span> <span class="mf">3.0e4</span>  <span class="c1"># dom_time</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">log10</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">4</span><span class="p">])</span> <span class="o">/</span> <span class="mf">3.0</span>  <span class="c1"># charge</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">-=</span> <span class="mf">1.25</span>  <span class="c1"># rde</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">5</span><span class="p">]</span> <span class="o">/=</span> <span class="mf">0.25</span>
-        <span class="n">data</span><span class="o">.</span><span class="n">x</span><span class="p">[:,</span> <span class="mi">6</span><span class="p">]</span> <span class="o">/=</span> <span class="mf">0.05</span>  <span class="c1"># pmt_area</span>
+    <span class="k">def</span> <span class="nf">_rde</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="mf">1.25</span><span class="p">)</span> <span class="o">/</span> <span class="mf">0.25</span>
 
-        <span class="k">return</span> <span class="n">data</span></div>
+    <span class="k">def</span> <span class="nf">_pmt_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span> <span class="o">/</span> <span class="mf">0.05</span></div>
 
 
 <div class="viewcode-block" id="IceCubeKaggle"><a class="viewcode-back" href="../../../../api/graphnet.models.detector.icecube.html#graphnet.models.detector.icecube.IceCubeKaggle">[docs]</a><span class="k">class</span> <span class="nc">IceCubeKaggle</span><span class="p">(</span><span class="n">Detector</span><span class="p">):</span>
