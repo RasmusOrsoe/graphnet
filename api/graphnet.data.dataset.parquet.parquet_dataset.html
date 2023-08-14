@@ -111,12 +111,20 @@
     background: rgba(0,0,0,0.03);
   }
 
+  #eu-emblem {
+    margin: 0;
+  }
+
+  #eu-emblem figcaption {
+    display: none;
+  }
+
 </style>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
-    <link rel="stylesheet" type="text/css" href="../_static/material.css" />
-    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-    <script src="../_static/doctools.js"></script>
-    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=83e35b93" />
+    <link rel="stylesheet" type="text/css" href="../_static/material.css?v=79c92029" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=b3ba4146"></script>
+    <script src="../_static/doctools.js?v=888ff710"></script>
+    <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
     <link rel="icon" href="../_static/favicon.svg"/>
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
@@ -509,7 +517,7 @@
 <p><cite>Dataset</cite> class(es) for reading from Parquet files.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="graphnet.data.dataset.parquet.parquet_dataset.ParquetDataset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphnet.data.dataset.parquet.parquet_dataset.</span></span><span class="sig-name descname"><span class="pre">ParquetDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pulsemaps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truth_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_truth_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string_selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_weight_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_weight_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_weight_default_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/data/dataset/parquet/parquet_dataset.html#ParquetDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.dataset.parquet.parquet_dataset.ParquetDataset" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphnet.data.dataset.parquet.parquet_dataset.</span></span><span class="sig-name descname"><span class="pre">ParquetDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_definition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pulsemaps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truth_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_truth_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">string_selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">selection</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_weight_table</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_weight_column</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loss_weight_default_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/data/dataset/parquet/parquet_dataset.html#ParquetDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.dataset.parquet.parquet_dataset.ParquetDataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="graphnet.data.dataset.dataset.html#graphnet.data.dataset.dataset.Dataset" title="graphnet.data.dataset.dataset.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a></p>
 <p>Pytorch dataset for reading from Parquet files.</p>
 <p>Construct Dataset.</p>
@@ -557,6 +565,7 @@ is provided, this value is ignored. Defaults to None.</p></li>
 subset of events when resolving a string-based selection (e.g.,
 <cite>“10000 random events ~ event_no % 5 &gt; 0”</cite> or <cite>“20% random
 events ~ event_no % 5 &gt; 0”</cite>).</p></li>
+<li><p><strong>graph_definition</strong> (<a class="reference internal" href="graphnet.models.graphs.graph_definition.html#graphnet.models.graphs.graph_definition.GraphDefinition" title="graphnet.models.graphs.graph_definition.GraphDefinition"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphDefinition</span></code></a>) – Method that defines the graph representation.</p></li>
 </ul>
 </dd>
 </dl>
@@ -628,7 +637,7 @@ events ~ event_no % 5 &gt; 0”</cite>).</p></li>
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 7.0.1.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 7.1.2.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>
