@@ -228,7 +228,7 @@ class Model(
             f"Number of provided column names ({len(prediction_columns)}) and "
             f"number of output columns ({predictions.shape[1]}) don't match."
         )
-
+        print(predictions.shape, len(dataloader.dataset))
         # Get additional attributes
         attributes: Dict[str, List[np.ndarray]] = OrderedDict(
             [(attr, []) for attr in additional_attributes]
@@ -243,37 +243,31 @@ class Model(
                 # Check if node level predictions
                 # If true, additional attributes are repeated
                 # to make dimensions fit
-                if len(predictions) != len(dataloader.dataset):
-                    if len(attribute) < np.sum(
-                        batch.n_pulses.detach().cpu().numpy()
-                    ):
-                        attribute = np.repeat(
-                            attribute, batch.n_pulses.detach().cpu().numpy()
+                total_rows = np.sum(batch.n_pulses.detach().cpu().numpy())
+                if (len(attribute) < total_rows) & (
+                    len(predictions) == total_rows
+                ):
+                    # If node-level predictions & the attributes are graph-level
+                    attribute = np.repeat(
+                        attribute, batch.n_pulses.detach().cpu().numpy()
+                    )
+                    try:
+                        assert len(attribute) == len(batch.x)
+                    except AssertionError:
+                        self.warning_once(
+                            "Could not automatically adjust length"
+                            f"of additional attribute {attr} to match length of"
+                            f"predictions. Make sure {attr} is a graph-level or"
+                            "node-level attribute. Attribute skipped."
                         )
-                        try:
-                            assert len(attribute) == len(batch.x)
-                        except AssertionError:
-                            self.warning_once(
-                                "Could not automatically adjust length"
-                                f"of additional attribute {attr} to match length of"
-                                f"predictions. Make sure {attr} is a graph-level or"
-                                "node-level attribute. Attribute skipped."
-                            )
-                            pass
+                        pass
                 attributes[attr].extend(attribute)
 
-        data = np.concatenate(
-            [predictions]
-            + [
-                np.asarray(values)[:, np.newaxis]
-                for values in attributes.values()
-            ],
-            axis=1,
+        predictions = pd.DataFrame(predictions, columns=prediction_columns)
+        additional_attributes = pd.DataFrame(
+            attributes, columns=additional_attributes
         )
-
-        results = pd.DataFrame(
-            data, columns=prediction_columns + additional_attributes
-        )
+        results = pd.concat([predictions, additional_attributes], axis=1)
         return results
 
     def save(self, path: str) -> None:

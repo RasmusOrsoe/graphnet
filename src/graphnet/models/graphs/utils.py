@@ -26,7 +26,7 @@ def lex_sort(x: np.array, cluster_columns: List[int]) -> np.ndarray:
 
 def gather_cluster_sequence(
     x: np.ndarray, feature_idx: int, cluster_columns: List[int]
-) -> Tuple[np.ndarray, np.ndarray]:
+) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
     """Turn `x` into rows of clusters with sequences along columns.
 
     Sequences along columns are added which correspond to
@@ -83,7 +83,7 @@ def gather_cluster_sequence(
         array[k, column_offset : (column_offset + counts[k])] = x[
             cumsum[k] : cumsum[k + 1], feature_idx
         ]
-    return array, column_offset
+    return array, column_offset, counts
 
 
 def identify_indices(
@@ -106,6 +106,7 @@ def cluster_summarize_with_percentiles(
     summarization_indices: List[int],
     cluster_indices: List[int],
     percentiles: List[int],
+    add_counts: bool,
 ) -> np.ndarray:
     """Turn `x` into clusters with percentile summary.
 
@@ -136,7 +137,7 @@ def cluster_summarize_with_percentiles(
     """
     pct_dict = {}
     for feature_idx in summarization_indices:
-        summarized_array, column_offset = gather_cluster_sequence(
+        summarized_array, column_offset, counts = gather_cluster_sequence(
             x, feature_idx, cluster_indices
         )
         pct_dict[feature_idx] = np.nanpercentile(
@@ -148,5 +149,10 @@ def cluster_summarize_with_percentiles(
             array = summarized_array[:, 0:column_offset]
 
         array = np.concatenate([array, pct_dict[key]], axis=1)
+
+    if add_counts:
+        array = np.concatenate(
+            [array, np.log10(counts).reshape(-1, 1)], axis=1
+        )
 
     return array

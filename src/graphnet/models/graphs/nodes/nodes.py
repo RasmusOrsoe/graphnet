@@ -102,6 +102,7 @@ class PercentileClusters(NodeDefinition):
         cluster_on: List[str],
         feature_names: List[str],
         percentiles: List[int],
+        add_counts: bool = True,
     ) -> None:
         """Construct `PercentileClusters`.
 
@@ -110,14 +111,18 @@ class PercentileClusters(NodeDefinition):
             feature_names: List of colum names for the input data.
                            E.g. ['dom_x', 'dom_y', 'dom_z',..]
             percentiles: List of percentiles. E.g. `[10, 50, 90]`.
+            add_counts: If True, number of duplicates is added to output array.
         """
         self._cluster_on = cluster_on
         self._percentiles = percentiles
+        self._add_counts = add_counts
         (
             cluster_idx,
             summ_idx,
             new_feature_names,
-        ) = self._get_indices_and_feature_names(feature_names)
+        ) = self._get_indices_and_feature_names(
+            feature_names, self._add_counts
+        )
         self._cluster_indices = cluster_idx
         self._summarization_indices = summ_idx
         self._output_feature_names = new_feature_names
@@ -125,7 +130,9 @@ class PercentileClusters(NodeDefinition):
         super().__init__()
 
     def _get_indices_and_feature_names(
-        self, feature_names: List[str]
+        self,
+        feature_names: List[str],
+        add_counts: bool,
     ) -> Tuple[List[int], List[int], List[str]]:
         cluster_idx, summ_idx, summ_names = identify_indices(
             feature_names, self._cluster_on
@@ -134,6 +141,9 @@ class PercentileClusters(NodeDefinition):
         for feature in summ_names:
             for pct in self._percentiles:
                 new_feature_names.append(f"{feature}_pct{pct}")
+        if add_counts:
+            # add "counts" as the last feature
+            new_feature_names.append("counts")
         return cluster_idx, summ_idx, new_feature_names
 
     def _construct_nodes(
@@ -147,6 +157,7 @@ class PercentileClusters(NodeDefinition):
             summarization_indices=self._summarization_indices,
             cluster_indices=self._cluster_indices,
             percentiles=self._percentiles,
+            add_counts=self._add_counts,
         )
 
         return Data(x=torch.tensor(array)), self._output_feature_names

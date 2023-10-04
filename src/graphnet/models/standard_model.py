@@ -119,8 +119,8 @@ class StandardModel(Model):
             loss,
             batch_size=self._get_batch_size(train_batch),
             prog_bar=True,
-            on_epoch=True,
-            on_step=False,
+            on_epoch=False,
+            on_step=True,
             sync_dist=True,
         )
         return loss

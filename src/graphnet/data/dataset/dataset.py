@@ -212,6 +212,7 @@ class Dataset(
         loss_weight_table: Optional[str] = None,
         loss_weight_column: Optional[str] = None,
         loss_weight_default_value: Optional[float] = None,
+        string_column: str = "string",
         seed: Optional[int] = None,
     ):
         """Construct Dataset.
@@ -259,6 +260,7 @@ class Dataset(
                 `"10000 random events ~ event_no % 5 > 0"` or `"20% random
                 events ~ event_no % 5 > 0"`).
             graph_definition: Method that defines the graph representation.
+            string_column: name of column defining the string index.
         """
         # Base class constructor
         super().__init__(name=__name__, class_name=self.__class__.__name__)
@@ -283,6 +285,7 @@ class Dataset(
         self._truth_table = truth_table
         self._loss_weight_default_value = loss_weight_default_value
         self._graph_definition = graph_definition
+        self._string_column = string_column
 
         if node_truth is not None:
             assert isinstance(node_truth_table, str)
@@ -307,7 +310,7 @@ class Dataset(
 
         self._selection = None
         if self._string_selection:
-            self._selection = f"string in {str(tuple(self._string_selection))}"
+            self._selection = f"{self._string_column} in {str(tuple(self._string_selection))}"
 
         self._loss_weight_column = loss_weight_column
         self._loss_weight_table = loss_weight_table
