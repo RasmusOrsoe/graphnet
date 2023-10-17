@@ -5,6 +5,7 @@ from typing import Dict, Callable, List
 
 from torch_geometric.data import Data
 import torch
+import pandas as pd
 
 from graphnet.models import Model
 from graphnet.utilities.decorators import final
@@ -17,6 +18,21 @@ class Detector(Model):
         """Construct `Detector`."""
         # Base class constructor
         super().__init__(name=__name__, class_name=self.__class__.__name__)
+
+    @property
+    def geometry_table(self) -> pd.DataFrame:
+        """Public get method for retrieving a `Detector`s geometry table."""
+        if ~hasattr(self, "_geometry_table"):
+            try:
+                assert hasattr(self, "geometry_table_path")
+            except AssertionError as e:
+                self.error(
+                    f"""{self.__class__.__name__} does not have class
+                           variable `geometry_table_path` set."""
+                )
+                raise e
+            self._geometry_table = pd.read_parquet(self.geometry_table_path)
+        return self._geometry_table
 
     @abstractmethod
     def feature_map(self) -> Dict[str, Callable]:

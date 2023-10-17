@@ -3,8 +3,10 @@
 import numpy as np
 import torch
 from torch import Tensor
+from typing import List, Any
 
 from graphnet.models.task import Task
+from graphnet.training.labels import SQLiteSuperResolutionLabel
 from graphnet.utilities.maths import eps_like
 
 
@@ -211,3 +213,42 @@ class InelasticityReconstruction(Task):
     def _forward(self, x: Tensor) -> Tensor:
         # Transform output to unit range
         return torch.sigmoid(x)
+
+
+class SuperResolution(Task):
+    """A Task for single-image super resolution."""
+
+    def __init__(
+        self, label: SQLiteSuperResolutionLabel, *args: Any, **kwargs: Any
+    ) -> None:
+        """Initialize class.
+
+        Args:
+            label: A label that generates info.
+        """
+        self._label = label
+        self._default_target_labels = [self._label.key]
+        prediction_labels = []
+        for label in self._label._targets:  # noqa
+            prediction_labels.append(label + "_pred")  # type: ignore
+        self._default_prediction_labels = prediction_labels
+        self._nb_inputs = 21648  # len(self.default_prediction_labels)
+        super().__init__(*args, **kwargs)
+
+    def _forward(self, x: Tensor) -> Tensor:
+        return x
+
+    @property
+    def default_target_labels(self) -> List[str]:
+        """Return default target labels."""
+        return self._default_target_labels
+
+    @property
+    def default_prediction_labels(self) -> List[str]:
+        """Return default prediction labels."""
+        return self._default_prediction_labels
+
+    @property
+    def nb_inputs(self) -> int:
+        """Return number of inputs assumed by task."""
+        return self._nb_inputs

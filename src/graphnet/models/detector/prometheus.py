@@ -32,6 +32,13 @@ class Prometheus(Detector):
 class ORCA150(Detector):
     """`Detector` class for Prometheus prototype."""
 
+    geometry_table_path = (
+        "/home/iwsatlas1/oersoe/phd/tmp/geometry_tables/geometry_table.parquet"
+    )
+    xyz = ["sensor_pos_x", "sensor_pos_y", "sensor_pos_z"]
+    string_id_column = "sensor_string_id"
+    sensor_id_column = "sensor_id"
+
     def feature_map(self) -> Dict[str, Callable]:
         """Map standardization functions to each dimension."""
         feature_map = {

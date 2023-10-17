@@ -50,6 +50,9 @@ class LossFunction(Model):
             Loss, either averaged to a scalar (if `return_elements = False`) or
             elementwise terms with shape [N,] (if `return_elements = True`).
         """
+        if len(target.shape) == 3:
+            if target.shape[1] == 1:
+                target = target[:, 0, :]
         elements = self._forward(prediction, target)
         if weights is not None:
             elements = elements * weights
