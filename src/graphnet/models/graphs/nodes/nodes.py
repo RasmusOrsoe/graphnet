@@ -126,6 +126,7 @@ class PercentileClusters(NodeDefinition):
         self._cluster_indices = cluster_idx
         self._summarization_indices = summ_idx
         self._output_feature_names = new_feature_names
+        print(new_feature_names)
         # Base class constructor
         super().__init__()
 

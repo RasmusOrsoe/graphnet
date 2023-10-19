@@ -108,6 +108,21 @@ class SQLiteSuperResolutionLabel(Label):
         self._string_column = string_column
         self._index_column = index_column
 
+        detector = self._graph_definition._detector
+
+        sensor_id_column = detector.sensor_id_column
+        geometry_table = detector.geometry_table
+
+        lookup = graph_definition._geometry_table_lookup(
+            node_features=geometry_table.to_numpy(),
+            node_feature_names=graph_definition._node_feature_names,
+        )
+        mask = ~geometry_table.loc[lookup, sensor_id_column].isin(
+            graph_definition._sensor_mask
+        )
+        target_sensor_id = geometry_table.loc[
+            mask, sensor_id_column
+        ].to_numpy()
         if drop_columns is not None:
             self._keep_columns = self._create_column_mask(drop_columns)
             targets = []
@@ -115,9 +130,14 @@ class SQLiteSuperResolutionLabel(Label):
                 targets.append(
                     self._graph_definition.output_feature_names[feature]
                 )
-            self._targets = targets
         else:
-            self._targets = self._graph_definition.output_feature_names
+            targets = self._graph_definition.output_feature_names
+        all_targets = []
+        for id in target_sensor_id:
+            for target in targets:
+                all_targets.append(target + f"_sensor_{id}")
+
+        self._targets = all_targets
         # Base class constructor
         super().__init__(key=key)
 

@@ -233,6 +233,8 @@ class SuperResolution(Task):
             prediction_labels.append(label + "_pred")  # type: ignore
         self._default_prediction_labels = prediction_labels
         self._nb_inputs = 21648  # len(self.default_prediction_labels)
+        assert len(self._default_prediction_labels) == self._nb_inputs
+
         super().__init__(*args, **kwargs)
 
     def _forward(self, x: Tensor) -> Tensor:
