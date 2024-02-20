@@ -129,7 +129,7 @@
     <link rel="author" title="About these documents" href="../about.html" />
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="filters" href="graphnet.data.filters.html" />
+    <link rel="next" title="datamodule" href="graphnet.data.datamodule.html" />
     <link rel="prev" title="dataconverter" href="graphnet.data.dataconverter.html" />
   
    
@@ -330,6 +330,20 @@
     <li class="md-nav__item">
     
     
+      <a href="graphnet.data.pre_configured.html" class="md-nav__link">pre_configured</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="graphnet.data.readers.html" class="md-nav__link">readers</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
       <a href="graphnet.data.sqlite.html" class="md-nav__link">sqlite</a>
       
     
@@ -344,7 +358,21 @@
     <li class="md-nav__item">
     
     
+      <a href="graphnet.data.writers.html" class="md-nav__link">writers</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
       <a href="graphnet.data.constants.html" class="md-nav__link">constants</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="graphnet.data.dataclasses.html" class="md-nav__link">dataclasses</a>
       
     
     </li>
@@ -365,59 +393,16 @@
       
         
 <nav class="md-nav md-nav--secondary">
-    <label class="md-nav__title" for="__toc">"Contents"</label>
   <ul class="md-nav__list" data-md-scrollfix="">
-        <li class="md-nav__item"><a href="#api-graphnet-data-dataloader--page-root" class="md-nav__link">dataloader</a><nav class="md-nav">
-              <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#graphnet.data.dataloader.collate_fn" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">collate_fn()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#graphnet.data.dataloader.do_shuffle" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">do_shuffle()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#graphnet.data.dataloader.DataLoader" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">DataLoader</span></code></a><nav class="md-nav">
-              <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#graphnet.data.dataloader.DataLoader.from_dataset_config" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">from_dataset_config()</span></code></a>
-        </li></ul>
-            </nav>
-        </li></ul>
-            </nav>
-        </li>
   </ul>
 </nav>
-      <ul class="md-nav__list"> 
-    <li class="md-nav__item">
-    
-    
-      <a href="#graphnet.data.dataloader.collate_fn" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">collate_fn()</span></code></a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="#graphnet.data.dataloader.do_shuffle" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">do_shuffle()</span></code></a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="#graphnet.data.dataloader.DataLoader" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">DataLoader</span></code></a>
-      <ul class="md-nav__list"> 
-    <li class="md-nav__item">
-    
-    
-      <a href="#graphnet.data.dataloader.DataLoader.from_dataset_config" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">from_dataset_config()</span></code></a>
-      
-    
-    </li></ul>
-    
-    </li></ul>
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="graphnet.data.filters.html" class="md-nav__link">filters</a>
+      <a href="graphnet.data.datamodule.html" class="md-nav__link">datamodule</a>
       
     
     </li>
@@ -486,22 +471,7 @@
               <div class="md-sidebar__inner">
                 
 <nav class="md-nav md-nav--secondary">
-    <label class="md-nav__title" for="__toc">"Contents"</label>
   <ul class="md-nav__list" data-md-scrollfix="">
-        <li class="md-nav__item"><a href="#api-graphnet-data-dataloader--page-root" class="md-nav__link">dataloader</a><nav class="md-nav">
-              <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#graphnet.data.dataloader.collate_fn" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">collate_fn()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#graphnet.data.dataloader.do_shuffle" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">do_shuffle()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#graphnet.data.dataloader.DataLoader" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">DataLoader</span></code></a><nav class="md-nav">
-              <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#graphnet.data.dataloader.DataLoader.from_dataset_config" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">from_dataset_config()</span></code></a>
-        </li></ul>
-            </nav>
-        </li></ul>
-            </nav>
-        </li>
   </ul>
 </nav>
               </div>
@@ -511,73 +481,8 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  <section id="module-graphnet.data.dataloader">
-<span id="dataloader"></span><h1 id="api-graphnet-data-dataloader--page-root">dataloader<a class="headerlink" href="#api-graphnet-data-dataloader--page-root" title="Link to this heading">¶</a></h1>
-<p>Base <cite>Dataloader</cite> class(es) used in <cite>graphnet</cite>.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="graphnet.data.dataloader.collate_fn">
-<span class="sig-prename descclassname"><span class="pre">graphnet.data.dataloader.</span></span><span class="sig-name descname"><span class="pre">collate_fn</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graphs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/data/dataloader.html#collate_fn"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.dataloader.collate_fn" title="Link to this definition">¶</a></dt>
-<dd><p>Remove graphs with less than two DOM hits.</p>
-<p>Should not occur in “production.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Batch</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>graphs</strong> (<em>List</em><em>[</em><em>Data</em><em>]</em>) – </p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="graphnet.data.dataloader.do_shuffle">
-<span class="sig-prename descclassname"><span class="pre">graphnet.data.dataloader.</span></span><span class="sig-name descname"><span class="pre">do_shuffle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">selection_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/data/dataloader.html#do_shuffle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.dataloader.do_shuffle" title="Link to this definition">¶</a></dt>
-<dd><p>Check whether to shuffle selection with name <cite>selection_name</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>selection_name</strong> (<em>str</em>) – </p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py class">
-<dt class="sig sig-object py" id="graphnet.data.dataloader.DataLoader">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphnet.data.dataloader.</span></span><span class="sig-name descname"><span class="pre">DataLoader</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shuffle</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_workers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">persistent_workers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">collate_fn=&lt;function</span> <span class="pre">collate_fn&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prefetch_factor</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">**kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/data/dataloader.html#DataLoader"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.dataloader.DataLoader" title="Link to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code></p>
-<p>Class for loading data from a <cite>Dataset</cite>.</p>
-<p>Construct <cite>DataLoader</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dataset</strong> (<em>Dataset</em><em>[</em><em>T_co</em><em>]</em>) – </p></li>
-<li><p><strong>batch_size</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
-<li><p><strong>shuffle</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>num_workers</strong> (<em>int</em>) – </p></li>
-<li><p><strong>persistent_workers</strong> (<em>bool</em>) – </p></li>
-<li><p><strong>collate_fn</strong> (<em>Callable</em>) – </p></li>
-<li><p><strong>prefetch_factor</strong> (<em>int</em><em> | </em><em>None</em>) – </p></li>
-<li><p><strong>kwargs</strong> (<em>Any</em>) – </p></li>
-</ul>
-</dd>
-</dl>
-<dl class="py method">
-<dt class="sig sig-object py" id="graphnet.data.dataloader.DataLoader.from_dataset_config">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dataset_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/data/dataloader.html#DataLoader.from_dataset_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.data.dataloader.DataLoader.from_dataset_config" title="Link to this definition">¶</a></dt>
-<dd><p>Construct <cite>DataLoader`s based on selections in `DatasetConfig</cite>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference internal" href="#graphnet.data.dataloader.DataLoader" title="graphnet.data.dataloader.DataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <a class="reference internal" href="#graphnet.data.dataloader.DataLoader" title="graphnet.data.dataloader.DataLoader"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataLoader</span></code></a>]]</span></p>
-</dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>config</strong> (<a class="reference internal" href="graphnet.utilities.config.dataset_config.html#graphnet.utilities.config.dataset_config.DatasetConfig" title="graphnet.utilities.config.dataset_config.DatasetConfig"><em>DatasetConfig</em></a>) – </p></li>
-<li><p><strong>kwargs</strong> (<em>Any</em>) – </p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-</dd></dl>
+  <section id="dataloader">
+<h1 id="api-graphnet-data-dataloader--page-root">dataloader<a class="headerlink" href="#api-graphnet-data-dataloader--page-root" title="Link to this heading">¶</a></h1>
 </section>
 
 
@@ -604,12 +509,12 @@
             </a>
           
           
-            <a href="graphnet.data.filters.html" title="filters"
+            <a href="graphnet.data.datamodule.html" title="datamodule"
                class="md-flex md-footer-nav__link md-footer-nav__link--next"
                rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
                 class="md-flex__ellipsis"> <span
-                class="md-footer-nav__direction"> "Next" </span> filters </span>
+                class="md-footer-nav__direction"> "Next" </span> datamodule </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink"><i
                 class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
