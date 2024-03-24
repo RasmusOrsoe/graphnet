@@ -637,6 +637,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_loss_weight_default_value</span> <span class="o">=</span> <span class="n">loss_weight_default_value</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_graph_definition</span> <span class="o">=</span> <span class="n">deepcopy</span><span class="p">(</span><span class="n">graph_definition</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_labels</span> <span class="o">=</span> <span class="n">labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_string_column</span> <span class="o">=</span> <span class="n">graph_definition</span><span class="o">.</span><span class="n">_detector</span><span class="o">.</span><span class="n">string_index_name</span>
 
         <span class="k">if</span> <span class="n">node_truth</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">node_truth_table</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
@@ -661,7 +662,10 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_string_selection</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"string in </span><span class="si">{</span><span class="nb">str</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_string_selection</span><span class="p">))</span><span class="si">}</span><span class="s2">"</span>
+            <span class="c1"># Broken into multple lines lines for length</span>
+            <span class="n">col</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_string_column</span>
+            <span class="n">condition</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_string_selection</span><span class="p">))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_selection</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> in </span><span class="si">{</span><span class="n">condition</span><span class="si">}</span><span class="s2">"</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">_loss_weight_column</span> <span class="o">=</span> <span class="n">loss_weight_column</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_loss_weight_table</span> <span class="o">=</span> <span class="n">loss_weight_table</span>
@@ -692,7 +696,6 @@
 
         <span class="c1"># Implementation-specific initialisation.</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init</span><span class="p">()</span>
-
 
         <span class="c1"># Set unique indices</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_indices</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">List</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">int</span><span class="p">]]]</span>

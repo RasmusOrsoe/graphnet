@@ -425,11 +425,13 @@
         <span class="k">if</span> <span class="n">sequential_index</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">index_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indices</span><span class="p">[</span><span class="n">sequential_index</span><span class="p">]</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_database_list</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index_</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
-                <span class="n">index</span> <span class="o">=</span> <span class="n">index_</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index_</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                    <span class="n">index_</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">index_</span><span class="p">)</span>  <span class="c1"># type: ignore</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index_</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
-                <span class="n">index</span> <span class="o">=</span> <span class="n">index_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index_</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+                    <span class="n">index_</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">index_</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+            <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index_</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">index_</span>
         <span class="k">return</span> <span class="n">index</span>
 
     <span class="c1"># Custom, internal method(s)</span>
