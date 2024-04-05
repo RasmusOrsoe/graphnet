@@ -1,8 +1,8 @@
 
-fitting
+liquido
 =======
 
-.. automodule:: graphnet.pisa.fitting
+.. automodule:: graphnet.models.detector.liquido
    :members:
    :undoc-members:
    :show-inheritance:

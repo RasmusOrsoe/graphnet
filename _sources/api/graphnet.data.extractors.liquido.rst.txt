@@ -1,9 +1,9 @@
 
-pisa
-====
+liquido
+=======
 
 
-.. automodule:: graphnet.pisa
+.. automodule:: graphnet.data.extractors.liquido
    :members:
    :undoc-members:
    :show-inheritance:
@@ -15,8 +15,7 @@ pisa
 .. toctree::
    :maxdepth: 2
 
-   graphnet.pisa.fitting
-   graphnet.pisa.plotting
+   graphnet.data.extractors.liquido.h5_extractor
 
 
 
