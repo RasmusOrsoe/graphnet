@@ -1,18 +1,31 @@
 """Modules for reading data files from the Prometheus project."""
 
-from typing import List, Union, OrderedDict
+from typing import List, Union, OrderedDict, Optional
 import pandas as pd
 from pathlib import Path
 
 from graphnet.data.extractors.prometheus import PrometheusExtractor
+from graphnet.data.extractors.prometheus.utilities import PrometheusFilter
 from .graphnet_file_reader import GraphNeTFileReader
 
 
 class PrometheusReader(GraphNeTFileReader):
     """A class for reading parquet files from Prometheus simulation."""
 
-    _accepted_file_extensions = [".parquet"]
-    _accepted_extractors = [PrometheusExtractor]
+    def __init__(
+        self, filters: Optional[List[PrometheusFilter]] = None
+    ) -> None:
+        """Initialize reader.
+
+        Args:
+            filters: A list of filters to apply on Prometheus files.
+                If a single filter returns False, the event will be skipped.
+                Defaults to None.
+        """
+        # Member Variables
+        self._filters = filters
+        self._accepted_file_extensions = [".parquet"]
+        self._accepted_extractors = [PrometheusExtractor]
 
     def __call__(self, file_path: str) -> List[OrderedDict]:
         """Extract data from single parquet file.
@@ -28,12 +41,28 @@ class PrometheusReader(GraphNeTFileReader):
         file = pd.read_parquet(file_path)
         for k in range(len(file)):  # Loop over events in file
             extracted_event = OrderedDict()
+            keep_event = True
             for extractor in self._extractors:
                 assert isinstance(extractor, PrometheusExtractor)
                 if extractor._table in file.columns:
                     output = extractor(file[extractor._table][k])
+
+                    # Apply filter. If one filter returns False, the event is
+                    # skipped.
+                    if self._filters is not None:
+                        filter_counter = 0
+                        for filter in self._filters:
+                            if extractor._table == filter._filter_on:
+                                # True + False = 1, True + True = 2
+                                filter_counter += filter(output)
+                        if filter_counter < len(self._filters):
+                            keep_event = False
+                        else:
+                            keep_event = True
+
                     extracted_event[extractor._extractor_name] = output
-            outputs.append(extracted_event)
+            if keep_event:
+                outputs.append(extracted_event)
         return outputs
 
     def find_files(self, path: Union[str, List[str]]) -> List[str]:
