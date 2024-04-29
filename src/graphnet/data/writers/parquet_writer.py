@@ -144,8 +144,8 @@ class ParquetWriter(GraphNeTWriter):
     def _identify_events(
         self, index_column: str, truth_files: List[str], truth_table: str
     ) -> pd.DataFrame:
-        res = pol.DataFrame()
-        for truth_file in truth_files:
+        dfs = []
+        for truth_file in tqdm(truth_files, desc="Preparing files"):
             df = pol.read_parquet(truth_file)
             df2 = pol.concat(
                 [
@@ -163,7 +163,8 @@ class ParquetWriter(GraphNeTWriter):
                 ],
                 how="horizontal",
             )
-            res = pol.concat([res, df2])
+            dfs.append(df2)
+        res = pol.concat(dfs)
         return res.to_pandas().sample(frac=1.0)
 
     def _split_dataframe(

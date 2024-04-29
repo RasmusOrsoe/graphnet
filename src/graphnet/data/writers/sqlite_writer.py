@@ -165,7 +165,9 @@ class SQLiteWriter(GraphNeTWriter):
             self._largest_table = 0
 
         # Merge temporary databases into newly created one
-        for file_count, input_file in tqdm(enumerate(files), colour="green"):
+        for file_count, input_file in tqdm(
+            enumerate(files), colour="green", total=len(files)
+        ):
             # Extract table names and index column name in database
             try:
                 tables, primary_key = get_primary_keys(database=input_file)
