@@ -1,7 +1,7 @@
 """SQLite-specific utility functions for use in `graphnet.data`."""
 
 import os.path
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Optional
 
 import pandas as pd
 import sqlalchemy
@@ -97,7 +97,12 @@ def run_sql_code(database_path: str, code: str) -> None:
     c.close()
 
 
-def save_to_sql(df: pd.DataFrame, table_name: str, database_path: str) -> None:
+def save_to_sql(
+    df: pd.DataFrame,
+    table_name: str,
+    database_path: str,
+    chunk_size: Optional[int],
+) -> None:
     """Save a dataframe `df` to a table `table_name` in SQLite `database`.
 
     Table must exist already.
@@ -106,9 +111,17 @@ def save_to_sql(df: pd.DataFrame, table_name: str, database_path: str) -> None:
         df: Dataframe with data to be stored in sqlite table
         table_name: Name of table. Must exist already
         database_path: Path to SQLite database
+        chunk_size: If given, chunk_size rows of the dataframe will be written
+        to sqlite at a time, severely decreasing the memory consumption.
     """
     engine = sqlalchemy.create_engine("sqlite:///" + database_path)
-    df.to_sql(table_name, con=engine, index=False, if_exists="append")
+    df.to_sql(
+        table_name,
+        con=engine,
+        index=False,
+        if_exists="append",
+        chunksize=chunk_size,
+    )
     engine.dispose()
 
 
@@ -192,6 +205,7 @@ def create_table_and_save_to_sql(
     index_column: str = "event_no",
     default_type: str = "NOT NULL",
     integer_primary_key: bool = True,
+    chunk_size: Optional[int] = None,
 ) -> None:
     """Create table if it doesn't exist and save dataframe to it."""
     if not database_table_exists(database_path, table_name):
@@ -203,4 +217,9 @@ def create_table_and_save_to_sql(
             default_type=default_type,
             integer_primary_key=integer_primary_key,
         )
-    save_to_sql(df, table_name=table_name, database_path=database_path)
+    save_to_sql(
+        df=df,
+        table_name=table_name,
+        database_path=database_path,
+        chunk_size=chunk_size,
+    )
