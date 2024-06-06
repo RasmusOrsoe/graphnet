@@ -66,9 +66,9 @@ class MaxPhotonCount(PrometheusFilter):
             event: photons from event.
 
         Returns:
-            True if event exceeds limit on photon count.
+            False if event exceeds limit on photon count.
         """
-        if len(event) > self._max_photons:
+        if len(event) < self._max_photons:
             return True
         else:
             return False
