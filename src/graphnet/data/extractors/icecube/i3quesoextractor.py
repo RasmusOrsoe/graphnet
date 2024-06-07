@@ -25,6 +25,7 @@ class I3QUESOExtractor(I3Extractor):
         """Extract Event Selection Labels from the QUESO event selection."""
         keys = [
             "QuesoL3_Bool",
+            "QuesoL4_Bool",
             "QuesoL3_Vars_cleaned_length",
             "QuesoL3_Vars_cleaned_num_hit_modules",
             "QuesoL3_Vars_cleaned_num_hits_fid_vol",
