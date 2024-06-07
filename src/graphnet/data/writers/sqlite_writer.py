@@ -70,7 +70,7 @@ class SQLiteWriter(GraphNeTWriter):
         # Concatenate data
         if len(data) == 0:
             self.warning(
-                "No data was extracted from the processed I3 file(s). "
+                "No data was extracted from the processed file. "
                 f"No data saved to {output_file_path}"
             )
             return
