@@ -72,7 +72,7 @@ class PrometheusReader(GraphNeTFileReader):
                     if extractor._table in file.columns:
                         output = extractor(file[extractor._table][k])
                         extracted_event[extractor._extractor_name] = output
-                # Apply filter. If one filter returns False, the event is skipped.
+                # Apply filter. If one filter returns False event is skipped.
                 if self._keep_event(extracted_event=extracted_event):
                     outputs.append(extracted_event)
         except ArrowInvalid:
