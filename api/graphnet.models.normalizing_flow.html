@@ -61,7 +61,7 @@
 </script>
   
   
-    <title>graphnet.models.utils module &#8212; graphnet  documentation</title>
+    <title>graphnet.models.normalizing_flow module &#8212; graphnet  documentation</title>
 
 <style>
   dt:target {
@@ -128,8 +128,8 @@
     <link rel="icon" href="../_static/favicon.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="graphnet.training package" href="graphnet.training.html" />
-    <link rel="prev" title="graphnet.models.standard_model module" href="graphnet.models.standard_model.html" />
+    <link rel="next" title="graphnet.models.standard_averaged_model module" href="graphnet.models.standard_averaged_model.html" />
+    <link rel="prev" title="graphnet.models.model module" href="graphnet.models.model.html" />
   
    
 
@@ -148,7 +148,7 @@
   <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer">
   <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search">
   <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
-  <a href="#api/graphnet.models.utils" tabindex="1" class="md-skip"> Skip to content </a>
+  <a href="#api/graphnet.models.normalizing_flow" tabindex="1" class="md-skip"> Skip to content </a>
   <header class="md-header" data-md-component="header">
   <nav class="md-header-nav md-grid">
     <div class="md-flex navheader">
@@ -166,7 +166,7 @@
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           <span class="md-header-nav__topic">GraphNeT</span>
-          <span class="md-header-nav__topic"> graphnet.models.utils module </span>
+          <span class="md-header-nav__topic"> graphnet.models.normalizing_flow module </span>
         </div>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
@@ -397,8 +397,60 @@
     <li class="md-nav__item">
     
     
-      <a href="graphnet.models.normalizing_flow.html" class="md-nav__link">graphnet.models.normalizing_flow module</a>
+    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+    <label class="md-nav__link md-nav__link--active" for="__toc"> graphnet.models.normalizing_flow module </label>
+    
+      <a href="#" class="md-nav__link md-nav__link--active">graphnet.models.normalizing_flow module</a>
       
+        
+<nav class="md-nav md-nav--secondary">
+    <label class="md-nav__title" for="__toc">"Contents"</label>
+  <ul class="md-nav__list" data-md-scrollfix="">
+        <li class="md-nav__item"><a href="#api-graphnet-models-normalizing-flow--page-root" class="md-nav__link">graphnet.models.normalizing_flow module</a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#graphnet.models.normalizing_flow.NormalizingFlow" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">NormalizingFlow</span></code></a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#graphnet.models.normalizing_flow.NormalizingFlow.forward" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a>
+        </li>
+        <li class="md-nav__item"><a href="#graphnet.models.normalizing_flow.NormalizingFlow.shared_step" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">shared_step()</span></code></a>
+        </li>
+        <li class="md-nav__item"><a href="#graphnet.models.normalizing_flow.NormalizingFlow.validate_tasks" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">validate_tasks()</span></code></a>
+        </li></ul>
+            </nav>
+        </li></ul>
+            </nav>
+        </li>
+  </ul>
+</nav>
+      <ul class="md-nav__list"> 
+    <li class="md-nav__item">
+    
+    
+      <a href="#graphnet.models.normalizing_flow.NormalizingFlow" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">NormalizingFlow</span></code></a>
+      <ul class="md-nav__list"> 
+    <li class="md-nav__item">
+    
+    
+      <a href="#graphnet.models.normalizing_flow.NormalizingFlow.forward" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#graphnet.models.normalizing_flow.NormalizingFlow.shared_step" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">shared_step()</span></code></a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="#graphnet.models.normalizing_flow.NormalizingFlow.validate_tasks" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">validate_tasks()</span></code></a>
+      
+    
+    </li></ul>
+    
+    </li></ul>
     
     </li>
     <li class="md-nav__item">
@@ -418,67 +470,8 @@
     <li class="md-nav__item">
     
     
-    <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    <label class="md-nav__link md-nav__link--active" for="__toc"> graphnet.models.utils module </label>
-    
-      <a href="#" class="md-nav__link md-nav__link--active">graphnet.models.utils module</a>
+      <a href="graphnet.models.utils.html" class="md-nav__link">graphnet.models.utils module</a>
       
-        
-<nav class="md-nav md-nav--secondary">
-    <label class="md-nav__title" for="__toc">"Contents"</label>
-  <ul class="md-nav__list" data-md-scrollfix="">
-        <li class="md-nav__item"><a href="#api-graphnet-models-utils--page-root" class="md-nav__link">graphnet.models.utils module</a><nav class="md-nav">
-              <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#graphnet.models.utils.calculate_xyzt_homophily" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">calculate_xyzt_homophily()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#graphnet.models.utils.calculate_distance_matrix" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">calculate_distance_matrix()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#graphnet.models.utils.knn_graph_batch" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">knn_graph_batch()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#graphnet.models.utils.array_to_sequence" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">array_to_sequence()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#graphnet.models.utils.get_fields" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">get_fields()</span></code></a>
-        </li></ul>
-            </nav>
-        </li>
-  </ul>
-</nav>
-      <ul class="md-nav__list"> 
-    <li class="md-nav__item">
-    
-    
-      <a href="#graphnet.models.utils.calculate_xyzt_homophily" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">calculate_xyzt_homophily()</span></code></a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="#graphnet.models.utils.calculate_distance_matrix" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">calculate_distance_matrix()</span></code></a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="#graphnet.models.utils.knn_graph_batch" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">knn_graph_batch()</span></code></a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="#graphnet.models.utils.array_to_sequence" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">array_to_sequence()</span></code></a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="#graphnet.models.utils.get_fields" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">get_fields()</span></code></a>
-      
-    
-    </li></ul>
     
     </li></ul>
     
@@ -522,17 +515,17 @@
 <nav class="md-nav md-nav--secondary">
     <label class="md-nav__title" for="__toc">"Contents"</label>
   <ul class="md-nav__list" data-md-scrollfix="">
-        <li class="md-nav__item"><a href="#api-graphnet-models-utils--page-root" class="md-nav__link">graphnet.models.utils module</a><nav class="md-nav">
+        <li class="md-nav__item"><a href="#api-graphnet-models-normalizing-flow--page-root" class="md-nav__link">graphnet.models.normalizing_flow module</a><nav class="md-nav">
               <ul class="md-nav__list">
-        <li class="md-nav__item"><a href="#graphnet.models.utils.calculate_xyzt_homophily" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">calculate_xyzt_homophily()</span></code></a>
+        <li class="md-nav__item"><a href="#graphnet.models.normalizing_flow.NormalizingFlow" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">NormalizingFlow</span></code></a><nav class="md-nav">
+              <ul class="md-nav__list">
+        <li class="md-nav__item"><a href="#graphnet.models.normalizing_flow.NormalizingFlow.forward" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">forward()</span></code></a>
         </li>
-        <li class="md-nav__item"><a href="#graphnet.models.utils.calculate_distance_matrix" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">calculate_distance_matrix()</span></code></a>
+        <li class="md-nav__item"><a href="#graphnet.models.normalizing_flow.NormalizingFlow.shared_step" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">shared_step()</span></code></a>
         </li>
-        <li class="md-nav__item"><a href="#graphnet.models.utils.knn_graph_batch" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">knn_graph_batch()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#graphnet.models.utils.array_to_sequence" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">array_to_sequence()</span></code></a>
-        </li>
-        <li class="md-nav__item"><a href="#graphnet.models.utils.get_fields" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">get_fields()</span></code></a>
+        <li class="md-nav__item"><a href="#graphnet.models.normalizing_flow.NormalizingFlow.validate_tasks" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">validate_tasks()</span></code></a>
+        </li></ul>
+            </nav>
         </li></ul>
             </nav>
         </li>
@@ -545,119 +538,98 @@
         <div class="md-content">
           <article class="md-content__inner md-typeset" role="main">
             
-  <section id="module-graphnet.models.utils">
-<span id="graphnet-models-utils-module"></span><h1 id="api-graphnet-models-utils--page-root">graphnet.models.utils module<a class="headerlink" href="#api-graphnet-models-utils--page-root" title="Link to this heading">¶</a></h1>
-<p>Utility functions for <cite>graphnet.models</cite>.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="graphnet.models.utils.calculate_xyzt_homophily">
-<span class="sig-prename descclassname"><span class="pre">graphnet.models.utils.</span></span><span class="sig-name descname"><span class="pre">calculate_xyzt_homophily</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">edge_index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/models/utils.html#calculate_xyzt_homophily"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.models.utils.calculate_xyzt_homophily" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate xyzt-homophily from a batch of graphs.</p>
-<p>Homophily is a graph scalar quantity that measures the likeness of
-variables in nodes. Notice that this calculator assumes a special order of
-input features in x.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code>]</span></p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Tuple, each element with shape [batch_size,1].</p>
-</dd>
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>Tensor</em>)</p></li>
-<li><p><strong>edge_index</strong> (<em>LongTensor</em>)</p></li>
-<li><p><strong>batch</strong> (<em>Batch</em>)</p></li>
-</ul>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="graphnet.models.utils.calculate_distance_matrix">
-<span class="sig-prename descclassname"><span class="pre">graphnet.models.utils.</span></span><span class="sig-name descname"><span class="pre">calculate_distance_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xyz_coords</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/models/utils.html#calculate_distance_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.models.utils.calculate_distance_matrix" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate the matrix of pairwise distances between pulses.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>xyz_coords</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span>) – (x,y,z)-coordinates of pulses, of shape [nb_doms, 3].</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Matrix of pairwise distances, of shape [nb_doms, nb_doms]</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="graphnet.models.utils.knn_graph_batch">
-<span class="sig-prename descclassname"><span class="pre">graphnet.models.utils.</span></span><span class="sig-name descname"><span class="pre">knn_graph_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/models/utils.html#knn_graph_batch"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.models.utils.knn_graph_batch" title="Link to this definition">¶</a></dt>
-<dd><p>Calculate k-nearest-neighbours with individual k for each batch event.</p>
+  <section id="module-graphnet.models.normalizing_flow">
+<span id="graphnet-models-normalizing-flow-module"></span><h1 id="api-graphnet-models-normalizing-flow--page-root">graphnet.models.normalizing_flow module<a class="headerlink" href="#api-graphnet-models-normalizing-flow--page-root" title="Link to this heading">¶</a></h1>
+<p>Standard model class(es).</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="graphnet.models.normalizing_flow.NormalizingFlow">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphnet.models.normalizing_flow.</span></span><span class="sig-name descname"><span class="pre">NormalizingFlow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/models/normalizing_flow.html#NormalizingFlow"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.models.normalizing_flow.NormalizingFlow" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="graphnet.models.easy_model.html#graphnet.models.easy_model.EasySyntax" title="graphnet.models.easy_model.EasySyntax"><code class="xref py py-class docutils literal notranslate"><span class="pre">EasySyntax</span></code></a></p>
+<p>A model for building (conditional) normalizing flows in GraphNeT.</p>
+<p>This model relies on <cite>jammy_flows</cite> for building and evaluating
+normalizing flows.
+<a class="reference external" href="https://thoglu.github.io/jammy_flows/usage/introduction.html">https://thoglu.github.io/jammy_flows/usage/introduction.html</a>
+for details.</p>
+<p>Build NormalizingFlow to learn (conditional) normalizing flows.</p>
+<p>NormalizingFlow is able to build, train and evaluate a wide suite of
+normalizing flows. Instead of optimizing a loss function, flows
+minimize a learned pdf of your data, providing you with a posterior
+distribution for every example instead of point-like predictions.</p>
+<p><cite>NormalizingFlow</cite> can be conditioned on existing fields in the
+DataRepresentation or latent representations from <cite>Models</cite>.</p>
+<p>NormalizingFlow is built upon <a class="reference external" href="https://github.com/thoglu/jammy_flows">https://github.com/thoglu/jammy_flows</a>,
+and we refer to their documentation for details on the flows.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>batch</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Batch</span></code></span>) – Batch of events.</p></li>
-<li><p><strong>k</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – A list of k’s.</p></li>
-<li><p><strong>columns</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>]</span>) – The columns of Data.x used for computing the distances. E.g.,
-Data.x[:,[0,1,2]]</p></li>
+<li><p><strong>graph_definition</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="graphnet.models.graphs.graph_definition.html#graphnet.models.graphs.graph_definition.GraphDefinition" title="graphnet.models.graphs.graph_definition.GraphDefinition"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphDefinition</span></code></a></span>) – The <cite>GraphDefinition</cite> to train the model on.</p></li>
+<li><p><strong>target_labels</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Name of target(s) to learn the pdf of.</p></li>
+<li><p><strong>backbone</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<a class="reference internal" href="graphnet.models.gnn.gnn.html#graphnet.models.gnn.gnn.GNN" title="graphnet.models.gnn.gnn.GNN"><code class="xref py py-class docutils literal notranslate"><span class="pre">GNN</span></code></a>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Architecture used to produce latent representations of</p></li>
+<li><p><strong>conditioned.</strong> (<em>the input data on which the pdf will be</em>)</p></li>
+<li><p><strong>None.</strong> (<em>Defaults to</em>)</p></li>
+<li><p><strong>condition_on</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>], <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – List of fields in Data objects to condition the</p></li>
+<li><p><strong>None.</strong></p></li>
+<li><p><strong>flow_layers</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">'gggt'</span></code>) – A string defining the flow layers.</p></li>
+<li><p><strong>https</strong> (<em>See</em>) – //thoglu.github.io/jammy_flows/usage/introduction.html</p></li>
+<li><p><strong>"gggt".</strong> (<em>for details. Defaults to</em>)</p></li>
+<li><p><strong>optimizer_class</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Type</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">&lt;class</span> <span class="pre">'torch.optim.adam.Adam'&gt;</span></code>) – Optimizer to use. Defaults to Adam.</p></li>
+<li><p><strong>optimizer_kwargs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Optimzier arguments. Defaults to None.</p></li>
+<li><p><strong>scheduler_class</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">type</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Learning rate scheduler to use. Defaults to None.</p></li>
+<li><p><strong>scheduler_kwargs</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Arguments to learning rate scheduler.</p></li>
+<li><p><strong>None.</strong></p></li>
+<li><p><strong>scheduler_config</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Defaults to None.</p></li>
+<li><p><strong>args</strong> (<em>Any</em>)</p></li>
+<li><p><strong>kwargs</strong> (<em>Any</em>)</p></li>
 </ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Batch</span></code></span></p>
-</dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Returns the same batch of events, but with updated edges.</p>
-</dd>
-</dl>
-</dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="graphnet.models.utils.array_to_sequence">
-<span class="sig-prename descclassname"><span class="pre">graphnet.models.utils.</span></span><span class="sig-name descname"><span class="pre">array_to_sequence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding_value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">excluding_value</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/models/utils.html#array_to_sequence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.models.utils.array_to_sequence" title="Link to this definition">¶</a></dt>
-<dd><p>Convert <cite>x</cite> of shape [n,d] into a padded sequence of shape [B, L, D].</p>
-<blockquote>
-<div><p>Where B is the batch size, L is the sequence length and D is the
-features for each time step.</p>
-</div></blockquote>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span>) – array-like tensor with shape <cite>[n,d]</cite> where <cite>n</cite> is the total number</p></li>
-<li><p><strong>features.</strong> (<em>of pulses in the batch and d is the number</em><em> of  </em><em>node</em>)</p></li>
-<li><p><strong>batch_idx</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">LongTensor</span></code></span>) – a LongTensor identifying which row in <cite>x</cite> belongs to
-which training example.
-E.g. <cite>torch_geometric.data.Batch.batch</cite>.</p></li>
-<li><p><strong>padding_value</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">0</span></code>) – The value to use for padding.</p></li>
-<li><p><strong>excluding_value</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></span>, default: <code class="docutils literal notranslate"><span class="pre">inf</span></code>) – This parameter represents a unique value that should
-not be present in the input tensor ‘x’</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Padded sequence with dimensions  [B, L, D].
-mask: A tensor that identifies masked entries in <cite>x</cite>.</p>
-<blockquote>
-<div><p>E.g. : <cite>masked_entries = x[mask]</cite></p>
-</div></blockquote>
-<p>seq_length: A tensor containing the number of pulses in each event.</p>
-</p>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if both <cite>backbone</cite> and <cite>condition_on</cite> is specified.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>x</p>
+<dd class="field-odd"><p>object</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.models.normalizing_flow.NormalizingFlow.forward">
+<span class="sig-name descname"><span class="pre">forward</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/models/normalizing_flow.html#NormalizingFlow.forward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.models.normalizing_flow.NormalizingFlow.forward" title="Link to this definition">¶</a></dt>
+<dd><p>Forward pass, chaining model components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span></p>
+</dd>
+<dt class="field-even">Parameters<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>data</strong> (<em>Data</em><em> | </em><em>List</em><em>[</em><em>Data</em><em>]</em>)</p>
 </dd>
 </dl>
 </dd></dl>
-<dl class="py function">
-<dt class="sig sig-object py" id="graphnet.models.utils.get_fields">
-<span class="sig-prename descclassname"><span class="pre">graphnet.models.utils.</span></span><span class="sig-name descname"><span class="pre">get_fields</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/models/utils.html#get_fields"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.models.utils.get_fields" title="Link to this definition">¶</a></dt>
-<dd><p>Extract named fields in Data object.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.models.normalizing_flow.NormalizingFlow.shared_step">
+<span class="sig-name descname"><span class="pre">shared_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">batch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/models/normalizing_flow.html#NormalizingFlow.shared_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.models.normalizing_flow.NormalizingFlow.shared_step" title="Link to this definition">¶</a></dt>
+<dd><p>Perform shared step.</p>
+<p>Applies the forward pass and the following loss calculation, shared
+between the training and validation step.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tensor</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>data</strong> (<em>Data</em><em> | </em><em>List</em><em>[</em><em>Data</em><em>]</em>)</p></li>
-<li><p><strong>fields</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>batch</strong> (<em>List</em><em>[</em><em>Data</em><em>]</em>)</p></li>
+<li><p><strong>batch_idx</strong> (<em>int</em>)</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="graphnet.models.normalizing_flow.NormalizingFlow.validate_tasks">
+<span class="sig-name descname"><span class="pre">validate_tasks</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/models/normalizing_flow.html#NormalizingFlow.validate_tasks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.models.normalizing_flow.NormalizingFlow.validate_tasks" title="Link to this definition">¶</a></dt>
+<dd><p>Verify that self._tasks contain compatible elements.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
+</dd>
+</dl>
+</dd></dl>
 </dd></dl>
 </section>
 
@@ -671,7 +643,7 @@ mask: A tensor that identifies masked entries in <cite>x</cite>.</p>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
           
-            <a href="graphnet.models.standard_model.html" title="graphnet.models.standard_model module"
+            <a href="graphnet.models.model.html" title="graphnet.models.model module"
                class="md-flex md-footer-nav__link md-footer-nav__link--prev"
                rel="prev">
               <div class="md-flex__cell md-flex__cell--shrink">
@@ -680,17 +652,17 @@ mask: A tensor that identifies masked entries in <cite>x</cite>.</p>
               <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
                 <span class="md-flex__ellipsis">
                   <span
-                      class="md-footer-nav__direction"> "Previous" </span> graphnet.models.standard_model module </span>
+                      class="md-footer-nav__direction"> "Previous" </span> graphnet.models.model module </span>
               </div>
             </a>
           
           
-            <a href="graphnet.training.html" title="graphnet.training package"
+            <a href="graphnet.models.standard_averaged_model.html" title="graphnet.models.standard_averaged_model module"
                class="md-flex md-footer-nav__link md-footer-nav__link--next"
                rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
                 class="md-flex__ellipsis"> <span
-                class="md-footer-nav__direction"> "Next" </span> graphnet.training package </span>
+                class="md-footer-nav__direction"> "Next" </span> graphnet.models.standard_averaged_model module </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink"><i
                 class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>

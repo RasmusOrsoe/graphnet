@@ -498,8 +498,6 @@
 </li>
         <li><a href="api/graphnet.models.task.task.html#graphnet.models.task.task.LearnedTask.compute_loss">(graphnet.models.task.task.LearnedTask method)</a>
 </li>
-        <li><a href="api/graphnet.models.task.task.html#graphnet.models.task.task.StandardFlowTask.compute_loss">(graphnet.models.task.task.StandardFlowTask method)</a>
-</li>
         <li><a href="api/graphnet.models.task.task.html#graphnet.models.task.task.StandardLearnedTask.compute_loss">(graphnet.models.task.task.StandardLearnedTask method)</a>
 </li>
       </ul></li>
@@ -602,9 +600,13 @@
 </li>
         <li><a href="api/graphnet.models.task.task.html#graphnet.models.task.task.IdentityTask.default_prediction_labels">(graphnet.models.task.task.IdentityTask property)</a>
 </li>
+        <li><a href="api/graphnet.models.task.task.html#graphnet.models.task.task.StandardFlowTask.default_prediction_labels">(graphnet.models.task.task.StandardFlowTask property)</a>
+</li>
         <li><a href="api/graphnet.models.task.task.html#graphnet.models.task.task.Task.default_prediction_labels">(graphnet.models.task.task.Task property)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/graphnet.models.task.classification.html#graphnet.models.task.classification.BinaryClassificationTask.default_target_labels">default_target_labels (graphnet.models.task.classification.BinaryClassificationTask attribute)</a>
 
       <ul>
@@ -641,8 +643,6 @@
         <li><a href="api/graphnet.models.task.task.html#graphnet.models.task.task.Task.default_target_labels">(graphnet.models.task.task.Task property)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/graphnet.deployment.deployer.html#graphnet.deployment.deployer.Deployer">Deployer (class in graphnet.deployment.deployer)</a>
 </li>
       <li><a href="api/graphnet.deployment.deployment_module.html#graphnet.deployment.deployment_module.DeploymentModule">DeploymentModule (class in graphnet.deployment.deployment_module)</a>
@@ -866,6 +866,8 @@
 </li>
         <li><a href="api/graphnet.models.graphs.nodes.nodes.html#graphnet.models.graphs.nodes.nodes.NodeDefinition.forward">(graphnet.models.graphs.nodes.nodes.NodeDefinition method)</a>
 </li>
+        <li><a href="api/graphnet.models.normalizing_flow.html#graphnet.models.normalizing_flow.NormalizingFlow.forward">(graphnet.models.normalizing_flow.NormalizingFlow method)</a>
+</li>
         <li><a href="api/graphnet.models.rnn.node_rnn.html#graphnet.models.rnn.node_rnn.Node_RNN.forward">(graphnet.models.rnn.node_rnn.Node_RNN method)</a>
 </li>
         <li><a href="api/graphnet.models.standard_model.html#graphnet.models.standard_model.StandardModel.forward">(graphnet.models.standard_model.StandardModel method)</a>
@@ -952,6 +954,8 @@
       <li><a href="api/graphnet.utilities.config.base_config.html#graphnet.utilities.config.base_config.get_all_argument_values">get_all_argument_values() (in module graphnet.utilities.config.base_config)</a>
 </li>
       <li><a href="api/graphnet.utilities.config.parsing.html#graphnet.utilities.config.parsing.get_all_grapnet_classes">get_all_grapnet_classes() (in module graphnet.utilities.config.parsing)</a>
+</li>
+      <li><a href="api/graphnet.models.utils.html#graphnet.models.utils.get_fields">get_fields() (in module graphnet.models.utils)</a>
 </li>
       <li><a href="api/graphnet.utilities.config.parsing.html#graphnet.utilities.config.parsing.get_graphnet_classes">get_graphnet_classes() (in module graphnet.utilities.config.parsing)</a>
 </li>
@@ -1699,6 +1703,13 @@
 </li>
       </ul></li>
       <li>
+    graphnet.models.normalizing_flow
+
+      <ul>
+        <li><a href="api/graphnet.models.normalizing_flow.html#module-graphnet.models.normalizing_flow">module</a>
+</li>
+      </ul></li>
+      <li>
     graphnet.models.rnn
 
       <ul>
@@ -1948,13 +1959,15 @@
 </li>
       <li><a href="api/graphnet.data.extractors.liquido.h5_extractor.html#graphnet.data.extractors.liquido.h5_extractor.H5TruthExtractor">H5TruthExtractor (class in graphnet.data.extractors.liquido.h5_extractor)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/graphnet.utilities.logging.html#graphnet.utilities.logging.Logger.handlers">handlers (graphnet.utilities.logging.Logger property)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="api/graphnet.utilities.filesys.html#graphnet.utilities.filesys.has_extension">has_extension() (in module graphnet.utilities.filesys)</a>
 </li>
       <li><a href="api/graphnet.utilities.imports.html#graphnet.utilities.imports.has_icecube_package">has_icecube_package() (in module graphnet.utilities.imports)</a>
+</li>
+      <li><a href="api/graphnet.utilities.imports.html#graphnet.utilities.imports.has_jammy_flows_package">has_jammy_flows_package() (in module graphnet.utilities.imports)</a>
 </li>
       <li><a href="api/graphnet.utilities.imports.html#graphnet.utilities.imports.has_torch_package">has_torch_package() (in module graphnet.utilities.imports)</a>
 </li>
@@ -2454,6 +2467,8 @@
 </li>
         <li><a href="api/graphnet.models.model.html#module-graphnet.models.model">graphnet.models.model</a>
 </li>
+        <li><a href="api/graphnet.models.normalizing_flow.html#module-graphnet.models.normalizing_flow">graphnet.models.normalizing_flow</a>
+</li>
         <li><a href="api/graphnet.models.rnn.html#module-graphnet.models.rnn">graphnet.models.rnn</a>
 </li>
         <li><a href="api/graphnet.models.rnn.node_rnn.html#module-graphnet.models.rnn.node_rnn">graphnet.models.rnn.node_rnn</a>
@@ -2602,6 +2617,8 @@
       <li><a href="api/graphnet.models.graphs.nodes.nodes.html#graphnet.models.graphs.nodes.nodes.NodeDefinition">NodeDefinition (class in graphnet.models.graphs.nodes.nodes)</a>
 </li>
       <li><a href="api/graphnet.models.graphs.nodes.nodes.html#graphnet.models.graphs.nodes.nodes.NodesAsPulses">NodesAsPulses (class in graphnet.models.graphs.nodes.nodes)</a>
+</li>
+      <li><a href="api/graphnet.models.normalizing_flow.html#graphnet.models.normalizing_flow.NormalizingFlow">NormalizingFlow (class in graphnet.models.normalizing_flow)</a>
 </li>
       <li><a href="api/graphnet.data.extractors.icecube.utilities.i3_filters.html#graphnet.data.extractors.icecube.utilities.i3_filters.NullSplitI3Filter">NullSplitI3Filter (class in graphnet.data.extractors.icecube.utilities.i3_filters)</a>
 </li>
@@ -2862,6 +2879,8 @@
       <li><a href="api/graphnet.models.easy_model.html#graphnet.models.easy_model.EasySyntax.shared_step">shared_step() (graphnet.models.easy_model.EasySyntax method)</a>
 
       <ul>
+        <li><a href="api/graphnet.models.normalizing_flow.html#graphnet.models.normalizing_flow.NormalizingFlow.shared_step">(graphnet.models.normalizing_flow.NormalizingFlow method)</a>
+</li>
         <li><a href="api/graphnet.models.standard_model.html#graphnet.models.standard_model.StandardModel.shared_step">(graphnet.models.standard_model.StandardModel method)</a>
 </li>
       </ul></li>
@@ -3026,6 +3045,8 @@
       <li><a href="api/graphnet.models.easy_model.html#graphnet.models.easy_model.EasySyntax.validate_tasks">validate_tasks() (graphnet.models.easy_model.EasySyntax method)</a>
 
       <ul>
+        <li><a href="api/graphnet.models.normalizing_flow.html#graphnet.models.normalizing_flow.NormalizingFlow.validate_tasks">(graphnet.models.normalizing_flow.NormalizingFlow method)</a>
+</li>
         <li><a href="api/graphnet.models.standard_model.html#graphnet.models.standard_model.StandardModel.validate_tasks">(graphnet.models.standard_model.StandardModel method)</a>
 </li>
       </ul></li>
