@@ -51,12 +51,19 @@ class PrometheusTruthExtractor(PrometheusExtractor):
     This Extractor will "initial_state" i.e. neutrino truth.
     """
 
-    def __init__(self, table_name: str = "mc_truth") -> None:
+    def __init__(
+        self,
+        table_name: str = "mc_truth",
+        transform_azimuth: bool = True,
+    ) -> None:
         """Construct PrometheusTruthExtractor.
 
         Args:
             table_name: Name of the table in the parquet files that contain
                 event-level truth. Defaults to "mc_truth".
+            transform_azimuth: Some simulation has the azimuthal angle
+            written in a [-pi, pi] projection instead of [0, 2pi].
+            If True, the azimuthal angle will be transformed to [0, 2pi].
         """
         columns = [
             "interaction",
@@ -67,8 +74,23 @@ class PrometheusTruthExtractor(PrometheusExtractor):
             "initial_state_x",
             "initial_state_y",
             "initial_state_z",
+            "bjorken_x",
+            "bjorken_y",
         ]
+        self._transform_az = transform_azimuth
         super().__init__(extractor_name=table_name, columns=columns)
+
+    def __call__(self, event: pd.DataFrame) -> pd.DataFrame:
+        """Extract event-level truth information."""
+        # Extract data
+        res = super().__call__(event=event)
+        # transform azimuth from [-pi, pi] to [0, 2pi] if wanted
+        if self._transform_az:
+            if len(res["initial_state_azimuth"]) > 0:
+                azimuth = np.asarray(res["initial_state_azimuth"]) + np.pi
+                azimuth = azimuth.tolist()  # back to list
+                res["initial_state_azimuth"] = azimuth
+        return res
 
 
 class PrometheusFeatureExtractor(PrometheusExtractor):

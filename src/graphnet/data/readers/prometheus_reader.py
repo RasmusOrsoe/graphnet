@@ -40,7 +40,7 @@ class PrometheusReader(GraphNeTFileReader):
                     )
                 else:
                     self.warning_once(
-                        f"{filter._filter_on} not in file." " Filter skipped."
+                        f"{filter._filter_on} not in file. Filter skipped."
                     )
                     filter_counter += True
             if filter_counter < len(self._filters):
