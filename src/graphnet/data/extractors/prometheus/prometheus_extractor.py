@@ -1,9 +1,10 @@
 """Parquet Extractor for conversion of simulation files from PROMETHEUS."""
-from typing import List
+from typing import List, Dict, Any
 import pandas as pd
 import numpy as np
 
 from graphnet.data.extractors import Extractor
+from .utilities import compute_visible_inelasticity
 
 
 class PrometheusExtractor(Extractor):
@@ -28,7 +29,7 @@ class PrometheusExtractor(Extractor):
         # Base class constructor
         super().__init__(extractor_name=extractor_name)
 
-    def __call__(self, event: pd.DataFrame) -> pd.DataFrame:
+    def __call__(self, event: pd.DataFrame) -> Dict[str, Any]:
         """Extract information from parquet file."""
         output = {key: [] for key in self._columns}  # type: ignore
         for key in self._columns:
@@ -83,6 +84,7 @@ class PrometheusTruthExtractor(PrometheusExtractor):
     def __call__(self, event: pd.DataFrame) -> pd.DataFrame:
         """Extract event-level truth information."""
         # Extract data
+        visible_inelasticity = compute_visible_inelasticity(event)
         res = super().__call__(event=event)
         # transform azimuth from [-pi, pi] to [0, 2pi] if wanted
         if self._transform_az:
@@ -90,6 +92,7 @@ class PrometheusTruthExtractor(PrometheusExtractor):
                 azimuth = np.asarray(res["initial_state_azimuth"]) + np.pi
                 azimuth = azimuth.tolist()  # back to list
                 res["initial_state_azimuth"] = azimuth
+        res["visible_inelasticity"] = [visible_inelasticity]
         return res
 
 

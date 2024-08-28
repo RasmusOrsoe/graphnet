@@ -4,3 +4,4 @@ from .prometheus_extractor import (
     PrometheusTruthExtractor,
     PrometheusFeatureExtractor,
 )
+from .pulsemap_simulator import PulsemapSimulator

@@ -195,13 +195,17 @@ class ParquetWriter(GraphNeTWriter):
                         os.path.join(input_dir, table, unique_file)
                         + f"_{table}.parquet"
                     )
-                    df = pd.read_parquet(path)
+                    try:
+                        df = pd.read_parquet(path)
+                        id = split[index_column][
+                            split["file_name"] == unique_file
+                        ]
 
-                    id = split[index_column][split["file_name"] == unique_file]
-
-                    # Filter out indices that point to empty events
-                    idx = [i for i in id if i in df.index]
-                    table_shards.append(df.loc[idx, :])
+                        # Filter out indices that point to empty events
+                        idx = [i for i in id if i in df.index]
+                        table_shards.append(df.loc[idx, :])
+                    except FileNotFoundError:
+                        self.error(f"FileNotFoundError: {path}")
 
                 os.makedirs(os.path.join(outdir, table), exist_ok=True)
                 if len(table_shards) > 0:
