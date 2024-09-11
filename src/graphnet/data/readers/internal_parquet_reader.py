@@ -41,7 +41,7 @@ class ParquetReader(GraphNeTFileReader):
         Returns:
             List of parquet files in the folders.
         """
-        # Find all I3 and GCD files in the specified directories.
+        # Find paruqet files in the specified directories.
         files = []
         if isinstance(path, str):
             path = [path]
