@@ -29,7 +29,7 @@ class ParquetExtractor(Extractor):
 
     def __call__(self, file_path: str) -> pd.DataFrame:
         """Extract information from parquet file."""
-        if self._table == os.path.dirname(file_path):
+        if self._table == os.path.basename(os.path.dirname(file_path)):
             return pol.read_parquet(file_path).to_pandas()
         else:
             return None
