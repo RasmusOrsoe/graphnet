@@ -456,6 +456,9 @@ class PulsemapSimulator(PrometheusExtractor):
             lengths.append(len(photons[key]))
         lengths_array = np.array(lengths)
         # Check that lengths are equal
-        assert sum(lengths_array - lengths_array[0]) == 0
-
+        try:
+            assert sum(lengths_array - lengths_array[0]) == 0
+        except AssertionError as e:
+            print(lengths_array, flush=True)
+            raise e
         return lengths_array.tolist()[0]

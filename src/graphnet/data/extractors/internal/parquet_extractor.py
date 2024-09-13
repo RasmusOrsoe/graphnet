@@ -1,6 +1,7 @@
 """Parquet Extractor for conversion from internal parquet format."""
 import polars as pol
 import pandas as pd
+import os
 
 from graphnet.data.extractors import Extractor
 
@@ -28,7 +29,7 @@ class ParquetExtractor(Extractor):
 
     def __call__(self, file_path: str) -> pd.DataFrame:
         """Extract information from parquet file."""
-        if self._table in file_path:
+        if self._table == os.path.dirname(file_path):
             return pol.read_parquet(file_path).to_pandas()
         else:
             return None
