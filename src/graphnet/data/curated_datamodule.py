@@ -285,17 +285,7 @@ class ERDAHostedDataset(CuratedDataset):
             return
         else:
             # Download, unzip and delete zipped file
-
             os.makedirs(self.dataset_dir, exist_ok=True)
-
-            os.makedirs(self.dataset_dir)
-            _, file_name = os.path.split(file_hash)
-            extension = ".tar.gz" if ".tar.gz" not in file_name else ""
-            file_path = os.path.join(
-                self.dataset_dir,
-                file_name + extension,
-            )
-
             os.system(f"wget -O {file_path} {self._mirror}/{file_hash}")
             print("Unzipping file, this might take a while..")
             if self._backend == "parquet":
@@ -340,9 +330,6 @@ class PublicBenchmarkDataset(ERDAHostedDataset):
             download_dir: Directory to download dataset to.
             truth (Optional): List of event-level truth to include. Will
                             include all available information if not given.
-            features (Optional): List of input features from pulsemap to use.
-                                If not given, all available features will be
-                                used.
             backend (Optional): data backend to use. Either "parquet" or
                             "sqlite". Defaults to "parquet".
             train_dataloader_kwargs (Optional): Arguments for the training
@@ -381,14 +368,7 @@ class PublicBenchmarkDataset(ERDAHostedDataset):
             "visible_inelasticity",
         ]
         self._pulse_truth = "pulses"
-        self._features = [
-            "sensor_pos_x",
-            "sensor_pos_y",
-            "sensor_pos_z",
-            "t",
-            "charge",
-            "string_id",
-        ]
+        self._features = graph_definition._input_feature_names
 
         ERDAHostedDataset.__init__(
             self,
