@@ -122,6 +122,8 @@ class ParquetDataset(Dataset):
         # mypy..
         assert isinstance(self._path, str)
         self._path: str = self._path
+        # Remove missing chunks froms self._indices
+        self._remove_missing_chunk_ids()
         # Member Variables
         self._cache_size = cache_size
         self._batch_sizes = self._calculate_sizes()
@@ -135,6 +137,32 @@ class ParquetDataset(Dataset):
         # Purely internal member variables
         self._missing_variables: Dict[str, List[str]] = {}
         self._remove_missing_columns()
+
+    def _remove_missing_chunk_ids(self) -> None:
+        remove_these = []
+        # Identify chunk ids without files
+        for chunk_id in self._indices:
+            path = os.path.join(
+                self._path,
+                self._truth_table,
+                f"{self.truth_table}_{chunk_id}.parquet",
+            )
+            if not os.path.exists(path):
+                remove_these.append(chunk_id)
+
+        # Cast integer to list
+        if isinstance(self._indices, int):
+            self._indices = [self._indices]
+
+        # Remove chunks from list
+        if len(remove_these) > 0:
+            self.warning(
+                f"A `selection` was passed containing non-existing "
+                f"entries ({remove_these}) which have been removed."
+            )
+            for chunk_id in remove_these:
+                assert isinstance(chunk_id, (int, float))
+                self._indices.remove(chunk_id)  # type: ignore
 
     def _initialize_file_cache(
         self,
@@ -187,7 +215,12 @@ class ParquetDataset(Dataset):
     def _get_all_indices(self) -> List[int]:
         """Return a list of all unique values in `self._index_column`."""
         files = glob(os.path.join(self._path, self._truth_table, "*.parquet"))
-        return np.arange(0, len(files), 1)
+        ids = []
+        for file in files:
+            file_name = file.split("/")[-1].replace(self._truth_table, "")
+            file_name = file_name.replace("_", "")
+            ids.append(int(file_name.replace(".parquet", "")))
+        return np.array(ids)
 
     def _calculate_sizes(self) -> List[int]:
         """Calculate the number of events in each batch."""
