@@ -1,6 +1,6 @@
 """A series of utility functions for extraction of data from Prometheus."""
 
-from typing import Dict, Any
+from typing import Dict, Any, Tuple
 import pandas as pd
 from abc import abstractmethod
 import numpy as np
@@ -58,6 +58,26 @@ def compute_visible_inelasticity(mc_truth: pd.DataFrame) -> float:
             hadron_energy_em + muon_energy
         )
     return visible_inelasticity
+
+
+def get_muon_direction(mc_truth: pd.DataFrame) -> Tuple[float, float]:
+    """Get angles of muon in nu_mu CC events."""
+    final_type_1, final_type_2 = abs(mc_truth["final_state_type"])
+    if mc_truth["interaction"] != 1:
+        muon_zenith = -1
+        muon_azimuth = -1
+    elif not (final_type_1 == 13 or final_type_2 == 13):
+        muon_zenith = -1
+        muon_azimuth = -1
+    else:
+        # CC only
+        muon_zenith = mc_truth["final_state_zenith"][
+            abs(mc_truth["final_state_type"]) == 13
+        ][0]
+        muon_azimuth = mc_truth["final_state_azimuth"][
+            abs(mc_truth["final_state_type"]) == 13
+        ][0]
+    return muon_zenith, muon_azimuth
 
 
 class PrometheusFilter(Logger):

@@ -1,6 +1,17 @@
 """Contains `DataConverter`."""
-from typing import List, Union, OrderedDict, Dict, Tuple, Any, Optional, Type
+from typing import (
+    List,
+    Union,
+    OrderedDict,
+    Dict,
+    DefaultDict,
+    Tuple,
+    Any,
+    Optional,
+    Type,
+)
 from abc import abstractmethod, ABC
+from collections import defaultdict
 
 from tqdm import tqdm
 import numpy as np
@@ -98,8 +109,7 @@ class DataConverter(ABC, Logger):
         # Get the file reader to produce a list of input files
         # in the directory
         input_files = self._file_reader.find_files(path=input_dir)
-        self._launch_jobs(input_files=input_files)
-        self._output_files = [
+        candidate_file_names = [
             os.path.join(
                 self._output_dir,
                 self._create_file_name(file)
@@ -107,11 +117,46 @@ class DataConverter(ABC, Logger):
             )
             for file in input_files
         ]
+        output_files = self._rename_duplicates(candidate_file_names)
+        # file_map = {input_files[k]: output_files[k] for k in range(len(input_files))}
+        self._launch_jobs(
+            input_files=input_files, output_file_paths=output_files
+        )
+
+    def _rename_duplicates(self, files: List[str]) -> List[str]:
+        # Dictionary to track occurrences of each file
+        file_count: DefaultDict[str, int] = defaultdict(int)
+
+        # List to store updated file names
+        renamed_files = []
+
+        for file in files:
+            # Split the file into name and extension
+            name, extension = file.rsplit(".", 1)
+            file_name = os.path.basename(name) + f".{extension}"
+
+            # If the file has been encountered before, increment its count and rename it
+            if file_count[file_name] > 0:
+                new_name = os.path.join(
+                    os.path.dirname(file),
+                    f"{file_name}_{file_count[file_name]}.{extension}",
+                )
+            else:
+                new_name = file
+
+            # Increment the count for the file in file_count (after adding the file)
+            file_count[file_name] += 1
+
+            # Add the new name to the renamed_files list
+            renamed_files.append(new_name)
+
+        return renamed_files
 
     @final
     def _launch_jobs(
         self,
         input_files: Union[List[str], List[I3FileSet]],
+        output_file_paths: List[str],
     ) -> None:
         """Multi Processing Logic.
 
@@ -128,13 +173,18 @@ class DataConverter(ABC, Logger):
         # Iterate over files
         for _ in map_fn(
             self._process_file,
-            tqdm(input_files, unit=" file(s)", colour="green"),
+            tqdm(
+                zip(input_files, output_file_paths),
+                unit=" file(s)",
+                colour="green",
+                total=len(input_files),
+            ),
         ):
             self.debug("processing file.")
         self._update_shared_variables(pool)
 
     @final
-    def _process_file(self, file_path: Union[str, I3FileSet]) -> None:
+    def _process_file(self, args: Tuple[Union[str, I3FileSet], str]) -> None:
         """Process a single file.
 
         Calls file reader to recieve extracted output, event ids
@@ -142,6 +192,7 @@ class DataConverter(ABC, Logger):
 
         This function is called in parallel.
         """
+        file_path, output_file_path = args
         # Read and apply extractors
         data = self._file_reader(file_path=file_path)
 
@@ -169,12 +220,14 @@ class DataConverter(ABC, Logger):
         del data
 
         # Create output file name
-        output_file_name = self._create_file_name(input_file_path=file_path)
+
+        # output_file_name = self._output_files_map[file_path]
+        # output_file_name = self._create_file_name(input_file_path=file_path)
 
         # Apply save method
         self._save_method(
             data=dataframes,
-            file_name=output_file_name,
+            file_name=output_file_path,
             n_events=n_events,
             output_dir=self._output_dir,
         )

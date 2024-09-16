@@ -141,7 +141,7 @@ class PulsemapSimulator(PrometheusExtractor):
         photons = super().__call__(event=event)
 
         # Create empty variables - these will be returned if needed
-        features = self._columns + ["charge", "is_signal"]
+        features = self._columns + ["is_signal", "charge"]
         pulses: Dict[str, List] = {feature: [] for feature in features}
 
         # Return empty if not enough signal
@@ -195,7 +195,7 @@ class PulsemapSimulator(PrometheusExtractor):
                                 x=pulses["charge"], std=self._charge_std
                             )
                         )
-                    return pulses
+                    return {key: pulses[key] for key in features}
                 else:
                     return self._make_empty_return()
             else:
@@ -204,7 +204,7 @@ class PulsemapSimulator(PrometheusExtractor):
             return self._make_empty_return()
 
     def _make_empty_return(self) -> Dict[str, List]:
-        features = self._columns + ["charge", "is_signal"]
+        features = self._columns + ["is_signal", "charge"]
         pulses: Dict[str, List] = {feature: [] for feature in features}
         return pulses
 

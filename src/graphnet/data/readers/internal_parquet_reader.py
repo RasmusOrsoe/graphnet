@@ -4,6 +4,7 @@ from typing import List, Union, Dict
 from glob import glob
 import os
 import pandas as pd
+import random
 
 from graphnet.data.extractors.internal import ParquetExtractor
 from .graphnet_file_reader import GraphNeTFileReader
@@ -52,4 +53,5 @@ class ParquetReader(GraphNeTFileReader):
                         os.path.join(p, extractor._extractor_name, "*.parquet")
                     )
                 )
+        random.shuffle(files)
         return files

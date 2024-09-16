@@ -52,13 +52,19 @@ class ParquetWriter(GraphNeTWriter):
                 file_name = os.path.splitext(
                     os.path.basename(output_file_path)
                 )[0]
-
                 table_dir = os.path.join(save_path, f"{table}")
+                output_path_new = os.path.join(
+                    table_dir, file_name + f"_{table}.parquet"
+                )
                 os.makedirs(table_dir, exist_ok=True)
                 df = data[table].set_index(self._index_column)
-                df.to_parquet(
-                    os.path.join(table_dir, file_name + f"_{table}.parquet")
-                )
+                if os.path.isfile(output_path_new):
+                    self.warning(
+                        f"{os.path.basename(output_path_new)}"
+                        "already exists! Will be overwritten!"
+                    )
+
+                df.to_parquet(output_path_new)
 
     def merge_files(
         self,
