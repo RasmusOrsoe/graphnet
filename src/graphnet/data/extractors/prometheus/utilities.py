@@ -60,7 +60,9 @@ def compute_visible_inelasticity(mc_truth: pd.DataFrame) -> float:
     return visible_inelasticity
 
 
-def get_muon_direction(mc_truth: pd.DataFrame) -> Tuple[float, float]:
+def get_muon_direction(
+    mc_truth: pd.DataFrame, transform_az: bool = False
+) -> Tuple[float, float]:
     """Get angles of muon in nu_mu CC events."""
     final_type_1, final_type_2 = abs(mc_truth["final_state_type"])
     if mc_truth["interaction"] != 1:
@@ -77,6 +79,8 @@ def get_muon_direction(mc_truth: pd.DataFrame) -> Tuple[float, float]:
         muon_azimuth = mc_truth["final_state_azimuth"][
             abs(mc_truth["final_state_type"]) == 13
         ][0]
+        if transform_az:
+            muon_azimuth += np.pi
     return muon_zenith, muon_azimuth
 
 

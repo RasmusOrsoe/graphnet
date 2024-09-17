@@ -85,7 +85,9 @@ class PrometheusTruthExtractor(PrometheusExtractor):
         """Extract event-level truth information."""
         # Extract data
         visible_inelasticity = compute_visible_inelasticity(event)
-        muon_zenith, muon_azimuth = get_muon_direction(event)
+        muon_zenith, muon_azimuth = get_muon_direction(
+            event, self._transform_az
+        )
         res = super().__call__(event=event)
         # transform azimuth from [-pi, pi] to [0, 2pi] if wanted
         if self._transform_az:
@@ -93,7 +95,6 @@ class PrometheusTruthExtractor(PrometheusExtractor):
                 azimuth = np.asarray(res["initial_state_azimuth"]) + np.pi
                 azimuth = azimuth.tolist()  # back to list
                 res["initial_state_azimuth"] = azimuth
-                muon_azimuth += np.pi
         res["visible_inelasticity"] = [visible_inelasticity]
         res["muon_azimuth"] = [muon_azimuth]
         res["muon_zenith"] = [muon_zenith]
