@@ -175,18 +175,18 @@ class PulsemapSimulator(PrometheusExtractor):
                         photons=photons, column=self._time_column
                     )
 
-                    # Smear arrival time
-                    if self._time_std > 0:
-                        photons[self._time_column] = abs(
-                            self._smear_feature(
-                                x=photons[self._time_column],
-                                std=self._time_std,
-                            )
-                        ).tolist()
-
                     # Merge photons into pulses, add charge & delete photons
                     pulses = self._merge_into_pulses(photons=photons)
                     del photons  # save memory
+
+                    # Smear arrival time
+                    if self._time_std > 0:
+                        pulses[self._time_column] = abs(
+                            self._smear_feature(
+                                x=pulses[self._time_column],
+                                std=self._time_std,
+                            )
+                        ).tolist()
 
                     # Smear Charge
                     if self._charge_std > 0:
