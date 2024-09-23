@@ -318,12 +318,12 @@ class GraphNeTDataModule(pl.LightningDataModule, Logger):
         ParquetDataset, or Dataset. Raises a TypeError if an invalid dataset
         type is detected, or if an EnsembleDataset is used.
         """
-        allowed_types = (SQLiteDataset, ParquetDataset, Dataset)
-        if self._dataset not in allowed_types:
-            raise TypeError(
-                "dataset_reference must be an instance "
-                "of SQLiteDataset, ParquetDataset, or Dataset."
-            )
+        # allowed_types = (SQLiteDataset, ParquetDataset, Dataset)
+        # if not isinstance(self._dataset, allowed_types):
+        #    raise TypeError(
+        #        "dataset_reference must be an instance "
+        #        "of SQLiteDataset, ParquetDataset, or Dataset."
+        #    )
         if self._dataset is EnsembleDataset:
             raise TypeError(
                 "EnsembleDataset is not allowed as dataset_reference."

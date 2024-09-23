@@ -461,10 +461,10 @@ class StandardFlowTask(Task):
         labels = labels.to(self.dtype)
         # Set the initial parameters of flow close to truth
         # This speeds up training and helps with NaN
-        if (self._initialized is False) & (self.training):
-            self._flow.init_params(data=deepcopy(labels).cpu())
-            self._flow.to(self.device)
-            self._initialized = True  # This is only done once
+        # if (self._initialized is False) & (self.training):
+        #    self._flow.init_params(data=deepcopy(labels).cpu())
+        #    self._flow.to(self.device)
+        #    self._initialized = True  # This is only done once
         # Compute nllh
         x = self._forward(x, labels)
         return self._transform_prediction(x)

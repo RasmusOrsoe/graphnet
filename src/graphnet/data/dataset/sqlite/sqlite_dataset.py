@@ -57,7 +57,6 @@ class SQLiteDataset(Dataset):
 
         if not selection:  # I.e., `None` or `""`
             selection = "1=1"  # Identically true, to select all
-
         index = self._get_event_index(sequential_index)
 
         # Query table
