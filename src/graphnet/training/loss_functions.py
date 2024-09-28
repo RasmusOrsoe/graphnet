@@ -307,7 +307,7 @@ class VonMisesFisherLoss(LossFunction):
 
     @classmethod
     def log_cmk(
-        cls, m: int, kappa: Tensor, kappa_switch: float = 600.0
+        cls, m: int, kappa: Tensor, kappa_switch: float = 100.0
     ) -> Tensor:  # pylint: disable=invalid-name
         """Calculate $log C_{m}(k)$ term in von Mises-Fisher loss.
 
