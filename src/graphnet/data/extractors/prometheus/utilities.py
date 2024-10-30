@@ -36,7 +36,9 @@ def compute_visible_inelasticity(mc_truth: pd.DataFrame) -> float:
                 f"event. Got {mc_truth.keys()}"
             )
 
-    final_type_1, final_type_2 = abs(mc_truth["final_state_type"])
+    # final_type_1, final_type_2 = abs(mc_truth["final_state_type"])
+    final_state = abs(mc_truth["final_state_type"])
+    final_type_1, final_type_2 = final_state[0], final_state[1]
     if mc_truth["interaction"] != 1:
         visible_inelasticity = 1.0
     elif not (final_type_1 == 13 or final_type_2 == 13):
@@ -64,7 +66,8 @@ def get_muon_direction(
     mc_truth: pd.DataFrame, transform_az: bool = False
 ) -> Tuple[float, float]:
     """Get angles of muon in nu_mu CC events."""
-    final_type_1, final_type_2 = abs(mc_truth["final_state_type"])
+    final_state = abs(mc_truth["final_state_type"])
+    final_type_1, final_type_2 = final_state[0], final_state[1]
     if mc_truth["interaction"] != 1:
         muon_zenith = -1
         muon_azimuth = -1

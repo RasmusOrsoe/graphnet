@@ -73,12 +73,13 @@ class PrometheusReader(GraphNeTFileReader):
                         try:
                             output = extractor(file[extractor._table][k])
                             extracted_event[extractor._extractor_name] = output
-                        except:  # noqa
+                        except Exception as e:  # noqa
                             self.warning(
                                 "Unable to apply "
                                 f"{extractor.__class__.__name__} to"
                                 f" {file_path}."
                             )
+
                 # Apply filter. If one filter returns False event is skipped.
                 if self._keep_event(extracted_event=extracted_event):
                     outputs.append(extracted_event)
