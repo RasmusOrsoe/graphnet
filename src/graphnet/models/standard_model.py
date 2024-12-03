@@ -97,7 +97,7 @@ class StandardModel(EasySyntax):
         self, data: Union[Data, List[Data]]
     ) -> List[Union[Tensor, Data]]:
         """Forward pass, chaining model components."""
-        if isinstance(data, Data):
+        if isinstance(data, (Data, Tensor)):
             data = [data]
         x_list = []
         for d in data:
