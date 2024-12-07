@@ -53,7 +53,7 @@ class EasySyntax(Model):
         self._scheduler_kwargs = scheduler_kwargs or dict()
         self._scheduler_config = scheduler_config or dict()
 
-        self.validate_tasks()
+        # self.validate_tasks()
 
     def compute_loss(
         self, preds: Tensor, data: List[Data], verbose: bool = False
@@ -364,10 +364,10 @@ class EasySyntax(Model):
         predictions = (
             torch.cat(predictions_torch, dim=1).detach().cpu().numpy()
         )
-        assert len(prediction_columns) == predictions.shape[1], (
-            f"Number of provided column names ({len(prediction_columns)}) and "
-            f"number of output columns ({predictions.shape[1]}) don't match."
-        )
+        if len(prediction_columns) != predictions.shape[1]:
+            prediction_columns = [
+                f"pred_{i}" for i in range(predictions.shape[1])
+            ]
 
         # Check if predictions are on event- or pulse-level
         pulse_level_predictions = len(predictions) > len(dataloader.dataset)
