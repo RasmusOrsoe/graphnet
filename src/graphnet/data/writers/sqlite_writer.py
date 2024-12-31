@@ -101,6 +101,7 @@ class SQLiteWriter(GraphNeTWriter):
         output_dir: str,
         primary_key_rescue: str = "event_no",
         chunk_size: Optional[int] = None,
+        merged_database_name: str = "merged.db",
     ) -> None:
         """SQLite-specific method for merging output files/databases.
 
@@ -120,6 +121,7 @@ class SQLiteWriter(GraphNeTWriter):
                 possible to infer the primary key name.
             chunk_size: If given, databases will be merged `chunk_size` rows at
             a time.
+            merged_database_name: name of merged database
         """
         # Warnings
         if self._max_table_size:
@@ -133,6 +135,7 @@ class SQLiteWriter(GraphNeTWriter):
         self._partition_count = 1
         self._primary_key_rescue = primary_key_rescue
         self._chunk_size = chunk_size
+        self._database_name = merged_database_name
 
         # Construct full database path
         database_path = os.path.join(output_dir, self._database_name)

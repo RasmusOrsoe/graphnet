@@ -338,7 +338,10 @@ class PulsemapSimulator(PrometheusExtractor):
         # Adjust arrival time
         times_array = np.array(times)
         del times  # MyPy wanted this solution..
-        times_array = times_array + np.abs(low)  # Center to trigger window
+
+        # Center to trigger window
+        times_array = times_array + np.abs(low)
+        high += np.abs(low)
         photons[self._time_column] = times_array.tolist()
         return photons, high
 
