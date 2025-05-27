@@ -119,10 +119,10 @@
   }
 
 </style>
-    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=83e35b93" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=75810a84" />
     <link rel="stylesheet" type="text/css" href="../../../../_static/material.css?v=79c92029" />
     <script src="../../../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../../../../_static/favicon.svg"/>
     <link rel="index" title="Index" href="../../../../genindex.html" />
@@ -322,14 +322,7 @@
     <li class="md-nav__item">
     
     
-      <a href="../../../../api/graphnet.html" class="md-nav__link">Subpackages</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="../../../../api/graphnet.html#submodules" class="md-nav__link">Submodules</a>
+      <a href="../../../../api/graphnet.html" class="md-nav__link">API</a>
       
     
     </li>
@@ -360,21 +353,22 @@
 
 <span class="sd">(cannot be used as a standalone model)</span>
 <span class="sd">"""</span>
-<span class="kn">import</span> <span class="nn">torch</span>
 
-<span class="kn">from</span> <span class="nn">graphnet.models.gnn.gnn</span> <span class="kn">import</span> <span class="n">GNN</span>
-<span class="kn">from</span> <span class="nn">graphnet.utilities.config</span> <span class="kn">import</span> <span class="n">save_model_config</span>
-<span class="kn">from</span> <span class="nn">torch_geometric.data</span> <span class="kn">import</span> <span class="n">Data</span>
-<span class="kn">from</span> <span class="nn">torch_geometric.nn.pool</span> <span class="kn">import</span> <span class="n">knn_graph</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphnet.models.gnn.gnn</span><span class="w"> </span><span class="kn">import</span> <span class="n">GNN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphnet.utilities.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">save_model_config</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_geometric.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_geometric.nn.pool</span><span class="w"> </span><span class="kn">import</span> <span class="n">knn_graph</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
 
 
-<span class="kn">from</span> <span class="nn">graphnet.models.components.embedding</span> <span class="kn">import</span> <span class="n">SinusoidalPosEmb</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphnet.models.components.embedding</span><span class="w"> </span><span class="kn">import</span> <span class="n">SinusoidalPosEmb</span>
 
 
 <div class="viewcode-block" id="Node_RNN">
 <a class="viewcode-back" href="../../../../api/graphnet.models.rnn.node_rnn.html#graphnet.models.rnn.node_rnn.Node_RNN">[docs]</a>
-<span class="k">class</span> <span class="nc">Node_RNN</span><span class="p">(</span><span class="n">GNN</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Node_RNN</span><span class="p">(</span><span class="n">GNN</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""Implementation of the Node RNN model architecture.</span>
 
 <span class="sd">    The model takes as input the typical DOM data format and transforms it into</span>
@@ -387,7 +381,7 @@
 <span class="sd">    """</span>
 
     <span class="nd">@save_model_config</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">nb_inputs</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
         <span class="n">hidden_size</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
@@ -402,13 +396,21 @@
 
 <span class="sd">        Args:</span>
 <span class="sd">            nb_inputs: Number of features in the input data.</span>
-<span class="sd">            hidden_size: Number of features for the RNN output and hidden layers.</span>
+<span class="sd">            hidden_size: Number of features for the RNN output and hidden</span>
+<span class="sd">                layers.</span>
 <span class="sd">            num_layers: Number of layers in the RNN.</span>
-<span class="sd">            time_series_columns: The indices of the input data that should be treated as time series data. The first index should be the charge column.</span>
-<span class="sd">            nb_neighbours: Number of neighbours to use when reconstructing the graph representation. Defaults to 8.</span>
-<span class="sd">            features_subset: The subset of latent features on each node that are used as metric dimensions when performing the k-nearest neighbours clustering. Defaults to [0,1,2,3]</span>
+<span class="sd">            time_series_columns: The indices of the input data that should be</span>
+<span class="sd">                treated as time series data. The first index should be</span>
+<span class="sd">                the charge column.</span>
+<span class="sd">            nb_neighbours: Number of neighbours to use when reconstructing the</span>
+<span class="sd">                graph representation. Defaults to 8.</span>
+<span class="sd">            features_subset: The subset of latent features on each node that</span>
+<span class="sd">                are used as metric dimensions when performing the k-nearest</span>
+<span class="sd">                neighbours clustering. Defaults to [0,1,2,3]</span>
 <span class="sd">            dropout: Dropout fraction to use in the RNN. Defaults to 0.5.</span>
-<span class="sd">            embedding_dim: Embedding dimension of the RNN. Defaults to no embedding.</span>
+<span class="sd">                embedding_dim: Embedding dimension of the RNN.</span>
+<span class="sd">                Defaults to no embedding.</span>
+<span class="sd">            embedding_dim: Dimension of the embedding. Defaults to 0.</span>
 <span class="sd">        """</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_hidden_size</span> <span class="o">=</span> <span class="n">hidden_size</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_num_layers</span> <span class="o">=</span> <span class="n">num_layers</span>
@@ -434,7 +436,7 @@
 
 <div class="viewcode-block" id="Node_RNN.clean_up_data_object">
 <a class="viewcode-back" href="../../../../api/graphnet.models.rnn.node_rnn.html#graphnet.models.rnn.node_rnn.Node_RNN.clean_up_data_object">[docs]</a>
-    <span class="k">def</span> <span class="nf">clean_up_data_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Data</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">clean_up_data_object</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Data</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Update the feature names of the data object.</span>
 
 <span class="sd">        Args:</span>
@@ -453,7 +455,7 @@
 
 <div class="viewcode-block" id="Node_RNN.forward">
 <a class="viewcode-back" href="../../../../api/graphnet.models.rnn.node_rnn.html#graphnet.models.rnn.node_rnn.Node_RNN.forward">[docs]</a>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Data</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Apply learnable forward pass to the GNN."""</span>
         <span class="c1"># cutter = data.cutter.cumsum(0)[:-1]</span>
         <span class="c1"># Optional embedding of the time and charge time series data.</span>
@@ -521,11 +523,11 @@
       <div class="md-footer-meta__inner md-grid">
         <div class="md-footer-copyright">
           <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2021-2024, GraphNeT team.
+              &#169; Copyright 2021-2025, GraphNeT team.
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

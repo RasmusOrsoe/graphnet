@@ -61,7 +61,7 @@
 </script>
   
   
-    <title>graphnet.datasets.test_dataset module &#8212; graphnet  documentation</title>
+    <title>test_dataset &#8212; graphnet  documentation</title>
 
 <style>
   dt:target {
@@ -120,16 +120,16 @@
   }
 
 </style>
-    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=83e35b93" />
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=75810a84" />
     <link rel="stylesheet" type="text/css" href="../_static/material.css?v=79c92029" />
     <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
     <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../_static/favicon.svg"/>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="graphnet.deployment package" href="graphnet.deployment.html" />
-    <link rel="prev" title="graphnet.datasets.prometheus_datasets module" href="graphnet.datasets.prometheus_datasets.html" />
+    <link rel="next" title="deployment" href="graphnet.deployment.html" />
+    <link rel="prev" title="snowstorm_dataset" href="graphnet.datasets.snowstorm_dataset.html" />
   
    
 
@@ -166,7 +166,7 @@
       <div class="md-flex__cell md-flex__cell--stretch">
         <div class="md-flex__ellipsis md-header-nav__title" data-md-component="title">
           <span class="md-header-nav__topic">GraphNeT</span>
-          <span class="md-header-nav__topic"> graphnet.datasets.test_dataset module </span>
+          <span class="md-header-nav__topic"> test_dataset </span>
         </div>
       </div>
       <div class="md-flex__cell md-flex__cell--shrink">
@@ -241,8 +241,8 @@
       <ul class="md-tabs__list">
             
             <li class="md-tabs__item"><a href="../index.html" class="md-tabs__link">Documentation</a></li>
-          <li class="md-tabs__item"><a href="graphnet.html" class="md-tabs__link">Subpackages</a></li>
-          <li class="md-tabs__item"><a href="graphnet.datasets.html" class="md-tabs__link">graphnet.datasets package</a></li>
+          <li class="md-tabs__item"><a href="graphnet.html" class="md-tabs__link">API</a></li>
+          <li class="md-tabs__item"><a href="graphnet.datasets.html" class="md-tabs__link">datasets</a></li>
       </ul>
     </div>
   </nav>
@@ -326,29 +326,31 @@
     <li class="md-nav__item">
     
     
-      <a href="graphnet.html" class="md-nav__link">Subpackages</a>
+      <a href="graphnet.html" class="md-nav__link">API</a>
       <ul class="md-nav__list"> 
     <li class="md-nav__item">
     
     
-      <a href="graphnet.data.html" class="md-nav__link">graphnet.data package</a>
+      <a href="graphnet.data.html" class="md-nav__link">data</a>
       
     
     </li>
     <li class="md-nav__item">
     
     
-      <a href="graphnet.datasets.html" class="md-nav__link">graphnet.datasets package</a>
+      <a href="graphnet.datasets.html" class="md-nav__link">datasets</a>
       <ul class="md-nav__list"> 
     <li class="md-nav__item">
     
     
-      <a href="graphnet.datasets.html#submodules" class="md-nav__link">Submodules</a>
-      <ul class="md-nav__list"> 
+      <a href="graphnet.datasets.prometheus_datasets.html" class="md-nav__link">prometheus_datasets</a>
+      
+    
+    </li>
     <li class="md-nav__item">
     
     
-      <a href="graphnet.datasets.prometheus_datasets.html" class="md-nav__link">graphnet.datasets.prometheus_datasets module</a>
+      <a href="graphnet.datasets.snowstorm_dataset.html" class="md-nav__link">snowstorm_dataset</a>
       
     
     </li>
@@ -356,15 +358,15 @@
     
     
     <input class="md-toggle md-nav__toggle" data-md-toggle="toc" type="checkbox" id="__toc">
-    <label class="md-nav__link md-nav__link--active" for="__toc"> graphnet.datasets.test_dataset module </label>
+    <label class="md-nav__link md-nav__link--active" for="__toc"> test_dataset </label>
     
-      <a href="#" class="md-nav__link md-nav__link--active">graphnet.datasets.test_dataset module</a>
+      <a href="#" class="md-nav__link md-nav__link--active">test_dataset</a>
       
         
 <nav class="md-nav md-nav--secondary">
     <label class="md-nav__title" for="__toc">"Contents"</label>
   <ul class="md-nav__list" data-md-scrollfix="">
-        <li class="md-nav__item"><a href="#api-graphnet-datasets-test-dataset--page-root" class="md-nav__link">graphnet.datasets.test_dataset module</a><nav class="md-nav">
+        <li class="md-nav__item"><a href="#api-graphnet-datasets-test-dataset--page-root" class="md-nav__link">test_dataset</a><nav class="md-nav">
               <ul class="md-nav__list">
         <li class="md-nav__item"><a href="#graphnet.datasets.test_dataset.TestDataset" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">TestDataset</span></code></a>
         </li></ul>
@@ -383,51 +385,49 @@
     
     </li></ul>
     
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="graphnet.deployment.html" class="md-nav__link">deployment</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="graphnet.exceptions.html" class="md-nav__link">exceptions</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="graphnet.models.html" class="md-nav__link">models</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="graphnet.training.html" class="md-nav__link">training</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="graphnet.utilities.html" class="md-nav__link">utilities</a>
+      
+    
+    </li>
+    <li class="md-nav__item">
+    
+    
+      <a href="graphnet.constants.html" class="md-nav__link">constants</a>
+      
+    
     </li></ul>
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="graphnet.deployment.html" class="md-nav__link">graphnet.deployment package</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="graphnet.exceptions.html" class="md-nav__link">graphnet.exceptions package</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="graphnet.models.html" class="md-nav__link">graphnet.models package</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="graphnet.training.html" class="md-nav__link">graphnet.training package</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="graphnet.utilities.html" class="md-nav__link">graphnet.utilities package</a>
-      
-    
-    </li></ul>
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="graphnet.html#submodules" class="md-nav__link">Submodules</a>
-      
     
     </li>
   </ul>
@@ -444,7 +444,7 @@
 <nav class="md-nav md-nav--secondary">
     <label class="md-nav__title" for="__toc">"Contents"</label>
   <ul class="md-nav__list" data-md-scrollfix="">
-        <li class="md-nav__item"><a href="#api-graphnet-datasets-test-dataset--page-root" class="md-nav__link">graphnet.datasets.test_dataset module</a><nav class="md-nav">
+        <li class="md-nav__item"><a href="#api-graphnet-datasets-test-dataset--page-root" class="md-nav__link">test_dataset</a><nav class="md-nav">
               <ul class="md-nav__list">
         <li class="md-nav__item"><a href="#graphnet.datasets.test_dataset.TestDataset" class="md-nav__link"><code class="docutils literal notranslate"><span class="pre">TestDataset</span></code></a>
         </li></ul>
@@ -460,11 +460,11 @@
           <article class="md-content__inner md-typeset" role="main">
             
   <section id="module-graphnet.datasets.test_dataset">
-<span id="graphnet-datasets-test-dataset-module"></span><h1 id="api-graphnet-datasets-test-dataset--page-root">graphnet.datasets.test_dataset module<a class="headerlink" href="#api-graphnet-datasets-test-dataset--page-root" title="Link to this heading">¶</a></h1>
+<span id="test-dataset"></span><h1 id="api-graphnet-datasets-test-dataset--page-root">test_dataset<a class="headerlink" href="#api-graphnet-datasets-test-dataset--page-root" title="Link to this heading">¶</a></h1>
 <p>A CuratedDataset for unit tests.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="graphnet.datasets.test_dataset.TestDataset">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphnet.datasets.test_dataset.</span></span><span class="sig-name descname"><span class="pre">TestDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">graph_definition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">download_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_dataloader_kwargs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_dataloader_kwargs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_dataloader_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/datasets/test_dataset.html#TestDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.datasets.test_dataset.TestDataset" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">graphnet.datasets.test_dataset.</span></span><span class="sig-name descname"><span class="pre">TestDataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">download_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_representation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">graph_definition</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">truth</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">features</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_dataloader_kwargs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validation_dataloader_kwargs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test_dataloader_kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/graphnet/datasets/test_dataset.html#TestDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#graphnet.datasets.test_dataset.TestDataset" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="graphnet.data.curated_datamodule.html#graphnet.data.curated_datamodule.ERDAHostedDataset" title="graphnet.data.curated_datamodule.ERDAHostedDataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">ERDAHostedDataset</span></code></a></p>
 <p>A CuratedDataset class for unit tests of ERDAHosted Datasets.</p>
 <p>This dataset should not be used outside the context of unit tests.</p>
@@ -472,8 +472,10 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>graph_definition</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="graphnet.models.graphs.graph_definition.html#graphnet.models.graphs.graph_definition.GraphDefinition" title="graphnet.models.graphs.graph_definition.GraphDefinition"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphDefinition</span></code></a></span>) – Method that defines the data representation.</p></li>
 <li><p><strong>download_dir</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></span>) – Directory to download dataset to.</p></li>
+<li><p><strong>data_representation</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<a class="reference internal" href="graphnet.models.data_representation.data_representation.html#graphnet.models.data_representation.data_representation.DataRepresentation" title="graphnet.models.data_representation.data_representation.DataRepresentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">DataRepresentation</span></code></a>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Method that defines the data representation.</p></li>
+<li><p><strong>graph_definition</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code>[<a class="reference internal" href="graphnet.models.data_representation.graphs.graph_definition.html#graphnet.models.data_representation.graphs.graph_definition.GraphDefinition" title="graphnet.models.data_representation.graphs.graph_definition.GraphDefinition"><code class="xref py py-class docutils literal notranslate"><span class="pre">GraphDefinition</span></code></a>]</span>, default: <code class="docutils literal notranslate"><span class="pre">None</span></code>) – Method that defines the graph representation.
+NOTE: DEPRECATED Use <cite>data_representation</cite> instead.</p></li>
 <li><p><strong>truth</strong> (<em>Optional</em>) – List of event-level truth to include. Will
 include all available information if not given.</p></li>
 <li><p><strong>features</strong> (<em>Optional</em>) – List of input features from pulsemap to use.
@@ -503,7 +505,7 @@ DataLoader. Default None.</p></li>
     <div class="md-footer-nav">
       <nav class="md-footer-nav__inner md-grid">
           
-            <a href="graphnet.datasets.prometheus_datasets.html" title="graphnet.datasets.prometheus_datasets module"
+            <a href="graphnet.datasets.snowstorm_dataset.html" title="snowstorm_dataset"
                class="md-flex md-footer-nav__link md-footer-nav__link--prev"
                rel="prev">
               <div class="md-flex__cell md-flex__cell--shrink">
@@ -512,17 +514,17 @@ DataLoader. Default None.</p></li>
               <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title">
                 <span class="md-flex__ellipsis">
                   <span
-                      class="md-footer-nav__direction"> "Previous" </span> graphnet.datasets.prometheus_datasets module </span>
+                      class="md-footer-nav__direction"> "Previous" </span> snowstorm_dataset </span>
               </div>
             </a>
           
           
-            <a href="graphnet.deployment.html" title="graphnet.deployment package"
+            <a href="graphnet.deployment.html" title="deployment"
                class="md-flex md-footer-nav__link md-footer-nav__link--next"
                rel="next">
             <div class="md-flex__cell md-flex__cell--stretch md-footer-nav__title"><span
                 class="md-flex__ellipsis"> <span
-                class="md-footer-nav__direction"> "Next" </span> graphnet.deployment package </span>
+                class="md-footer-nav__direction"> "Next" </span> deployment </span>
             </div>
             <div class="md-flex__cell md-flex__cell--shrink"><i
                 class="md-icon md-icon--arrow-forward md-footer-nav__button"></i>
@@ -536,11 +538,11 @@ DataLoader. Default None.</p></li>
       <div class="md-footer-meta__inner md-grid">
         <div class="md-footer-copyright">
           <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2021-2024, GraphNeT team.
+              &#169; Copyright 2021-2025, GraphNeT team.
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>

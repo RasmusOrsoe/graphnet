@@ -119,10 +119,10 @@
   }
 
 </style>
-    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=83e35b93" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=75810a84" />
     <link rel="stylesheet" type="text/css" href="../../../_static/material.css?v=79c92029" />
     <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
-    <script src="../../../_static/doctools.js?v=9a2dae69"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <link rel="icon" href="../../../_static/favicon.svg"/>
     <link rel="index" title="Index" href="../../../genindex.html" />
@@ -322,14 +322,7 @@
     <li class="md-nav__item">
     
     
-      <a href="../../../api/graphnet.html" class="md-nav__link">Subpackages</a>
-      
-    
-    </li>
-    <li class="md-nav__item">
-    
-    
-      <a href="../../../api/graphnet.html#submodules" class="md-nav__link">Submodules</a>
+      <a href="../../../api/graphnet.html" class="md-nav__link">API</a>
       
     
     </li>
@@ -358,22 +351,25 @@
   <h1 id="modules-graphnet-models-standard-model--page-root">Source code for graphnet.models.standard_model</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""Standard model class(es)."""</span>
 
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Type</span>
-<span class="kn">import</span> <span class="nn">torch</span>
-<span class="kn">from</span> <span class="nn">torch</span> <span class="kn">import</span> <span class="n">Tensor</span>
-<span class="kn">from</span> <span class="nn">torch_geometric.data</span> <span class="kn">import</span> <span class="n">Data</span>
-<span class="kn">from</span> <span class="nn">torch.optim</span> <span class="kn">import</span> <span class="n">Adam</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Type</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">torch</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch</span><span class="w"> </span><span class="kn">import</span> <span class="n">Tensor</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch_geometric.data</span><span class="w"> </span><span class="kn">import</span> <span class="n">Data</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">torch.optim</span><span class="w"> </span><span class="kn">import</span> <span class="n">Adam</span>
 
-<span class="kn">from</span> <span class="nn">graphnet.models.gnn.gnn</span> <span class="kn">import</span> <span class="n">GNN</span>
-<span class="kn">from</span> <span class="nn">graphnet.models</span> <span class="kn">import</span> <span class="n">Model</span>
-<span class="kn">from</span> <span class="nn">.easy_model</span> <span class="kn">import</span> <span class="n">EasySyntax</span>
-<span class="kn">from</span> <span class="nn">graphnet.models.task</span> <span class="kn">import</span> <span class="n">StandardLearnedTask</span>
-<span class="kn">from</span> <span class="nn">graphnet.models.graphs</span> <span class="kn">import</span> <span class="n">GraphDefinition</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphnet.models.gnn.gnn</span><span class="w"> </span><span class="kn">import</span> <span class="n">GNN</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphnet.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">Model</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.easy_model</span><span class="w"> </span><span class="kn">import</span> <span class="n">EasySyntax</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphnet.models.task</span><span class="w"> </span><span class="kn">import</span> <span class="n">StandardLearnedTask</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">graphnet.models.data_representation</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+    <span class="n">GraphDefinition</span><span class="p">,</span>
+    <span class="n">DataRepresentation</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <div class="viewcode-block" id="StandardModel">
 <a class="viewcode-back" href="../../../api/graphnet.models.standard_model.html#graphnet.models.standard_model.StandardModel">[docs]</a>
-<span class="k">class</span> <span class="nc">StandardModel</span><span class="p">(</span><span class="n">EasySyntax</span><span class="p">):</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">StandardModel</span><span class="p">(</span><span class="n">EasySyntax</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">"""A Standard way of combining model components in GraphNeT.</span>
 
 <span class="sd">    This model is compatible with the vast majority of supervised learning</span>
@@ -382,11 +378,12 @@
 <span class="sd">    Capable of producing both event-level and pulse-level predictions.</span>
 <span class="sd">    """</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">graph_definition</span><span class="p">:</span> <span class="n">GraphDefinition</span><span class="p">,</span>
         <span class="n">tasks</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">StandardLearnedTask</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">StandardLearnedTask</span><span class="p">]],</span>
-        <span class="n">backbone</span><span class="p">:</span> <span class="n">Model</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">data_representation</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">DataRepresentation</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">graph_definition</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GraphDefinition</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">backbone</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Model</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">gnn</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">GNN</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">optimizer_class</span><span class="p">:</span> <span class="n">Type</span><span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Optimizer</span><span class="p">]</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">,</span>
         <span class="n">optimizer_kwargs</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
@@ -404,6 +401,24 @@
             <span class="n">scheduler_kwargs</span><span class="o">=</span><span class="n">scheduler_kwargs</span><span class="p">,</span>
             <span class="n">scheduler_config</span><span class="o">=</span><span class="n">scheduler_config</span><span class="p">,</span>
         <span class="p">)</span>
+        <span class="c1"># DEPRECATION ARG GRAPH_DEFINITION: REMOVE AT 2.0 LAUNCH</span>
+        <span class="c1"># See https://github.com/graphnet-team/graphnet/issues/647</span>
+
+        <span class="k">if</span> <span class="p">(</span><span class="n">data_representation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">graph_definition</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="n">data_representation</span> <span class="o">=</span> <span class="n">graph_definition</span>
+            <span class="c1"># Code continues after warning</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">"DeprecationWarning: Argument `graph_definition` will be"</span>
+                <span class="s2">" deprecated in GraphNeT 2.0. Please use `data_representation`"</span>
+                <span class="s2">" instead."</span>
+                <span class="s2">""</span>
+            <span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">data_representation</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">graph_definition</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+            <span class="c1"># Code stops</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                <span class="s2">"__init__() missing 1 required keyword argument:"</span>
+                <span class="s2">"'data_representation'"</span>
+            <span class="p">)</span>
 
         <span class="c1"># deprecation warnings</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">backbone</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">gnn</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">):</span>
@@ -422,15 +437,15 @@
 
         <span class="c1"># Checks</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">backbone</span><span class="p">,</span> <span class="n">Model</span><span class="p">)</span>
-        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">graph_definition</span><span class="p">,</span> <span class="n">GraphDefinition</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data_representation</span><span class="p">,</span> <span class="n">DataRepresentation</span><span class="p">)</span>
 
         <span class="c1"># Member variable(s)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_graph_definition</span> <span class="o">=</span> <span class="n">graph_definition</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_data_representation</span> <span class="o">=</span> <span class="n">data_representation</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">backbone</span> <span class="o">=</span> <span class="n">backbone</span>
 
 <div class="viewcode-block" id="StandardModel.compute_loss">
 <a class="viewcode-back" href="../../../api/graphnet.models.standard_model.html#graphnet.models.standard_model.StandardModel.compute_loss">[docs]</a>
-    <span class="k">def</span> <span class="nf">compute_loss</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_loss</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">preds</span><span class="p">:</span> <span class="n">Tensor</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Data</span><span class="p">],</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Compute and sum losses across tasks."""</span>
@@ -458,7 +473,7 @@
 
 <div class="viewcode-block" id="StandardModel.forward">
 <a class="viewcode-back" href="../../../api/graphnet.models.standard_model.html#graphnet.models.standard_model.StandardModel.forward">[docs]</a>
-    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">forward</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Data</span><span class="p">,</span> <span class="n">List</span><span class="p">[</span><span class="n">Data</span><span class="p">]]</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">Tensor</span><span class="p">,</span> <span class="n">Data</span><span class="p">]]:</span>
 <span class="w">        </span><span class="sd">"""Forward pass, chaining model components."""</span>
@@ -476,7 +491,7 @@
 
 <div class="viewcode-block" id="StandardModel.shared_step">
 <a class="viewcode-back" href="../../../api/graphnet.models.standard_model.html#graphnet.models.standard_model.StandardModel.shared_step">[docs]</a>
-    <span class="k">def</span> <span class="nf">shared_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Data</span><span class="p">],</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">shared_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Data</span><span class="p">],</span> <span class="n">batch_idx</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tensor</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Perform shared step.</span>
 
 <span class="sd">        Applies the forward pass and the following loss calculation, shared</span>
@@ -489,12 +504,23 @@
 
 <div class="viewcode-block" id="StandardModel.validate_tasks">
 <a class="viewcode-back" href="../../../api/graphnet.models.standard_model.html#graphnet.models.standard_model.StandardModel.validate_tasks">[docs]</a>
-    <span class="k">def</span> <span class="nf">validate_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_tasks</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">"""Verify that self._tasks contain compatible elements."""</span>
         <span class="n">accepted_tasks</span> <span class="o">=</span> <span class="n">StandardLearnedTask</span>
         <span class="k">for</span> <span class="n">task</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tasks</span><span class="p">:</span>
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">task</span><span class="p">,</span> <span class="n">accepted_tasks</span><span class="p">)</span></div>
-</div>
+
+
+    <span class="c1"># DEPRECATION ARG GRAPH_DEFINITION: REMOVE AT 2.0 LAUNCH</span>
+    <span class="c1"># See https://github.com/graphnet-team/graphnet/issues/647</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_graph_definition</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DataRepresentation</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the graph definition."""</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+            <span class="s2">"DeprecationWarning: `_graph_definition` will be deprecated in"</span>
+            <span class="s2">" GraphNeT 2.0. Please use `_data_representation` instead."</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data_representation</span></div>
 
 </pre></div>
 
@@ -516,11 +542,11 @@
       <div class="md-footer-meta__inner md-grid">
         <div class="md-footer-copyright">
           <div class="md-footer-copyright__highlight">
-              &#169; Copyright 2021-2024, GraphNeT team.
+              &#169; Copyright 2021-2025, GraphNeT team.
               
           </div>
             Created using
-            <a href="http://www.sphinx-doc.org/">Sphinx</a> 8.0.2.
+            <a href="http://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
              and
             <a href="https://github.com/bashtage/sphinx-material/">Material for
               Sphinx</a>
